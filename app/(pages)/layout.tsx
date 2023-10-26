@@ -6,8 +6,7 @@ import Footer from "../components/footer"
 import BgPattern from "../components/bgPattern"
 import { cn } from "../libs/utils"
 import "../globals.css"
-
-// const inter = Inter({ subsets: ["latin"] })
+import PopupModal from "../components/popupModal"
 
 export const metadata: Metadata = {
 	title: "Free Phones Today",

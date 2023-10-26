@@ -1,4 +1,12 @@
 import Link from "next/link"
+import PopupModal from "./popupModal"
+import { useState } from "react"
+
+type formState = {
+	toggleMainForm: any
+	formOpen: any
+	setForm: any
+}
 
 const faqs = [
 	{
@@ -19,7 +27,8 @@ const faqs = [
 	},
 ]
 
-export default function Faq() {
+export default function Faq({ toggleMainForm, formOpen, setForm }: formState) {
+	const [formState, setFormState] = useState("")
 	return (
 		<section id="faqs" className="bg-zinc-50">
 			<div className="px-6 py-16 md:px-24 sm:pt-32 lg:px-8 lg:py-30 md:mx-6">
@@ -28,9 +37,14 @@ export default function Faq() {
 						<h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">Frequently asked questions</h2>
 						<p className="mt-4 text-base leading-7 text-gray-600">
 							Can’t find the answer you’re looking for? Reach out to our{" "}
-							<Link href="/support" className="mr-1 font-semibold text-indigo-600 hover:text-indigo-500">
+							<span
+								onClick={() => {
+									setForm("SupportForm")
+									toggleMainForm()
+								}}
+								className="inline-block mr-1 font-semibold text-indigo-600 cursor-pointer w-fit hover:text-indigo-500">
 								support
-							</Link>
+							</span>
 							team.
 						</p>
 					</div>

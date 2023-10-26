@@ -2,17 +2,20 @@
 import React, { JSXElementConstructor, useState } from "react"
 import CareerSlider from "./careerSlider"
 import Link from "next/link"
-import SignupForm from "./signupForm"
+import SignupForm from "./SignupForm"
+import PopupModal from "./popupModal"
 
 type hero = {
 	toggleMainForm: any
 	formOpen: any
+	setForm: any
 }
 
-const Hero = ({ toggleMainForm, formOpen }: hero) => {
+const Hero = ({ toggleMainForm, formOpen, form, setForm }: hero) => {
 	return (
 		<section id="hero" className={`${formOpen === true && "overflow-hidden"} relative px-4 mx-auto max-w-7xl sm:mt-12`}>
-			{formOpen && <SignupForm toggleMainForm={toggleMainForm} formOpen={formOpen} />}
+			{/* {formOpen && <SignupForm toggleMainForm={toggleMainForm} formOpen={formOpen} />} */}
+			{formOpen && form === "SignupForm" && <PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} />}
 			<div className="items-center justify-center w-5/6 mx-auto text-center md:max-w-3/4 xl:max-w-1/2">
 				<CareerSlider />
 				<h1 className="flex flex-col gap-2 pt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
@@ -30,7 +33,10 @@ const Hero = ({ toggleMainForm, formOpen }: hero) => {
 				<div className="max-w-md pt-6 mx-auto sm:flex sm:justify-center md:mt-8">
 					<div className="rounded-md shadow">
 						<button
-							onClick={toggleMainForm}
+							onClick={() => {
+								setForm("SignupForm")
+								toggleMainForm()
+							}}
 							className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md whitespace-nowrap hover:bg-indigo-700 md:px-10 md:py-4 md:text-lg">
 							Claim your device!
 						</button>

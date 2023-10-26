@@ -19,6 +19,17 @@
 }
 
 body {
+        /* For Webkit-based browsers (Chrome, Safari and Opera) */
+	.scrollbar-hide::-webkit-scrollbar {
+		display: none;
+	}
+
+	/* For IE, Edge and Firefox */
+	.scrollbar-hide {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+    
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -26,6 +37,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+
 }
 
 @layer components {
