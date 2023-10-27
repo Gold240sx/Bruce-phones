@@ -5,10 +5,8 @@ type UserData = {
 	firstName: string
 	middleInitial: string
 	lastName: string
-	lastFour: string
 	phoneNo: string
 	email: string
-	DOB: string
 }
 
 type UserFormProps = UserData & {
@@ -16,7 +14,7 @@ type UserFormProps = UserData & {
 	updateFields: (fields: Partial<UserData>) => void
 }
 
-const UserForm = ({ firstName, middleInitial, lastName, lastFour, phoneNo, email, DOB, updateFields }: UserFormProps) => {
+const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFields }: UserFormProps) => {
 	return (
 		<FormWrapper className="flex flex-col gap-3" title="User Details">
 			<label>First Name</label>
@@ -51,30 +49,6 @@ const UserForm = ({ firstName, middleInitial, lastName, lastFour, phoneNo, email
 				onChange={(e) =>
 					updateFields({
 						lastName: e.target.value,
-					})
-				}
-			/>
-			<label>Last 4 of Social</label>
-			<input
-				required
-				min={1}
-				type="number"
-				value={lastFour}
-				onChange={(e) =>
-					updateFields({
-						lastFour: e.target.value,
-					})
-				}
-			/>
-			<label>Date of Birth</label>
-			<input
-				required
-				min={1}
-				type="number"
-				value={DOB}
-				onChange={(e) =>
-					updateFields({
-						DOB: e.target.value,
 					})
 				}
 			/>

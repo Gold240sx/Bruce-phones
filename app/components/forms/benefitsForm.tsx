@@ -3,6 +3,8 @@ import FormWrapper from "./formWrapper"
 
 type BenefitsData = {
 	benefits: string
+	lastFour: string
+	DOB: string
 }
 
 type BenefitsFormProps = BenefitsData & {
@@ -10,7 +12,7 @@ type BenefitsFormProps = BenefitsData & {
 	updateFields: (fields: Partial<BenefitsData>) => void
 }
 
-const BenefitsForm = ({ benefits, updateFields }: BenefitsFormProps) => {
+const BenefitsForm = ({ benefits, lastFour, DOB, updateFields }: BenefitsFormProps) => {
 	return (
 		<FormWrapper className="flex flex-col gap-3" title="Benefits Details">
 			<h2>What Benefits do you currently recieve?</h2>
@@ -57,6 +59,30 @@ const BenefitsForm = ({ benefits, updateFields }: BenefitsFormProps) => {
 				/>
 				Medicaid
 			</label>
+			<label>Last 4 of Social</label>
+			<input
+				required
+				min={1}
+				type="number"
+				value={lastFour}
+				onChange={(e) =>
+					updateFields({
+						lastFour: e.target.value,
+					})
+				}
+			/>
+			<label>Date of Birth</label>
+			<input
+				required
+				min={1}
+				type="number"
+				value={DOB}
+				onChange={(e) =>
+					updateFields({
+						DOB: e.target.value,
+					})
+				}
+			/>
 		</FormWrapper>
 	)
 }

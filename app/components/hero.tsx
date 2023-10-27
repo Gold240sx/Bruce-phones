@@ -2,8 +2,12 @@
 import React, { JSXElementConstructor, useState } from "react"
 import CareerSlider from "./careerSlider"
 import Link from "next/link"
+import Image from "next/image"
 import SignupForm from "./SignupForm"
 import PopupModal from "./popupModal"
+import ebtOrangeCard from "../assets/images/ebtOrange.png"
+import ebtTealCard from "../assets/images/ebtteal.png"
+import androidPhone from "../assets/images/androidPhone.png"
 
 type hero = {
 	toggleMainForm: any
@@ -18,7 +22,16 @@ const Hero = ({ toggleMainForm, formOpen, form, setForm }: hero) => {
 			{formOpen && form === "SignupForm" && <PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} />}
 			<div className="items-center justify-center w-5/6 mx-auto text-center md:max-w-3/4 xl:max-w-1/2">
 				<CareerSlider />
+				<Image className="absolute -z-10 -left-8 -top-16 opacity-80" src={ebtTealCard} height={250} width={350} alt="ebt card" />
+				<Image
+					className="absolute -z-10 -right-16 top-10 rotate-3"
+					src={androidPhone}
+					height={600}
+					width={200}
+					alt="android phone"
+				/>
 				<h1 className="flex flex-col gap-2 pt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+					<span className="text-2xl font-medium text-zinc-500">Recieve government assistance?</span>
 					<span className="">
 						Claim your Free<span className="text-fuchsia-600">*</span>
 					</span>

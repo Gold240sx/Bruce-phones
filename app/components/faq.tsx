@@ -15,7 +15,7 @@ const faqs = [
 	},
 	{
 		question: "How do you guys make your money?",
-		answer: "We our paid for every product you get! believe me, We want you to qualify!",
+		answer: "We are paid for every product you get! believe me, We want you to qualify!",
 	},
 	{
 		question: "Where is my data stored?",

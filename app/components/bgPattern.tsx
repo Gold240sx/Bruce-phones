@@ -2,7 +2,7 @@ import React from "react"
 
 const BgPattern = () => {
 	return (
-		<div className="hidden w-full h-full pointer-events-none  sm:absolute top:0 sm:inset-y-0 sm:block" aria-hidden="true">
+		<div className="hidden w-full h-full pointer-events-none -z-20 sm:absolute top:0 sm:inset-y-0 sm:block" aria-hidden="true">
 			<div className="relative w-full h-full mx-auto overflow-x-hidden -transform-h-full">
 				<svg
 					className="absolute bg-repeat-y right-full translate-x-1/4 transform-h-3/4"

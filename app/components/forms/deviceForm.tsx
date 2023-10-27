@@ -13,14 +13,14 @@ type DeviceFormProps = DeviceData & {
 
 const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 	return (
-		<FormWrapper className="flex flex-col gap-3" title="Account Details">
+		<FormWrapper className="flex flex-col gap-3" title="Product Selection">
 			<label screen-reader-only className="hidden">
 				Device
 			</label>
 			<input
-				className="hidden"
+				className=""
 				autoFocus
-				type="email"
+				type="text"
 				value={device}
 				onChange={(e) =>
 					updateFields({

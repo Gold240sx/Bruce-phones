@@ -36,21 +36,23 @@ const INITIAL_DATA: FormData = {
 	city: "",
 	state: "",
 	zip: "",
-	device: "",
+	device: "X65",
 	subscibed: false,
-	benefits: "",
+	benefits: "SNAP",
 }
 
 type Step = {
-	id: string
+	id: number
+	label: string
 	name: string
 	status: string
 }
 
 const Steps: Step[] = [
-	{ id: "Step 1", name: "User Details", status: "current" },
-	{ id: "Step 2", name: "Address Details", status: "upcoming" },
-	{ id: "Step 3", name: "Account Details", status: "upcoming" },
+	{ id: 1, label: "Step 1", name: "Product Selection", status: "current" },
+	{ id: 2, label: "Step 2", name: "User Details", status: "upcoming" },
+	{ id: 3, label: "Step 3", name: "Address Details", status: "upcoming" },
+	{ id: 4, label: "Step 4", name: "Benefits Details", status: "upcoming" },
 ]
 
 const MultistepForm = () => {
@@ -60,11 +62,11 @@ const MultistepForm = () => {
 			return { ...prev, ...fields }
 		})
 	}
-	const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultiStepForm([
+	const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } = useMultiStepForm([
 		<DeviceForm {...data} updateFields={updateFields} />,
-		<BenefitsForm {...data} updateFields={updateFields} />,
 		<UserForm {...data} updateFields={updateFields} />,
 		<AddressForm {...data} updateFields={updateFields} />,
+		<BenefitsForm {...data} updateFields={updateFields} />,
 	])
 
 	const onSubmit = (e: FormEvent) => {
@@ -73,26 +75,28 @@ const MultistepForm = () => {
 		alert("Successfully Submitted")
 	}
 	return (
-		<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full">
-			{/* <StepperGraphic Steps={Steps} /> */}
-			{step}
-			<div className="flex justify-end w-full gap-2 mt-4">
-				{!isFirstStep && (
+		<form onSubmit={(e) => onSubmit(e)} className="flex items-center w-full md:flex-col">
+			<StepperGraphic Steps={Steps} goTo={goTo} />
+			<div className="flex flex-col">
+				{step}
+				<div className="flex justify-end w-full gap-2 mt-4">
+					{!isFirstStep && (
+						<button
+							type="submit"
+							onClick={back}
+							className="px-3 py-1 text-lg border rounded-md hover:bg-white hover:border-2 acguvf:border-black border-zinc-400">
+							Back
+						</button>
+					)}
 					<button
 						type="submit"
-						onClick={back}
 						className="px-3 py-1 text-lg border rounded-md hover:bg-white hover:border-2 acguvf:border-black border-zinc-400">
-						Back
+						{isLastStep ? "Submit" : "Next"}
 					</button>
-				)}
-				<button
-					type="submit"
-					className="px-3 py-1 text-lg border rounded-md hover:bg-white hover:border-2 acguvf:border-black border-zinc-400">
-					{isLastStep ? "Submit" : "Next"}
-				</button>
-			</div>
-			<div className="flex pt-4 ml-auto text-2xl font-semibold w-fit text-zinc-400 bottom-4 right-4">
-				{currentStepIndex + 1}/{steps.length}
+				</div>
+				<div className="flex pt-4 ml-auto text-2xl font-semibold w-fit text-zinc-400 bottom-4 right-4">
+					{currentStepIndex + 1}/{steps.length}
+				</div>
 			</div>
 		</form>
 	)
