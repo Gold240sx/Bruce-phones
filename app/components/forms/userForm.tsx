@@ -3,8 +3,12 @@ import FormWrapper from "./formWrapper"
 
 type UserData = {
 	firstName: string
+	middleInitial: string
 	lastName: string
-	age: string
+	lastFour: string
+	phoneNo: string
+	email: string
+	DOB: string
 }
 
 type UserFormProps = UserData & {
@@ -12,7 +16,7 @@ type UserFormProps = UserData & {
 	updateFields: (fields: Partial<UserData>) => void
 }
 
-const UserForm = ({ firstName, lastName, age, updateFields }: UserFormProps) => {
+const UserForm = ({ firstName, middleInitial, lastName, lastFour, phoneNo, email, DOB, updateFields }: UserFormProps) => {
 	return (
 		<FormWrapper className="flex flex-col gap-3" title="User Details">
 			<label>First Name</label>
@@ -27,6 +31,18 @@ const UserForm = ({ firstName, lastName, age, updateFields }: UserFormProps) => 
 					})
 				}
 			/>
+			<label>Middle Initial</label>
+			<input
+				required
+				type="text"
+				maxLength={2}
+				value={middleInitial}
+				onChange={(e) =>
+					updateFields({
+						middleInitial: e.target.value,
+					})
+				}
+			/>
 			<label>Last Name</label>
 			<input
 				required
@@ -38,15 +54,50 @@ const UserForm = ({ firstName, lastName, age, updateFields }: UserFormProps) => 
 					})
 				}
 			/>
-			<label>Age</label>
+			<label>Last 4 of Social</label>
 			<input
 				required
 				min={1}
 				type="number"
-				value={age}
+				value={lastFour}
 				onChange={(e) =>
 					updateFields({
-						age: e.target.value,
+						lastFour: e.target.value,
+					})
+				}
+			/>
+			<label>Date of Birth</label>
+			<input
+				required
+				min={1}
+				type="number"
+				value={DOB}
+				onChange={(e) =>
+					updateFields({
+						DOB: e.target.value,
+					})
+				}
+			/>
+			<label>Phone Number</label>
+			<input
+				min={1}
+				type="number"
+				value={phoneNo}
+				onChange={(e) =>
+					updateFields({
+						phoneNo: e.target.value,
+					})
+				}
+			/>
+			<label>Email</label>
+			<input
+				required
+				autoFocus
+				type="email"
+				value={email}
+				onChange={(e) =>
+					updateFields({
+						email: e.target.value,
 					})
 				}
 			/>

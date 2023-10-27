@@ -3,30 +3,55 @@ import { useMultiStepForm } from "../hooks/useMultiStepForm"
 import UserForm from "./forms/userForm"
 import AddressForm from "./forms/addressForm"
 import AccountForm from "./forms/accountForm"
+import StepperGraphic from "./forms/StepperGraphic"
+import BenefitsForm from "./forms/benefitsForm"
+import DeviceForm from "./forms/deviceForm"
 
 type FormData = {
 	firstName: string
+	middleInitial: string
 	lastName: string
-	age: string
+	lastFour: string
+	phoneNo: string
+	DOB: string
+	email: string
 	street: string
 	city: string
 	state: string
 	zip: string
-	email: string
-	password: string
+	device: string
+	subscibed: boolean
+	benefits: string
 }
 
 const INITIAL_DATA: FormData = {
 	firstName: "",
+	middleInitial: "",
 	lastName: "",
-	age: "",
+	lastFour: "",
+	DOB: "",
+	phoneNo: "",
+	email: "",
 	street: "",
 	city: "",
 	state: "",
 	zip: "",
-	email: "",
-	password: "",
+	device: "",
+	subscibed: false,
+	benefits: "",
 }
+
+type Step = {
+	id: string
+	name: string
+	status: string
+}
+
+const Steps: Step[] = [
+	{ id: "Step 1", name: "User Details", status: "current" },
+	{ id: "Step 2", name: "Address Details", status: "upcoming" },
+	{ id: "Step 3", name: "Account Details", status: "upcoming" },
+]
 
 const MultistepForm = () => {
 	const [data, setData] = useState(INITIAL_DATA)
@@ -36,9 +61,10 @@ const MultistepForm = () => {
 		})
 	}
 	const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultiStepForm([
+		<DeviceForm {...data} updateFields={updateFields} />,
+		<BenefitsForm {...data} updateFields={updateFields} />,
 		<UserForm {...data} updateFields={updateFields} />,
 		<AddressForm {...data} updateFields={updateFields} />,
-		<AccountForm {...data} updateFields={updateFields} />,
 	])
 
 	const onSubmit = (e: FormEvent) => {
@@ -48,6 +74,7 @@ const MultistepForm = () => {
 	}
 	return (
 		<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full">
+			{/* <StepperGraphic Steps={Steps} /> */}
 			{step}
 			<div className="flex justify-end w-full gap-2 mt-4">
 				{!isFirstStep && (
