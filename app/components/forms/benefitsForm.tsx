@@ -83,6 +83,11 @@ const BenefitsForm = ({ benefits, lastFour, DOB, updateFields }: BenefitsFormPro
 					})
 				}
 			/>
+			<input required type="checkbox" />
+			<p>
+				I agknowledge and confirm that the answers submitted in this form are valid, up to date and is mine, my spouses or my
+				children's information.
+			</p>
 		</FormWrapper>
 	)
 }

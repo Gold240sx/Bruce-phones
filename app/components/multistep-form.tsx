@@ -37,7 +37,7 @@ const INITIAL_DATA: FormData = {
 	state: "",
 	zip: "",
 	device: "X65",
-	subscibed: false,
+	subscibed: true,
 	benefits: "SNAP",
 }
 
@@ -70,12 +70,18 @@ const MultistepForm = () => {
 	])
 
 	const onSubmit = (e: FormEvent) => {
+		// const formData = new FormData(e.currentTarget)
 		e.preventDefault()
 		if (!isLastStep) return next()
-		alert("Successfully Submitted")
+
+		// print each value to console.
+		// for (let [key, value] of formData.entries()) {
+		// 	console.log(key, value)
+		// }
 	}
+
 	return (
-		<form onSubmit={(e) => onSubmit(e)} className="flex items-center w-full md:flex-col">
+		<form onSubmit={onSubmit} className="flex flex-col items-center w-full">
 			<StepperGraphic Steps={Steps} goTo={goTo} />
 			<div className="flex flex-col">
 				{step}

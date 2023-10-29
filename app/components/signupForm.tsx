@@ -13,6 +13,7 @@ const SignupForm = () => {
 					as little as $20.{" "}
 				</CardDescription>
 			</CardHeader>
+
 			<CardContent className="">
 				<div className="relative isolate sm:pb-32">
 					<div className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu blur-3xl sm:top-[-20rem]" aria-hidden="true">
@@ -27,6 +28,7 @@ const SignupForm = () => {
 					<MultiStepForm />
 				</div>
 			</CardContent>
+
 			<CardFooter className="items-center w-full px-12 pt-6 pb-8 -mb-10 text-lg text-center min-h-24 text-zinc-600 bg-zinc-200">
 				<p className="max-w-3/5">
 					Offer subject to availability. By submitting this form you hereby aknowledge that the information that you submit is
