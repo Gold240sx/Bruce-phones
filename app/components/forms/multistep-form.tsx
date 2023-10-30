@@ -1,11 +1,24 @@
 import React, { FormEvent, useState } from "react"
-import { useMultiStepForm } from "../hooks/useMultiStepForm"
-import UserForm from "./forms/userForm"
-import AddressForm from "./forms/addressForm"
-import AccountForm from "./forms/accountForm"
-import StepperGraphic from "./forms/StepperGraphic"
-import BenefitsForm from "./forms/benefitsForm"
-import DeviceForm from "./forms/deviceForm"
+import { useMultiStepForm } from "../../hooks/useMultiStepForm"
+import UserForm from "./userForm"
+import AddressForm from "./addressForm"
+import AccountForm from "./accountForm"
+import StepperGraphic from "./StepperGraphic"
+import BenefitsForm from "./benefitsForm"
+import DeviceForm from "./deviceForm"
+import ContactForm from "./signupForm/contactForm"
+
+type Address = {
+	street: string
+	city: string
+	state: string
+	zip: string
+}
+
+type Addresses = {
+	document: Address
+	physical: Address
+}
 
 type FormData = {
 	firstName: string
@@ -15,12 +28,14 @@ type FormData = {
 	phoneNo: string
 	DOB: string
 	email: string
+	address: Addresses
 	street: string
 	city: string
 	state: string
 	zip: string
 	device: string
 	subscibed: boolean
+	documents: string[]
 	benefits: string
 }
 
@@ -32,11 +47,26 @@ const INITIAL_DATA: FormData = {
 	DOB: "",
 	phoneNo: "",
 	email: "",
-	street: "",
-	city: "",
-	state: "",
-	zip: "",
-	device: "X65",
+	address: {
+		document: {
+			street: "",
+			city: "",
+			state: "",
+			zip: "",
+		},
+		physical: {
+			street: "",
+			city: "",
+			state: "",
+			zip: "",
+		},
+	},
+	// street: "",
+	// city: "",
+	// state: "",
+	// zip: "",
+	documents: [],
+	device: "x10",
 	subscibed: true,
 	benefits: "SNAP",
 }
@@ -49,10 +79,11 @@ type Step = {
 }
 
 const Steps: Step[] = [
-	{ id: 1, label: "Step 1", name: "Product Selection", status: "current" },
-	{ id: 2, label: "Step 2", name: "User Details", status: "upcoming" },
-	{ id: 3, label: "Step 3", name: "Address Details", status: "upcoming" },
-	{ id: 4, label: "Step 4", name: "Benefits Details", status: "upcoming" },
+	{ id: 1, label: "Step 1", name: "Contact Details", status: "current" },
+	{ id: 1, label: "Step 1", name: "Device Details", status: "current" },
+	// { id: 2, label: "Step 2", name: "User Details", status: "upcoming" },
+	// { id: 3, label: "Step 3", name: "Address Details", status: "upcoming" },
+	// { id: 3, label: "Step 3", name: "Benefits Details", status: "upcoming" },
 ]
 
 const MultistepForm = () => {
@@ -63,25 +94,25 @@ const MultistepForm = () => {
 		})
 	}
 	const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } = useMultiStepForm([
-		<DeviceForm {...data} updateFields={updateFields} />,
+		// <ContactForm {...data} updateFields={updateFields} />,
+		// <DeviceForm {...data} updateFields={updateFields} />,
 		<UserForm {...data} updateFields={updateFields} />,
-		<AddressForm {...data} updateFields={updateFields} />,
-		<BenefitsForm {...data} updateFields={updateFields} />,
+		// <BenefitsForm {...data} updateFields={updateFields} />,
 	])
 
-	const onSubmit = (e: FormEvent) => {
-		// const formData = new FormData(e.currentTarget)
+	const onSubmit = (e: any) => {
 		e.preventDefault()
+		const formData = new FormData(e)
 		if (!isLastStep) return next()
 
 		// print each value to console.
-		// for (let [key, value] of formData.entries()) {
-		// 	console.log(key, value)
-		// }
+		for (let [key, value] of formData.entries()) {
+			console.log(key, value)
+		}
 	}
 
 	return (
-		<form onSubmit={onSubmit} className="flex flex-col items-center w-full">
+		<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full">
 			<StepperGraphic Steps={Steps} goTo={goTo} />
 			<div className="flex flex-col">
 				{step}

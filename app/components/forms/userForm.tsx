@@ -1,10 +1,84 @@
 "use client"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, FormEvent } from "react"
 import FormWrapper from "./formWrapper"
 import Image from "next/image"
 import { ChevronDownIcon, ExclamationCircleIcon } from "@heroicons/react/20/solid"
 import { Switch } from "@headlessui/react"
-import Select from "react-select"
+import DatePicker from "react-datepicker"
+// import Select from "react-select"
+import Select from "../select"
+import MultiSelect from "../multiSelect"
+import { FileInput, Label } from "flowbite-react"
+import { format } from "date-fns"
+import { AiFillInfoCircle } from "react-icons/ai"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
+
+import "react-datepicker/dist/react-datepicker.css"
+
+function classNames(...classes: string[]) {
+	return classes.filter(Boolean).join(" ")
+}
+
+const states = [
+	"AL",
+	"AK",
+	"AZ",
+	"AR",
+	"CA",
+	"CO",
+	"CT",
+	"DE",
+	"FL",
+	"GA",
+	"HI",
+	"ID",
+	"IL",
+	"IN",
+	"IA",
+	"KS",
+	"KY",
+	"LA",
+	"ME",
+	"MD",
+	"MA",
+	"MI",
+	"MN",
+	"MS",
+	"MO",
+	"MT",
+	"NE",
+	"NV",
+	"NH",
+	"NJ",
+	"NM",
+	"NY",
+	"NC",
+	"ND",
+	"OH",
+	"OK",
+	"OR",
+	"PA",
+	"RI",
+	"SC",
+	"SD",
+	"TN",
+	"TX",
+	"UT",
+	"VT",
+	"VA",
+	"WA",
+	"WV",
+	"WI",
+	"WY",
+]
+
+const valueToDropdownConversion = (stringArray: string[]) => {
+	const objectArray = stringArray.map((string: string) => {
+		return { label: string, value: string }
+	})
+	return objectArray
+}
+const stateDropdown = valueToDropdownConversion(states)
 
 type UserData = {
 	firstName: string
@@ -12,6 +86,7 @@ type UserData = {
 	lastName: string
 	phoneNo: string
 	email: string
+	zip: string
 }
 
 type UserFormProps = UserData & {
@@ -19,9 +94,10 @@ type UserFormProps = UserData & {
 	updateFields: (fields: Partial<UserData>) => void
 }
 
-const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFields }: UserFormProps) => {
+const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFields, zip, lastFour, DOB }: UserFormProps) => {
 	const [imageSrc, setImageSrc] = useState("")
-	const [selectedYear, setSelectedYear] = useState(null)
+	const [sameAsBilling, setSameAsBiling] = useState(true)
+	const [dob, setDOB] = useState(new Date())
 
 	function classNames(...classes: string[]) {
 		return classes.filter(Boolean).join(" ")
@@ -34,112 +110,47 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 		const endYear = new Date().getFullYear()
 
 		for (let i = endYear; i >= startYear; i--) {
-			arr.push(
-				<option value={i} className="text-lg text-black">
-					{i}
-				</option>
-			)
+			arr.push({
+				value: i.toString(), // Convert the year to a string
+				label: i.toString(),
+			})
 		}
 
 		return arr
 	}
 	const yearOptions = generateYearOptions()
 
-	useEffect(() => {
-		const fetchImage = async () => {
-			const imageSrc =
-				"https://images.pexels.com/photos/6146961/pexels-photo-6146961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-			// "https://images.unsplash.com/photo-1694813646514-a22180621d4c?auto=format&fit=crop&q=80&w=870&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-			try {
-				const response = await fetch(imageSrc)
-				if (response.ok) {
-					const blob = await response.blob()
-					const imageUrl = URL.createObjectURL(blob)
-					setImageSrc(imageUrl) // Set the image URL in state
-				} else {
-					console.error("Failed to fetch image")
-				}
-			} catch (error) {
-				console.error("Error fetching image:", error)
-			}
-		}
+	// const replaceWithAstrx = (string: string) => {
+	// 	const characters = string.split("")
+	// 	const asterisks = characters.map((char) => "*")
+	// 	const output = asterisks.join("")
+	// 	return output
+	// }
 
-		fetchImage()
-	}, [])
+	const formatPhoneNo = (inputValue: string) => {
+		if (!inputValue) return inputValue
+		const sanitizedValue = inputValue.replace(/[^\d]/g, "")
+		let formattedValue = ""
+		if (sanitizedValue.length <= 3) {
+			formattedValue = sanitizedValue
+		} else if (sanitizedValue.length <= 6) {
+			formattedValue = `(${sanitizedValue.slice(0, 3)}) ${sanitizedValue.slice(3)}`
+		} else {
+			formattedValue = `(${sanitizedValue.slice(0, 3)}) ${sanitizedValue.slice(3, 6)}-${sanitizedValue.slice(6, 10)}`
+		}
+		return formattedValue
+	}
 
 	return (
 		<FormWrapper className="grid grid-cols-1" title="User Details">
-			{/* <label>First Name</label>
-			<input
-				autoFocus
-				required
-				type="text"
-				name="firstName"
-				value={firstName}
-				onChange={(e) =>
-					updateFields({
-						firstName: e.target.value,
-					})
-				}
-			/>
-			<label>Middle Initial</label>
-			<input
-				required
-				type="text"
-				name="MI"
-				maxLength={2}
-				value={middleInitial}
-				onChange={(e) =>
-					updateFields({
-						middleInitial: e.target.value,
-					})
-				}
-			/>
-			<label>Last Name</label>
-			<input
-				required
-				type="text"
-				name="lastName"
-				value={lastName}
-				onChange={(e) =>
-					updateFields({
-						lastName: e.target.value,
-					})
-				}
-			/>
-			<label>Phone Number</label>
-			<input
-				min={1}
-				type="number"
-				name="phoneNumber"
-				value={phoneNo}
-				onChange={(e) =>
-					updateFields({
-						phoneNo: e.target.value,
-					})
-				}
-			/>
-			<label>Email</label>
-			<input
-				required
-				autoFocus
-				type="email"
-				name="email"
-				value={email}
-				onChange={(e) =>
-					updateFields({
-						email: e.target.value,
-					})
-				}
-			/> */}
-
 			{/* form */}
 			<div className="flex flex-wrap-reverse justify-between w-10/12 gap-8 mx-auto">
 				{/* left/bottom collumn/row */}
 				<div className="w-full md:w-8/12 lg:ml-6 lg:w-5/12">
-					<div className="flex pb-2 mr-auto">
-						<h2 className="col-span-12 col-start-2 text-3xl ">Provide Your Info:</h2>
-					</div>
+					<p className="items-center ml-auto w-fit">
+						<span className="text-2xl font-bold text-red-600">*</span>
+						<span className="font-semibold -translate-y-2">Required</span>
+					</p>
 					<div
 						className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
 						aria-hidden="true">
@@ -150,73 +161,158 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 									"polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
 							}}
 						/>
+						p
 					</div>
-					<form action="#" method="POST" className="max-w-xl mx-auto mt-5 sm:mt-5">
+					<div action="#" method="POST" className="max-w-xl mx-auto mt-5 sm:mt-5">
 						<div className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-12">
 							{/* form info */}
-							<div className="col-span-4">
-								<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-									First name
-								</label>
+							<div className="col-span-6">
+								<div className="flex justify-between">
+									<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										First name
+									</label>
+									<span className="text-sm leading-6 text-gray-500" id="email-optional">
+										Required
+									</span>
+								</div>
 								<div className="mt-2.5">
 									<input
+										autoFocus
 										type="text"
 										name="first-name"
 										id="first-name"
+										required
 										autoComplete="given-name"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
-								</div>
-							</div>
-							<div className="col-span-2">
-								<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-									M.I.
-								</label>
-								<div className="mt-2.5">
-									<input
-										type="text"
-										name="mi-name"
-										id="mi-name"
-										autoComplete="middle-initial-name"
+										onChange={(e) =>
+											updateFields({
+												firstName: e.target.value,
+											})
+										}
 										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>
 							</div>
 							<div className="col-span-6">
-								<label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
-									Last name
-								</label>
+								<div className="flex justify-between">
+									<label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										Last name
+									</label>
+									<span className="text-sm leading-6 text-gray-500" id="email-optional">
+										Required
+									</span>
+								</div>
 								<div className="mt-2.5">
 									<input
 										type="text"
 										name="last-name"
 										id="last-name"
+										required
 										autoComplete="family-name"
+										onChange={(e) =>
+											updateFields({
+												lastName: e.target.value,
+											})
+										}
+										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+									/>
+								</div>
+							</div>
+							<div className="col-span-4 col-start-3 ">
+								<label htmlFor="DOB" className="block text-sm font-semibold leading-6 text-gray-900">
+									<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+									Date of Birth
+								</label>
+								<div className="mt-2.5">
+									<DatePicker
+										id="DOB"
+										name="dob"
+										required
+										selected={dob}
+										onChange={(date: any) => {
+											const formattedDate = format(date, "MM-dd-yyyy") // Format the date
+											updateFields({ DOB: formattedDate })
+											setDOB(date)
+										}}
+										className="block w-full px-2 py-2 text-center text-gray-900 border-0 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+									/>
+								</div>
+							</div>
+							<div className="col-span-5">
+								<div className="flex justify-between">
+									<label
+										htmlFor="lastFour"
+										className="block text-sm font-semibold leading-6 text-gray-900 whitespace-nowrap">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										SSN (Last 4)
+									</label>
+									<TooltipProvider>
+										<Tooltip>
+											<TooltipTrigger className="flex items-end w-full">
+												<AiFillInfoCircle className="pr-6 mt-1 ml-auto text-lg w-fit text-zinc-700" />
+											</TooltipTrigger>
+											<TooltipContent className="text-white rounded-lg bg-zinc-700 max-w-[520px]">
+												<h4 className="my-2 text-lg font-bold"> Why is this being asked for?</h4>
+												<p className="text-base text-zinc-200">
+													Affordable Connectivity Program (ACP) is seeking to identify and confirm that the
+													information you provide is truely yours and that it matches your eligibility claim.
+												</p>
+											</TooltipContent>
+										</Tooltip>
+									</TooltipProvider>
+								</div>
+								<div className="mt-2.5">
+									<input
+										type="text"
+										name="lastFour"
+										placeholder=""
+										maxLength="4"
+										// defaultValue={lastFour}
+										aria-invalid="true"
+										required
+										aria-describedby="email-error"
+										id="lastFour"
+										autocomplete="off"
+										onChange={(e) => {
+											const result = e.target.value.replace(/\D/g, "")
+											updateFields({
+												lastFour: result,
+											})
+										}}
+										value={lastFour}
 										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>
 							</div>
 
-							<div id="email-container" className="col-span-full">
+							<div id="email-container" className="pt-6 col-span-full">
 								<div className="flex justify-between">
 									<label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
 										Email
 									</label>
 									<span className="text-sm leading-6 text-gray-500" id="email-optional">
 										Required
 									</span>
 								</div>
-								<div className="relative w-full mt-2 rounded-md shadow-sm sm:col-span-2">
+								<div className="relative w-full mt-2 rounded-md sm:col-span-2">
 									<input
 										type="email"
 										name="email"
 										placeholder="you@example.com"
 										defaultValue="adamwathan"
 										aria-invalid="true"
+										required
 										aria-describedby="email-error"
 										id="email"
 										autoComplete="email"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+										onChange={(e) =>
+											updateFields({
+												email: e.target.value,
+											})
+										}
+										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 									<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
 										<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
@@ -227,123 +323,140 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 								</p>
 							</div>
 
-							<div className="col-span-full">
-								<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
-									Phone number
-								</label>
+							<div className="col-span-full group">
+								<div className="flex justify-between">
+									<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										Phone Number
+									</label>
+									<span className="text-sm leading-6 text-gray-500" id="email-optional">
+										Required
+									</span>
+								</div>
 								<div className="relative mt-2.5">
-									<div className="absolute inset-y-0 left-0 flex items-center">
+									<div className="absolute inset-y-0 left-0 flex items-center -translate-x-[3px] border rounded-l-lg rounded-r-none bg-zinc-50">
 										<label htmlFor="country" className="sr-only">
 											Country
 										</label>
 										<select
 											id="country"
 											name="country"
-											className="h-full py-0 pl-4 text-gray-400 bg-transparent border-0 rounded-md bg-none pr-9 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm">
+											className="h-full py-0 pl-4 text-gray-400 bg-transparent border-0 rounded-md rounded-r-none ring-t-none ring-b-none border-t-none border-b-none bg-none pr-9 focus:ring-2 focus:ring-inset group-hover:ring-indigo-600 sm:text-sm">
 											<option>US</option>
 											<option>CA</option>
-											<option>EU</option>
+											<option>MX</option>
 										</select>
-										<ChevronDownIcon
-											className="absolute top-0 w-5 h-full text-gray-400 pointer-events-none right-3"
-											aria-hidden="true"
-										/>
 									</div>
 									<input
-										type="tel"
+										type="text"
 										name="phone-number"
 										id="phone-number"
+										required
 										autoComplete="tel"
-										className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+										maxLength="15"
+										onChange={(e) => {
+											const result = e.target.value.replace(/\D/g, "")
+
+											updateFields({
+												phoneNo: result,
+											})
+										}}
+										value={formatPhoneNo(phoneNo)}
+										className="block w-full rounded-md ring-t-none ring-b-none border-t-none border-b-none border-0 px-3.5 py-2 pl-[5.5rem] text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
 									/>
 								</div>
 							</div>
-
-							<div className="col-span-5">
-								<label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
-									Last 4 of social
-								</label>
-								<div className="mt-2.5">
-									<input
-										type="number"
-										name="last-four"
-										min={1111}
-										max={9999}
-										minLength={4}
-										maxLength={4}
-										id="last-four"
-										className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
-								</div>
-							</div>
-
-							<div className="col-span-3">
-								<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-									Year
-								</label>
-								<div className="mt-2.5">
-									<Select
-										className="form--dob-year text-zinc-700 "
-										name="year"
-										options={yearOptions}
-										// onChange={(selectedOption) => setSelectedYear(selectedOption)}
-										value={selectedYear}
-										placeholder="Year"
-									/>
-								</div>
-							</div>
-
-							<div className="col-span-full gap-y-4">
+							<div className="pt-6 col-span-full gap-y-4">
 								<div className="py-2">
-									<h3 className="text-lg">Address</h3>
-									<p>Provide the address on your documents.</p>
+									<h3 className="text-xl font-semibold text-gray-900">Address</h3>
+									<p className="pb-4 text-base text-zinc-600">Provide the address on your documents.</p>
 								</div>
-								<label htmlFor="street-address" className="block text-sm font-semibold leading-6 text-gray-900">
-									Street address
-								</label>
+								<div className="flex justify-between">
+									<label htmlFor="street-address" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										Street address
+									</label>
+									<span className="text-sm leading-6 text-gray-500" id="email-optional">
+										Required
+									</span>
+								</div>
 								<div className="mt-2">
 									<input
 										type="text"
 										name="street-address"
 										id="street-address"
+										required
+										onChange={(e) =>
+											updateFields({
+												streetAddress: e.target.value,
+											})
+										}
 										autoComplete="street-address"
 										className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>
 							</div>
-
 							<div className="sm:col-span-6">
-								<label htmlFor="city" className="block text-sm font-semibold leading-6 text-gray-900">
-									City
-								</label>
+								<div className="flex justify-between">
+									<label htmlFor="city" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										City
+									</label>
+									<span className="text-sm leading-6 text-gray-500" id="email-optional">
+										Required
+									</span>
+								</div>
 								<div className="mt-2">
 									<input
 										type="text"
 										name="city"
 										id="city"
 										autoComplete="address-level2"
+										required
+										onChange={(e) =>
+											updateFields({
+												city: e.target.value,
+											})
+										}
 										className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>
 							</div>
-
 							<div className="sm:col-span-3">
 								<label htmlFor="region" className="block text-sm font-semibold leading-6 text-gray-900">
+									<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
 									State
 								</label>
 								<div className="mt-2">
-									<input
+									<Select
+										placeholder="Year"
+										handleOnChange={(e) =>
+											updateFields({
+												state: e.target.value,
+											})
+										}
+										options={stateDropdown}
+										name="region"
+										className="h-full mb-4"
+									/>
+									{/* <input
 										type="text"
 										name="region"
 										id="region"
 										autoComplete="address-level1"
+										required
+										onChange={(e) =>
+											updateFields({
+												state: e.target.value,
+											})
+										}
 										className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-									/>
+									/> */}
 								</div>
 							</div>
-
 							<div className="sm:col-span-3">
 								<label htmlFor="postal-code" className="block text-sm font-semibold leading-6 text-gray-900">
+									<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
 									Zip Code
 								</label>
 								<div className="mt-2">
@@ -351,10 +464,283 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 										type="text"
 										name="postal-code"
 										id="postal-code"
+										required
+										maxLength="5"
+										onChange={(e) => {
+											const result = e.target.value.replace(/\D/g, "")
+											updateFields({
+												zip: result,
+											})
+										}}
+										value={zip}
 										autoComplete="postal-code"
 										className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 									/>
 								</div>
+							</div>
+
+							{/* toggle for address being same as the billing */}
+							<Switch.Group as="div" className="flex items-center col-span-12 ml-auto">
+								<Switch.Label as="span" className="flex pr-3 text-sm whitespace-nowrap">
+									<span className="text-base font-medium text-gray-700">Document address same as shipping address?</span>
+									{/* {sameAsBilling ? (
+										<p className="ml-2 px-2 my-0.5 rounded-full text-white bg-lime-600">Yes</p>
+									) : (
+										<p className="ml-2 px-2 my-0.5 rounded-full text-white bg-red-600">NO</p>
+									)} */}
+								</Switch.Label>
+								<Switch
+									checked={sameAsBilling}
+									onChange={setSameAsBiling}
+									className={classNames(
+										sameAsBilling ? "bg-indigo-600" : "bg-gray-200",
+										"relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+									)}>
+									<span
+										aria-hidden="true"
+										className={classNames(
+											sameAsBilling ? "translate-x-5" : "translate-x-0",
+											"pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+										)}
+									/>
+								</Switch>
+							</Switch.Group>
+							{!sameAsBilling && (
+								<>
+									<div className="pt-6 col-span-full gap-y-4">
+										<div className="py-2">
+											<h3 className="text-xl font-semibold text-gray-900">Shipping Address</h3>
+											<p className="pb-4 text-base text-zinc-600">
+												Where should we ship the device to? (if applicable)
+											</p>
+										</div>
+										<div className="flex justify-between">
+											<label
+												htmlFor="street-address-deliv"
+												className="block text-sm font-semibold leading-6 text-gray-900">
+												<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+												Street address
+											</label>
+											<span className="text-sm leading-6 text-gray-500" id="email-optional">
+												Required
+											</span>
+										</div>
+										<div className="mt-2">
+											<input
+												type="text"
+												name="street-address-deliv"
+												id="street-address-deliv"
+												autoComplete="street-address"
+												onChange={(e) =>
+													updateFields({
+														streetAddressDeliv: e.target.value,
+													})
+												}
+												className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+											/>
+										</div>
+									</div>
+
+									<div className="sm:col-span-6">
+										<div className="flex justify-between">
+											<label htmlFor="city-deliv" className="block text-sm font-semibold leading-6 text-gray-900">
+												<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+												City
+											</label>
+											<span className="text-sm leading-6 text-gray-500" id="email-optional">
+												Required
+											</span>
+										</div>
+										<div className="mt-2">
+											<input
+												type="text"
+												name="city-deliv"
+												id="city-deliv"
+												autoComplete="address-level2"
+												onChange={(e) =>
+													updateFields({
+														cityDeliv: e.target.value,
+													})
+												}
+												className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+											/>
+										</div>
+									</div>
+
+									<div className="sm:col-span-3">
+										<label htmlFor="region-deliv" className="block text-sm font-semibold leading-6 text-gray-900">
+											<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+											State
+										</label>
+										<div className="mt-2">
+											<Select
+												placeholder="Year"
+												handleOnChange={(e) =>
+													updateFields({
+														stateDeliv: e.target.value,
+													})
+												}
+												options={stateDropdown}
+												name="region-deliv"
+												className=""
+											/>
+										</div>
+									</div>
+
+									<div className="sm:col-span-3">
+										<label htmlFor="postal-code-deliv" className="block text-sm font-semibold leading-6 text-gray-900">
+											<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+											Zip Code
+										</label>
+										<div className="mt-2">
+											<input
+												type="text"
+												name="postal-code-deliv"
+												id="postal-code-deliv"
+												autoComplete="postal-code"
+												onChange={(e) =>
+													updateFields({
+														zipDeliv: e.target.value,
+													})
+												}
+												className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+											/>
+										</div>
+									</div>
+								</>
+							)}
+							<div className="col-span-12 pt-6">
+								<label className="text-base font-semibold text-gray-900">
+									<span className="mr-1.5 text-lg font-bold text-red-600">*</span>Which qualification do you meet?
+								</label>
+								<p className="text-base text-zinc-600">( Select one )</p>
+								<fieldset className="mt-4">
+									<legend className="sr-only">Benefits you would like to submit for eligibility</legend>
+									<div className="space-y-4">
+										<div className="flex items-center">
+											<input
+												id="radio-snap"
+												name="notification-method"
+												type="radio"
+												defaultChecked={true}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-snap"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												SNAP
+											</label>
+										</div>
+										<div className="flex items-center">
+											<input
+												id="radio-wic"
+												name="notification-method"
+												type="radio"
+												defaultChecked={false}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-wic"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												WIC
+											</label>
+										</div>
+										<div className="flex items-center">
+											<input
+												id="radio-medicaid"
+												name="notification-method"
+												type="radio"
+												defaultChecked={false}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-medicaid"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												Medicaid
+											</label>
+										</div>
+										<div className="flex items-center">
+											<input
+												id="radio-pell-grant"
+												name="notification-method"
+												type="radio"
+												defaultChecked={false}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-pell-grant"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												Pell Grant
+											</label>
+										</div>
+										<div className="flex items-center">
+											<input
+												id="radio-section8"
+												name="notification-method"
+												type="radio"
+												defaultChecked={false}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-section8"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												Section 8
+											</label>
+										</div>
+										<div className="flex items-center">
+											<input
+												id="radio-school-lunch"
+												name="notification-method"
+												type="radio"
+												defaultChecked={false}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-school-lunch"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												National School Lunch
+											</label>
+										</div>
+										<div className="flex items-center">
+											<input
+												id="radio-veterans"
+												name="notification-method"
+												type="radio"
+												defaultChecked={false}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-veterans"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												Veterans Pension and Survivors Benefit Program
+											</label>
+										</div>
+										<div className="flex items-center">
+											<input
+												id="radio-income"
+												name="notification-method"
+												type="radio"
+												defaultChecked={false}
+												className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+											/>
+											<label
+												htmlFor="radio-income"
+												className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">
+												Income below $26,000 / year
+											</label>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+
+							<div className="max-w-md col-span-12 pt-6" id="fileUpload">
+								<div className="block mb-2">
+									<label htmlFor="postal-code" className="block text-sm font-semibold leading-6 text-gray-700">
+										Supporting Documents File Upload
+									</label>
+									<Label htmlFor="file" value="(id, passport, w-2, tax-return)" className="" />
+								</div>
+								<FileInput helperText="Upload a picture of your id or supporting document" id="file" />
 							</div>
 							{/* <Switch.Group as="div" className="flex gap-x-4 sm:col-span-full">
                             <div className="flex items-center h-6">
@@ -391,8 +777,9 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 								Submit
 							</button>
 						</div>
-					</form>
+					</div>
 				</div>
+
 				{/* right/top collumn/row */}
 				<div className="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
 					{/* <img

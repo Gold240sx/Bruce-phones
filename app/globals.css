@@ -9,6 +9,7 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 }
+* { box-sizing: border-box;}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -38,6 +39,21 @@ body {
     )
     rgb(var(--background-start-rgb));
 
+    /* remove steppers from numeric inputs */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+     input[type=number] {
+        -moz-appearance:textfield;
+    }
+
+    /* remove unwanted blue border from react-select components */
+    input[id^='react-select-']:focus {
+        box-shadow: none;
+    }
 }
 
 @layer components {

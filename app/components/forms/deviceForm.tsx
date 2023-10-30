@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import FormWrapper from "./formWrapper"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card"
 import Image from "next/image"
@@ -18,17 +18,19 @@ type DeviceFormProps = DeviceData & {
 }
 
 const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
-	const [pickedProduct, setPickedProduct] = useState("x65")
+	const [pickedProduct, setPickedProduct] = useState(device)
 
 	return (
 		<FormWrapper className="flex flex-col gap-3" title="Product Selection">
 			{/* product Selection */}
-			<div className="grid grid-cols-12 gap-8 pb-4">
-				<h2 className="col-span-12 col-start-2 pl-3 text-3xl ">Select item:</h2>
-			</div>
-			<div className="flex flex-col gap-8 px-10 pb-10 lg:grid lg:grid-cols-12">
+			<div className="flex flex-col gap-4 px-8 pb-10 lg:grid lg:grid-cols-12">
+				<label className="w-full col-span-12 col-start-2 pl-3 text-xl font-semibold text-gray-900">Product Selection</label>
+				<p className="col-span-12 col-start-2 pl-3 text-lg text-gray-500 ">
+					Select your preffered device (subject to availability)
+				</p>
+
 				{/* Phone*/}
-				<div className="tablet h-[370px] col-span-5 col-start-2">
+				<div className="col-span-6 tablet h-fit">
 					<Card
 						onClick={() => setPickedProduct("x65")}
 						className={`${
@@ -42,7 +44,9 @@ const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 							</CardTitle>
 							<CardDescription className="text-lg text-center max-w-2/3">6.5" Smartphone</CardDescription>
 						</CardHeader>
-						<CardContent className="h-full pb-6 overflow-scroll">
+						<CardContent
+							onClick={() => setPickedProduct("x65")}
+							className="h-full pb-6 overflow-scroll pointer-events-none select-none">
 							<div className="flex justify-between w-full">
 								{/* Product Info */}
 								<div className="w-2/3 info">
@@ -55,7 +59,7 @@ const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 											<span className="pr-2 font-bold text-black">Retail Price:</span>$99
 										</li>
 										<li>
-											<span className="pr-2 font-bold text-black">Screen:</span>6.5" HD+ 1280 x 800
+											<span className="pr-2 font-bold text-black">Screen:</span>6.52" HD+ 720 x 1600
 										</li>
 										<li>
 											<span className="pr-2 font-bold text-black">Connnectivity:</span>Wifi + 4G
@@ -71,18 +75,18 @@ const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 										</li>
 									</ul>
 								</div>
-								<div className="items-center w-1/3">
+								<div className="items-center w-1/3 ">
 									<Image
-										className="object-cover ml-auto bg-center"
+										className="object-cover ml-auto bg-center "
 										src={DIALNX65}
 										alt="People enjoying mobile phone use"
 										sizes="100vw"
 										style={{
-											width: "100%",
-											height: "auto",
+											width: "auto",
+											height: "235px",
 										}}
 										width={300}
-										height={300}
+										height={258}
 									/>
 								</div>
 							</div>
@@ -91,21 +95,21 @@ const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 				</div>
 
 				{/* tablet */}
-				<div className="tablet h-[370px] col-span-5">
+				<div className="col-span-6 tablet h-fit">
 					<Card
 						onClick={() => setPickedProduct("x10")}
 						className={`${
 							pickedProduct === "x10"
 								? "border-fuchsia-500 shadow-2xl shadow-[#776fff] /20"
-								: "border-4 border-zinc-100  cursor-pointer saturate-50 bg-zinc-50"
+								: "border-4 border-zinc-100 cursor-pointer saturate-50 bg-zinc-50"
 						} h-full `}>
 						<CardHeader className="relative pt-4">
 							<CardTitle className="text-3xl font-semibold text-center text-[#776fff]   inline-block w-fit mx-auto">
 								DIALN X10G Tablet
 							</CardTitle>
-							<CardDescription className="text-lg text-center max-w-2/3">10" tablet with cellular </CardDescription>
+							<CardDescription className="text-lg text-center max-w-2/3">10" Tablet with cellular </CardDescription>
 						</CardHeader>
-						<CardContent className="h-full pb-6 overflow-scroll">
+						<CardContent className="h-full pb-6 overflow-scroll pointer-events-none select-none">
 							<div className="flex justify-between w-full">
 								{/* Product Info */}
 								<div className="w-2/3 info">
@@ -153,53 +157,55 @@ const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 					</Card>
 				</div>
 			</div>
-
 			{/* form */}
-			<label screen-reader-only className="hidden">
-				Device
-			</label>
-			<input
-				className=""
-				autoFocus
-				type="text"
-				value={device}
-				onChange={(e) =>
-					updateFields({
-						device: e.target.value,
-					})
-				}
-			/>
-			<h2>Subscribe for future giveaways, product launches and programs alerts.</h2>
-			<label>
-				<input
-					className="subscribed"
-					autoFocus
-					type="radio"
-					value="no"
-					checked={!subscribed}
-					onChange={(e) =>
-						updateFields({
-							subscribed: false,
-						})
-					}
-				/>
-				No.
-			</label>
-			<label>
-				<input
-					className="subscribed"
-					autoFocus
-					type="radio"
-					value="yes"
-					checked={subscribed}
-					onChange={(e) =>
-						updateFields({
-							subscribed: true,
-						})
-					}
-				/>
-				Yes. I like free stuff!
-			</label>
+			{/* <label screen-reader-only className="hidden"> */}
+			<input name="device" type="text" value={pickedProduct} />
+			{/* <input name="device" type="text" value={pickedProduct} />
+            	<div className="flex flex-col items-start w-10/12 px-10 mx-auto text-xl align-middle ">
+				<label className="text-xl font-semibold text-gray-900">Notifications</label>
+				<p className="text-lg text-gray-500 ">Subscribe for future giveaways, product launches and programs alerts?</p>
+				<fieldset className="mt-4 text-lg">
+					<legend className="sr-only">Notification method</legend>
+					<div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+						<div className="flex items-center">
+							<input
+								id="subscribed-no"
+								name="subscribed"
+								type="radio"
+								value="no"
+								checked={!subscribed}
+								onChange={(e) =>
+									updateFields({
+										subscribed: false,
+									})
+								}
+								className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+							/>
+							<label htmlFor="subscribed-no" className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
+								No
+							</label>
+						</div>
+						<div className="flex items-center">
+							<input
+								id="subscribed-yes"
+								name="subscribed"
+								type="radio"
+								value="yes"
+								checked={subscribed}
+								onChange={(e) =>
+									updateFields({
+										subscribed: true,
+									})
+								}
+								className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+							/>
+							<label htmlFor="subscribed-yes" className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
+								Yes, I like free stuff!
+							</label>
+						</div>
+					</div>
+				</fieldset>
+                            </div>*/}
 		</FormWrapper>
 	)
 }

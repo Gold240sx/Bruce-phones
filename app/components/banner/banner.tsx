@@ -18,8 +18,10 @@ const Banner = ({ messages }: { messages: Message[] }) => {
 	return (
 		<>
 			{showBanner &&
-				messages.map((message: Message) => (
-					<div className="sticky top-0 left-0 z-50 flex justify-center w-full pt-4 pb-3 text-lg border-b border-gray-300 shadow-xl from-zinc-50 to-zinc-200 bg-gradient-to-br backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:border lg:bg-gray-200 lg:dark:bg-zinc-800/30">
+				messages.map((message: Message, key) => (
+					<div
+						key={message.message}
+						className="sticky top-0 left-0 z-50 flex justify-center w-full pt-4 pb-3 text-lg border-b border-gray-300 shadow-xl from-zinc-50 to-zinc-200 bg-gradient-to-br backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto lg:border lg:bg-gray-200 lg:dark:bg-zinc-800/30">
 						{message.message}
 						<button
 							onClick={toggleBanner}
