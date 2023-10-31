@@ -6,13 +6,14 @@ import "react-datepicker/dist/react-datepicker.css"
 import { format } from "date-fns"
 
 type UserData = {
-	firstName: string
-	middleInitial: string
-	lastName: string
-	address: Addresses
-	email: string
+	// firstName: string
+	// middleInitial: string
+	// lastName: string
+	// phoneNo: string
+	// address: Addresses
+	// email: string
 	DOB: Date | string | null
-	benefits: string
+	// benefits: string
 }
 
 type UserFormProps = UserData & {
@@ -81,13 +82,13 @@ const valueToDropdownConversion = (stringArray: string[]) => {
 }
 const stateDropdown = valueToDropdownConversion(states)
 
-const ContactForm = ({ updateFields, DOB }: UserFormProps) => {
+const ProductForm = ({ DOB }: UserFormProps) => {
 	const [dob, setDOB] = useState(DOB)
 
 	useEffect(() => {
 		console.log(DOB)
 	}, [dob])
-	return <p>contact</p>
+	return <p>product</p>
 }
 
-export default ContactForm
+export default ProductForm

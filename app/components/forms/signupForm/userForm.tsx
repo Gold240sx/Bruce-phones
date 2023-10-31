@@ -81,13 +81,13 @@ const valueToDropdownConversion = (stringArray: string[]) => {
 }
 const stateDropdown = valueToDropdownConversion(states)
 
-const ContactForm = ({ updateFields, DOB }: UserFormProps) => {
-	const [dob, setDOB] = useState(DOB)
+const UserForm = ({ updateFields, DOB }: UserFormProps) => {
+	const [dob, _] = useState(DOB)
 
 	useEffect(() => {
 		console.log(DOB)
 	}, [dob])
-	return <p>contact</p>
+	return <p>userForm</p>
 }
 
-export default ContactForm
+export default UserForm

@@ -20,74 +20,18 @@ type UserFormProps = UserData & {
 	updateFields: (fields: Partial<UserData>) => void
 }
 
-const states = [
-	"AL",
-	"AK",
-	"AZ",
-	"AR",
-	"CA",
-	"CO",
-	"CT",
-	"DE",
-	"FL",
-	"GA",
-	"HI",
-	"ID",
-	"IL",
-	"IN",
-	"IA",
-	"KS",
-	"KY",
-	"LA",
-	"ME",
-	"MD",
-	"MA",
-	"MI",
-	"MN",
-	"MS",
-	"MO",
-	"MT",
-	"NE",
-	"NV",
-	"NH",
-	"NJ",
-	"NM",
-	"NY",
-	"NC",
-	"ND",
-	"OH",
-	"OK",
-	"OR",
-	"PA",
-	"RI",
-	"SC",
-	"SD",
-	"TN",
-	"TX",
-	"UT",
-	"VT",
-	"VA",
-	"WA",
-	"WV",
-	"WI",
-	"WY",
-]
-
 const valueToDropdownConversion = (stringArray: string[]) => {
 	const objectArray = stringArray.map((string: string) => {
 		return { label: string, value: string }
 	})
 	return objectArray
 }
-const stateDropdown = valueToDropdownConversion(states)
 
-const ContactForm = ({ updateFields, DOB }: UserFormProps) => {
-	const [dob, setDOB] = useState(DOB)
-
+const BenefitForm = ({ updateFields }: UserFormProps) => {
 	useEffect(() => {
-		console.log(DOB)
-	}, [dob])
-	return <p>contact</p>
+		// console.log()
+	}, [])
+	return <p>benefits</p>
 }
 
-export default ContactForm
+export default BenefitForm

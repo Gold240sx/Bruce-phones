@@ -4,17 +4,21 @@ export function useMultiStepForm(steps: ReactElement[]) {
 	const [currentStepIndex, setCurrentStepIndex] = useState(0)
 
 	function next() {
+		// console.log(currentStepIndex)
 		setCurrentStepIndex((i) => {
 			if (i > steps.length - 1) return i
 			return i + 1
 		})
+		// console.log("currentIndexafter:", currentStepIndex)
 	}
 
 	function back() {
+		console.log(currentStepIndex)
 		setCurrentStepIndex((i) => {
 			if (i <= 0) return i
 			return i - 1
 		})
+		console.log("currentIndexafter:", currentStepIndex)
 	}
 
 	function goTo(index: number) {

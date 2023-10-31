@@ -19,66 +19,7 @@ function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ")
 }
 
-const states = [
-	"AL",
-	"AK",
-	"AZ",
-	"AR",
-	"CA",
-	"CO",
-	"CT",
-	"DE",
-	"FL",
-	"GA",
-	"HI",
-	"ID",
-	"IL",
-	"IN",
-	"IA",
-	"KS",
-	"KY",
-	"LA",
-	"ME",
-	"MD",
-	"MA",
-	"MI",
-	"MN",
-	"MS",
-	"MO",
-	"MT",
-	"NE",
-	"NV",
-	"NH",
-	"NJ",
-	"NM",
-	"NY",
-	"NC",
-	"ND",
-	"OH",
-	"OK",
-	"OR",
-	"PA",
-	"RI",
-	"SC",
-	"SD",
-	"TN",
-	"TX",
-	"UT",
-	"VT",
-	"VA",
-	"WA",
-	"WV",
-	"WI",
-	"WY",
-]
 
-const valueToDropdownConversion = (stringArray: string[]) => {
-	const objectArray = stringArray.map((string: string) => {
-		return { label: string, value: string }
-	})
-	return objectArray
-}
-const stateDropdown = valueToDropdownConversion(states)
 
 type UserData = {
 	firstName: string
@@ -86,7 +27,6 @@ type UserData = {
 	lastName: string
 	phoneNo: string
 	email: string
-	zip: string
 }
 
 type UserFormProps = UserData & {
@@ -95,7 +35,7 @@ type UserFormProps = UserData & {
 }
 
 const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFields, zip, lastFour, DOB }: UserFormProps) => {
-	const [imageSrc, setImageSrc] = useState("")
+	const [imageSrc, _] = useState("")
 	const [sameAsBilling, setSameAsBiling] = useState(true)
 	const [dob, setDOB] = useState(new Date())
 
@@ -161,7 +101,7 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 									"polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
 							}}
 						/>
-						p
+						{/*  */}
 					</div>
 					<div action="#" method="POST" className="max-w-xl mx-auto mt-5 sm:mt-5">
 						<div className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-12">
@@ -740,7 +680,7 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 									</label>
 									<Label htmlFor="file" value="(id, passport, w-2, tax-return)" className="" />
 								</div>
-								<FileInput helperText="Upload a picture of your id or supporting document" id="file" />
+								<FileInput helperText="Upload supporting documents" id="file" multiple />
 							</div>
 							{/* <Switch.Group as="div" className="flex gap-x-4 sm:col-span-full">
                             <div className="flex items-center h-6">

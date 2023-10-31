@@ -1,38 +1,43 @@
-import React, { FormEvent, useState } from "react"
+"use client"
+import React, { FormEvent, useState, useEffect } from "react"
+import Image from "next/image"
 import { useMultiStepForm } from "../../hooks/useMultiStepForm"
-import UserForm from "./userForm"
 import AddressForm from "./addressForm"
 import AccountForm from "./accountForm"
 import StepperGraphic from "./StepperGraphic"
-import BenefitsForm from "./benefitsForm"
-import DeviceForm from "./deviceForm"
-import ContactForm from "./signupForm/contactForm"
 
-type Address = {
+import DeviceForm from "./deviceForm"
+import TestForm from "./testForm"
+import { format } from "date-fns"
+import ContactForm from "./signupForm/contactForm"
+import UserForm from "./signupForm/userForm"
+import BenefitForm from "./signupForm/benefitForm"
+import ProductForm from "./signupForm/ProductForm"
+
+export type Address = {
 	street: string
 	city: string
 	state: string
 	zip: string
 }
 
-type Addresses = {
+export type Addresses = {
 	document: Address
 	physical: Address
 }
 
-type FormData = {
+export type FormData = {
 	firstName: string
 	middleInitial: string
 	lastName: string
 	lastFour: string
-	phoneNo: string
-	DOB: string
+	phoneDetails: {
+		phoneNo: string
+		phoneCountryCode: string
+	}
+	DOB: Date | string | null
 	email: string
 	address: Addresses
-	street: string
-	city: string
-	state: string
-	zip: string
 	device: string
 	subscibed: boolean
 	documents: string[]
@@ -44,8 +49,11 @@ const INITIAL_DATA: FormData = {
 	middleInitial: "",
 	lastName: "",
 	lastFour: "",
-	DOB: "",
-	phoneNo: "",
+	DOB: new Date(),
+	phoneDetails: {
+		phoneNo: "",
+		phoneCountryCode: "",
+	},
 	email: "",
 	address: {
 		document: {
@@ -61,10 +69,6 @@ const INITIAL_DATA: FormData = {
 			zip: "",
 		},
 	},
-	// street: "",
-	// city: "",
-	// state: "",
-	// zip: "",
 	documents: [],
 	device: "x10",
 	subscibed: true,
@@ -79,63 +83,110 @@ type Step = {
 }
 
 const Steps: Step[] = [
-	{ id: 1, label: "Step 1", name: "Contact Details", status: "current" },
-	{ id: 1, label: "Step 1", name: "Device Details", status: "current" },
-	// { id: 2, label: "Step 2", name: "User Details", status: "upcoming" },
-	// { id: 3, label: "Step 3", name: "Address Details", status: "upcoming" },
-	// { id: 3, label: "Step 3", name: "Benefits Details", status: "upcoming" },
+	{ id: 1, label: "Step 1", name: "Contact Info", status: "current" },
+	{ id: 2, label: "Step 2", name: "User Details", status: "upcoming" },
+	{ id: 3, label: "Step 3", name: "Benefits Info", status: "upcoming" },
+	{ id: 4, label: "Step 4", name: "Product Select", status: "upcoming" },
 ]
 
 const MultistepForm = () => {
 	const [data, setData] = useState(INITIAL_DATA)
+	const [imageSrc, setImageSrc] = useState("")
+
+	useEffect(() => {
+		const fetchImage = async () => {
+			const imageSrc =
+				"https://images.pexels.com/photos/6146961/pexels-photo-6146961.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+
+			try {
+				const response = await fetch(imageSrc)
+				if (response.ok) {
+					const blob = await response.blob()
+					const imageURL = URL.createObjectURL(blob)
+					setImageSrc(imageURL)
+				}
+			} catch (error) {
+				console.log("Error fetching image: ", error)
+			}
+		}
+		fetchImage()
+	}, [])
+
 	function updateFields(fields: Partial<FormData>) {
 		setData((prev) => {
 			return { ...prev, ...fields }
 		})
 	}
 	const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } = useMultiStepForm([
-		// <ContactForm {...data} updateFields={updateFields} />,
-		// <DeviceForm {...data} updateFields={updateFields} />,
+		<ContactForm {...data} updateFields={updateFields} />,
 		<UserForm {...data} updateFields={updateFields} />,
-		// <BenefitsForm {...data} updateFields={updateFields} />,
+		<BenefitForm {...data} updateFields={updateFields} />,
+		<ProductForm {...data} updateFields={updateFields} />,
 	])
 
 	const onSubmit = (e: any) => {
 		e.preventDefault()
-		const formData = new FormData(e)
+		// console.log("data", data)
+		// console.log("docAddress", data.address.document)
 		if (!isLastStep) return next()
 
 		// print each value to console.
-		for (let [key, value] of formData.entries()) {
-			console.log(key, value)
-		}
+		// for (let [key, value] of formData.entries()) {
+		// 	console.log(key, value)
+		// }
 	}
 
 	return (
-		<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full">
-			<StepperGraphic Steps={Steps} goTo={goTo} />
-			<div className="flex flex-col">
-				{step}
-				<div className="flex justify-end w-full gap-2 mt-4">
-					{!isFirstStep && (
+		<div className="flex flex-col items-center justify-center mx-auto align-middle md:w-10/12">
+			{/* <StepperGraphic Steps={Steps} goTo={goTo} /> */}
+			<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full mx-auto">
+				<div className="flex flex-col-reverse w-full max-w-[990px] bg-red-200 md:flex-row">
+					<div className="grid grid-cols-12">
+						{/* left/bottom collumn/row */}
+						<div className="col-span-12 md:col-span-7 xl:col-span-6">{step}</div>
+						{/* right/top collumn/row */}
+						<div className="col-span-12 mb-12 md:mb-0 md:col-span-5 xl:col-span-6">
+							<Image
+								className="object-cover ml-auto bg-center"
+								src={imageSrc}
+								alt="People enjoying mobile phone use"
+								sizes="100vh"
+								style={{
+									width: "cover",
+									height: "100%",
+								}}
+								width={700}
+								height={900}
+							/>
+						</div>
+					</div>
+				</div>
+				<div className="flex flex-col">
+					<div className="flex justify-end w-full gap-2 mt-4">
+						{/* {!isFirstStep && ( */}
 						<button
 							type="submit"
 							onClick={back}
-							className="px-3 py-1 text-lg border rounded-md hover:bg-white hover:border-2 acguvf:border-black border-zinc-400">
+							className="px-3 py-1 text-lg border rounded-md hover:bg-white active:border-black hover:border-2 acguvf:border-black border-zinc-400">
 							Back
 						</button>
-					)}
-					<button
-						type="submit"
-						className="px-3 py-1 text-lg border rounded-md hover:bg-white hover:border-2 acguvf:border-black border-zinc-400">
-						{isLastStep ? "Submit" : "Next"}
-					</button>
+						{/*  */}
+						<button
+							type="submit"
+							className={`${
+								isLastStep && "bg-indigo-600 text-white hover:bg-indigo-500"
+							} px-3 py-1 text-lg rounded-md border-2 acguvf:border-black border-zinc-400`}>
+							{isLastStep ? "Submit" : "Next"}
+						</button>
+					</div>
 				</div>
-				<div className="flex pt-4 ml-auto text-2xl font-semibold w-fit text-zinc-400 bottom-4 right-4">
-					{currentStepIndex + 1}/{steps.length}
+				<div className="flex w-full pt-2 ml-auto text-2xl font-semibold text-right align-right text-zinc-400 bottom-4 right-4">
+					<p className="px-2 ml-auto w-fit">
+						{currentStepIndex + 1}/{steps.length}
+					</p>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	)
 }
 
