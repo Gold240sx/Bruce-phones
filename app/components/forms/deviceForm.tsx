@@ -161,51 +161,7 @@ const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 			{/* <label screen-reader-only className="hidden"> */}
 			<input name="device" type="text" value={pickedProduct} />
 			{/* <input name="device" type="text" value={pickedProduct} />
-            	<div className="flex flex-col items-start w-10/12 px-10 mx-auto text-xl align-middle ">
-				<label className="text-xl font-semibold text-gray-900">Notifications</label>
-				<p className="text-lg text-gray-500 ">Subscribe for future giveaways, product launches and programs alerts?</p>
-				<fieldset className="mt-4 text-lg">
-					<legend className="sr-only">Notification method</legend>
-					<div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-						<div className="flex items-center">
-							<input
-								id="subscribed-no"
-								name="subscribed"
-								type="radio"
-								value="no"
-								checked={!subscribed}
-								onChange={(e) =>
-									updateFields({
-										subscribed: false,
-									})
-								}
-								className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
-							/>
-							<label htmlFor="subscribed-no" className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
-								No
-							</label>
-						</div>
-						<div className="flex items-center">
-							<input
-								id="subscribed-yes"
-								name="subscribed"
-								type="radio"
-								value="yes"
-								checked={subscribed}
-								onChange={(e) =>
-									updateFields({
-										subscribed: true,
-									})
-								}
-								className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
-							/>
-							<label htmlFor="subscribed-yes" className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
-								Yes, I like free stuff!
-							</label>
-						</div>
-					</div>
-				</fieldset>
-                            </div>*/}
+            
 		</FormWrapper>
 	)
 }

@@ -306,6 +306,7 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 									/>
 								</div>
 							</div>
+
 							<div className="pt-6 col-span-full gap-y-4">
 								<div className="py-2">
 									<h3 className="text-xl font-semibold text-gray-900">Address</h3>

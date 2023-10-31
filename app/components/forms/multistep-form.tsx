@@ -42,6 +42,7 @@ export type FormData = {
 	subscibed: boolean
 	documents: string[]
 	benefits: string
+	password: string
 }
 
 const INITIAL_DATA: FormData = {
@@ -52,7 +53,7 @@ const INITIAL_DATA: FormData = {
 	DOB: new Date(),
 	phoneDetails: {
 		phoneNo: "",
-		phoneCountryCode: "",
+		phoneCountryCode: "US",
 	},
 	email: "",
 	address: {
@@ -73,6 +74,7 @@ const INITIAL_DATA: FormData = {
 	device: "x10",
 	subscibed: true,
 	benefits: "SNAP",
+	password: "",
 }
 
 type Step = {
@@ -138,10 +140,10 @@ const MultistepForm = () => {
 
 	return (
 		<div className="flex flex-col items-center justify-center mx-auto align-middle md:w-10/12">
-			{/* <StepperGraphic Steps={Steps} goTo={goTo} /> */}
+			<StepperGraphic Steps={Steps} goTo={goTo} />
 			<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full mx-auto">
-				<div className="flex flex-col-reverse w-full max-w-[990px] bg-red-200 md:flex-row">
-					<div className="grid grid-cols-12">
+				<div className="flex flex-col-reverse w-full max-w-[990px] md:flex-row">
+					<div className="grid grid-cols-12 md:gap-8">
 						{/* left/bottom collumn/row */}
 						<div className="col-span-12 md:col-span-7 xl:col-span-6">{step}</div>
 						{/* right/top collumn/row */}
@@ -162,15 +164,15 @@ const MultistepForm = () => {
 					</div>
 				</div>
 				<div className="flex flex-col">
-					<div className="flex justify-end w-full gap-2 mt-4">
-						{/* {!isFirstStep && ( */}
-						<button
-							type="submit"
-							onClick={back}
-							className="px-3 py-1 text-lg border rounded-md hover:bg-white active:border-black hover:border-2 acguvf:border-black border-zinc-400">
-							Back
-						</button>
-						{/*  */}
+					<div className="flex justify-end gap-2 mt-4 w-fit">
+						{!isFirstStep && (
+							<button
+								type="submit"
+								onClick={back}
+								className="px-3 py-1 text-lg border rounded-md hover:bg-white active:border-black hover:border-2 acguvf:border-black border-zinc-400">
+								Back
+							</button>
+						)}
 						<button
 							type="submit"
 							className={`${
