@@ -34,7 +34,8 @@ const SignupForm = () => {
 					Offer subject to availability. By submitting this form you hereby aknowledge that the information that you submit is
 					your own, current and valid. Address must be located within the greater US and applicants must be of age 18yo or older.
 					Eligibility is determined by the government program and is not controlled by us in any way. We do not gurantee
-					eligibility or product availibility. We will not be held liable in any way
+					eligibility or product availibility. We will not be held liable in any way for the misuse of any products aquired via
+					this program.
 				</p>
 			</CardFooter>
 		</Card>

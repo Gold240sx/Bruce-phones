@@ -57,183 +57,225 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 	}
 
 	return (
-		<FormWrapper className="" title="User Details">
-			<div id="email-container" className="pt-6 col-span-full">
-				<div className="flex justify-between">
-					<label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
-						<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-						Email
-					</label>
-					<span className="text-sm leading-6 text-gray-500" id="email-required">
-						Required
-					</span>
-				</div>
-				<div className="relative w-full mt-2 rounded-md sm:col-span-2">
-					<input
-						type="email"
-						name="email"
-						placeholder="you@example.com"
-						defaultValue="adamwathan"
-						aria-invalid="true"
-						required
-						aria-describedby="email-error"
-						id="email"
-						autoComplete="email"
-						onChange={(e) =>
-							updateFields({
-								email: e.target.value,
-							})
-						}
-						value={email}
-						className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-					/>
-					<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-						<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
-					</div>
-				</div>
-				<p className="mt-2 text-sm text-red-600" id="email-error">
-					Not a valid email address.
-				</p>
-			</div>
-			<div className="col-span-full group">
-				<div className="flex justify-between">
-					<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
-						<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-						Phone Number
-					</label>
-					<span className="text-sm leading-6 text-gray-500" id="phone-required">
-						Required
-					</span>
-				</div>
-				<div className="relative mt-2.5">
-					<div className="absolute inset-y-0 left-0 flex items-center -translate-x-[3px] border rounded-l-lg rounded-r-none bg-zinc-50">
-						<label htmlFor="country" className="sr-only">
-							Country
-						</label>
-						<select
-							id="country"
-							name="country"
-							onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-								const newPhoneDetails = {
-									...phoneDetails,
-									phoneCountryCode: e.target.value,
-								}
-								updateFields({
-									phoneDetails: newPhoneDetails,
-								})
-							}}
-							value={phoneDetails.phoneCountryCode}
-							className="h-full py-0 pl-4 text-gray-400 bg-transparent border-0 rounded-md rounded-r-none ring-t-none ring-b-none border-t-none border-b-none bg-none pr-9 focus:ring-2 focus:ring-inset group-hover:ring-indigo-600 sm:text-sm">
-							<option>US</option>
-							<option>CA</option>
-							<option>MX</option>
-						</select>
-					</div>
-					<input
-						type="text"
-						name="phone-number"
-						id="phone-number"
-						required
-						autoComplete="tel"
-						maxLength="15"
-						onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-							const result = e.target.value.replace(/\D/g, "")
-							const newPhoneDetails = {
-								...phoneDetails,
-								phoneNo: result,
-							}
+		<FormWrapper className="" title="Contact Info">
+			{" "}
+			{/* form */}
+			<div className="flex flex-wrap-reverse justify-between w-full mx-auto ">
+				{/* left/bottom collumn/row */}
 
-							updateFields({
-								phoneDetails: newPhoneDetails,
-							})
-						}}
-						value={formatPhoneNo(phoneDetails.phoneNo)}
-						className="block w-full rounded-md ring-t-none ring-b-none border-t-none border-b-none border-0 px-3.5 py-2 pl-[5.5rem] text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
-					/>
-				</div>
-			</div>
-			<div className="flex flex-col items-start mx-2 text-xl align-middle ">
-				<label className="text-xl font-semibold text-gray-900">Notifications</label>
-				<p className="text-lg text-gray-500 ">
-					Subscribe for future giveaways, product launches and programs alerts?{" "}
-					<span className="text-zinc-400">
-						(Subscribing will also create an account where you can supply any verification documents in the event you need to
-						appeal the decision.)
-					</span>
-				</p>
-				<fieldset className="mt-4 text-lg">
-					<legend className="sr-only">Notification method</legend>
-					<div className="mx-6 space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-						<div className="flex items-center">
-							<input
-								id="subscribed-no"
-								name="subscribed"
-								type="radio"
-								value="no"
-								checked={!subscribed}
-								onChange={(e) =>
-									updateFields({
-										subscribed: false,
-									})
-								}
-								className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
-							/>
-							<label htmlFor="subscribed-no" className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
-								No
-							</label>
-						</div>
-						<div className="flex items-center">
-							<input
-								id="subscribed-yes"
-								name="subscribed"
-								type="radio"
-								value="yes"
-								checked={subscribed}
-								onChange={(e) =>
-									updateFields({
-										subscribed: true,
-									})
-								}
-								className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
-							/>
-							<label htmlFor="subscribed-yes" className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
-								Yes, I like free stuff!
-							</label>
-						</div>
-					</div>
-				</fieldset>
-			</div>
-			{/* account creation */}
-			{subscribed && (
-				<div className="mx-4 col-span-full group">
-					<div className="flex justify-between">
-						<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
-							Create an account password
-						</label>
-					</div>
-					<div className="relative mt-2.5">
-						<div className="absolute inset-y-0 left-0 flex items-center -translate-x-[3px] border rounded-l-lg rounded-r-none bg-zinc-50">
-							<label htmlFor="country" className="sr-only">
-								Create Password
-							</label>
-						</div>
-						<input
-							type="password"
-							name="password"
-							id="password"
-							maxLength="16"
-							required={subscribed}
-							onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-								updateFields({
-									password: e.target.value,
-								})
+				<div className="flex flex-col w-full gap-6">
+					<p className="flex items-center ml-auto -mb-6 w-fit">
+						<span className="text-2xl font-bold text-red-600">*</span>
+						<span className="font-semibold -translate-y-[5px]">Required</span>
+					</p>
+					<div
+						className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
+						aria-hidden="true">
+						<div
+							className="relative left-1/2 -z-10 aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] translate-y-1/6 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-40rem)] sm:w-[72.1875rem]"
+							style={{
+								clipPath:
+									"polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
 							}}
-							value={password}
-							className="block w-full rounded-md ring-t-none ring-b-none border-t-none border-b-none border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
 						/>
+						{/*  */}
 					</div>
+
+					<div id="email-container" className="pt-6 col-span-full">
+						<div className="flex justify-between">
+							<label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
+								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+								Email
+							</label>
+							<span className="text-sm leading-6 text-gray-500" id="email-required">
+								Required
+							</span>
+						</div>
+						<div className="relative w-full mt-2 rounded-md sm:col-span-2">
+							<input
+								type="email"
+								name="email"
+								placeholder="you@example.com"
+								defaultValue="adamwathan"
+								aria-invalid="true"
+								required
+								aria-describedby="email-error"
+								id="email"
+								autoComplete="email"
+								onChange={(e) =>
+									updateFields({
+										email: e.target.value,
+									})
+								}
+								value={email}
+								className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+							/>
+							<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+								<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+							</div>
+						</div>
+						<p className="mt-2 text-sm text-red-600" id="email-error">
+							Not a valid email address.
+						</p>
+					</div>
+					<div className="col-span-full group">
+						<div className="flex justify-between">
+							<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
+								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+								Phone Number
+							</label>
+							<span className="text-sm leading-6 text-gray-500" id="phone-required">
+								Required
+							</span>
+						</div>
+						<div className="relative mt-2.5">
+							<div className="absolute inset-y-0 left-0 flex items-center -translate-x-[3px] border rounded-l-lg rounded-r-none bg-zinc-50">
+								<label htmlFor="country" className="sr-only">
+									Country
+								</label>
+								<select
+									id="country"
+									name="country"
+									onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+										const newPhoneDetails = {
+											...phoneDetails,
+											phoneCountryCode: e.target.value,
+										}
+										updateFields({
+											phoneDetails: newPhoneDetails,
+										})
+									}}
+									value={phoneDetails.phoneCountryCode}
+									className="h-full py-0 pl-4 text-gray-400 bg-transparent border-0 rounded-md rounded-r-none ring-t-none ring-b-none border-t-none border-b-none bg-none pr-9 focus:ring-2 focus:ring-inset group-hover:ring-indigo-600 sm:text-sm">
+									<option>US</option>
+									<option>CA</option>
+									<option>MX</option>
+								</select>
+							</div>
+							<input
+								type="text"
+								name="phone-number"
+								id="phone-number"
+								required
+								autoComplete="tel"
+								maxLength="15"
+								onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+									const result = e.target.value.replace(/\D/g, "")
+									const newPhoneDetails = {
+										...phoneDetails,
+										phoneNo: result,
+									}
+
+									updateFields({
+										phoneDetails: newPhoneDetails,
+									})
+								}}
+								value={formatPhoneNo(phoneDetails.phoneNo)}
+								className="block w-full rounded-md ring-t-none ring-b-none border-t-none border-b-none border-0 px-3.5 py-2 pl-[5.5rem] text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+							/>
+							<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+								<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+							</div>
+						</div>
+						<p className="mt-2 text-sm text-red-600" id="email-error">
+							Please enter your phone number.
+						</p>
+					</div>
+					<div className="flex flex-col items-start mx-2 text-xl align-middle ">
+						<label className="text-xl font-semibold text-gray-900">Notifications</label>
+						<p className="text-lg text-gray-500 ">
+							Subscribe for future giveaways, product launches and programs alerts?{" "}
+							<span className="text-zinc-400">
+								(Subscribing will also create an account where you can supply any verification documents in the event you
+								need to appeal the decision.)
+							</span>
+						</p>
+						<fieldset className="mt-4 text-lg">
+							<legend className="sr-only">Notification method</legend>
+							<div className="mx-6 space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+								<div className="flex items-center">
+									<input
+										id="subscribed-no"
+										name="subscribed"
+										type="radio"
+										value="no"
+										checked={!subscribed}
+										onChange={(e) =>
+											updateFields({
+												subscribed: false,
+											})
+										}
+										className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+									/>
+									<label
+										htmlFor="subscribed-no"
+										className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
+										No
+									</label>
+								</div>
+
+								<div className="flex items-center">
+									<input
+										id="subscribed-yes"
+										name="subscribed"
+										type="radio"
+										value="yes"
+										checked={subscribed}
+										onChange={(e) =>
+											updateFields({
+												subscribed: true,
+											})
+										}
+										className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
+									/>
+									<label
+										htmlFor="subscribed-yes"
+										className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
+										Yes, I like free stuff!
+									</label>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					{/* account creation */}
+					{subscribed && (
+						<div className="mx-4 col-span-full group">
+							<div className="flex justify-between">
+								<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
+									Create an account password
+								</label>
+							</div>
+							<div className="relative mt-2.5">
+								<div className="absolute inset-y-0 left-0 flex items-center -translate-x-[3px] border rounded-l-lg rounded-r-none bg-zinc-50">
+									<label htmlFor="country" className="sr-only">
+										Create Password
+									</label>
+								</div>
+								<input
+									type="password"
+									name="password"
+									id="password"
+									maxLength="16"
+									required={subscribed}
+									onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+										updateFields({
+											password: e.target.value,
+										})
+									}}
+									value={password}
+									className="block w-full rounded-md ring-t-none ring-b-none border-t-none border-b-none border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
+								/>
+								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+								</div>
+							</div>
+							<p className="mt-2 text-sm text-red-600" id="email-error">
+								Please enter a valid password.
+							</p>
+						</div>
+					)}
 				</div>
-			)}
+			</div>
 			{/* <button onClick={showData} className="mx-4 my-1 text-white bg-indigo-400">
 				Show Data
 			</button> */}

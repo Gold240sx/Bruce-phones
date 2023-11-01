@@ -22,6 +22,7 @@ export type Address = {
 }
 
 export type Addresses = {
+	docEqDelivAdd: boolean
 	document: Address
 	physical: Address
 }
@@ -57,6 +58,7 @@ const INITIAL_DATA: FormData = {
 	},
 	email: "",
 	address: {
+		docEqDelivAdd: true,
 		document: {
 			street: "",
 			city: "",
@@ -122,7 +124,7 @@ const MultistepForm = () => {
 	const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } = useMultiStepForm([
 		<ContactForm {...data} updateFields={updateFields} />,
 		<UserForm {...data} updateFields={updateFields} />,
-		<BenefitForm {...data} updateFields={updateFields} />,
+		<BenefitForm {...data} data={data} updateFields={updateFields} />,
 		<ProductForm {...data} updateFields={updateFields} />,
 	])
 
@@ -140,6 +142,20 @@ const MultistepForm = () => {
 
 	return (
 		<div className="flex flex-col items-center justify-center mx-auto align-middle md:w-10/12">
+			<div className="col-span-12 mb-12 md:hidden md:mb-0 md:col-span-5 xl:col-span-6">
+				<Image
+					className="object-cover ml-auto bg-center"
+					src={imageSrc}
+					alt="People enjoying mobile phone use"
+					sizes="100vh"
+					style={{
+						width: "cover",
+						height: "100%",
+					}}
+					width={700}
+					height={900}
+				/>
+			</div>
 			<StepperGraphic Steps={Steps} goTo={goTo} />
 			<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full mx-auto">
 				<div className="flex flex-col-reverse w-full max-w-[990px] md:flex-row">
@@ -147,7 +163,7 @@ const MultistepForm = () => {
 						{/* left/bottom collumn/row */}
 						<div className="col-span-12 md:col-span-7 xl:col-span-6">{step}</div>
 						{/* right/top collumn/row */}
-						<div className="col-span-12 mb-12 md:mb-0 md:col-span-5 xl:col-span-6">
+						<div className="hidden col-span-12 mb-12 md:flex md:mb-0 md:col-span-5 xl:col-span-6">
 							<Image
 								className="object-cover ml-auto bg-center"
 								src={imageSrc}

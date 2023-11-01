@@ -103,7 +103,7 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 						/>
 						{/*  */}
 					</div>
-					<div action="#" method="POST" className="max-w-xl mx-auto mt-5 sm:mt-5">
+					<div className="max-w-xl mx-auto mt-5 sm:mt-5">
 						<div className="grid grid-cols-3 gap-x-3 gap-y-6 sm:grid-cols-12">
 							{/* form info */}
 							<div className="col-span-6">
