@@ -14,6 +14,8 @@ export const metadata: Metadata = {
 		"Claim your free* phone or tablet today! (free phone or tablet dependant upon eligibility. We do not in any way guarantee eligibilty. Offer subject to availability. )",
 }
 
+
+
 export const fontSans = FontSans({
 	subsets: ["latin"],
 	variable: "--font-sans",
@@ -37,5 +39,5 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				</div>
 			</body>
 		</html>
-	)
+	)!
 }

@@ -9,8 +9,8 @@ import Link from "next/link"
 
 const navigation = [
 	{ name: "About", href: "/about" },
-	{ name: "Products", href: "/products" },
-	{ name: "Reviews", href: "/reviews" },
+	// { name: "Products", href: "/products" },
+	// { name: "Reviews", href: "/reviews" },
 	{ name: "Careers", href: "/careers" },
 ]
 
@@ -54,11 +54,11 @@ const Navbar = () => {
 						</div>
 						<div className="hidden md:absolute md:inset-y-0 md:right-0 md:flex md:items-center md:justify-end">
 							<span className="inline-flex rounded-md shadow">
-								<a
-									href="#"
+								<Link
+									href="/signIn"
 									className="inline-flex items-center px-4 py-2 text-base font-medium text-indigo-600 bg-white border border-transparent rounded-md hover:bg-gray-50">
 									Log in
-								</a>
+								</Link>
 							</span>
 						</div>
 					</nav>
@@ -96,11 +96,11 @@ const Navbar = () => {
 									</a>
 								))}
 							</div>
-							<a
-								href="#"
+							<Link
+								href="/signIn"
 								className="block w-full px-5 py-3 font-medium text-center text-indigo-600 bg-gray-50 hover:bg-gray-100">
 								Log in
-							</a>
+							</Link>
 						</div>
 					</Popover.Panel>
 				</Transition>

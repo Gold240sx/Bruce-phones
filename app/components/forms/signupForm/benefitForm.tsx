@@ -10,6 +10,8 @@ import { format } from "date-fns"
 import FormWrapper from "../formWrapper"
 import { FileInput, Label } from "flowbite-react"
 import RadioBoxList from "./RadioBoxList"
+import CustomCalendar from "../customCalendar"
+// import "react-calendar/dist/Calendar.css"
 
 type BenefitData = {
 	DOB: string
@@ -24,6 +26,8 @@ type BenefitFormProps = BenefitData & {
 type Item = {
 	name: string
 }
+type ValuePiece = Date | null
+type Value = ValuePiece | [ValuePiece, ValuePiece]
 
 const valueToDropdownConversion = (stringArray: string[]) => {
 	const objectArray = stringArray.map((string: string) => {
@@ -109,7 +113,8 @@ const BenefitsForm = ({ updateFields, DOB, lastFour, benefits, data }: BenefitFo
 								Date of Birth
 							</label>
 							<div className="mt-2.5">
-								<DatePicker
+								<CustomCalendar />
+								{/* <DatePicker
 									id="DOB"
 									name="dob"
 									required
@@ -120,7 +125,7 @@ const BenefitsForm = ({ updateFields, DOB, lastFour, benefits, data }: BenefitFo
 										setDOB(date)
 									}}
 									className="block w-full px-2 py-2 text-center text-gray-900 border-0 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-								/>
+								/> */}
 							</div>
 						</div>
 
@@ -170,7 +175,7 @@ const BenefitsForm = ({ updateFields, DOB, lastFour, benefits, data }: BenefitFo
 						</div>
 					</div>
 
-					<div className="max-w-md pt-6 col-span-full" id="fileUpload">
+					<div className="max-w-md col-span-full" id="fileUpload">
 						<div className="block mb-2">
 							<label htmlFor="postal-code" className="block text-sm font-semibold leading-6 text-gray-700">
 								Supporting Documents File Upload

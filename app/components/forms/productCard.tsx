@@ -52,9 +52,9 @@ const ProductCard = ({
 							disabled={pickedProduct === nickName}
 							className={`${
 								pickedProduct === nickName
-									? "bg-indigo-200 cursor-default"
-									: "bg-indigo-500 hover:bg-indigo-400 transition-100"
-							} px-6 py-1 mt-2 text-lg text-white  transition-colors duration-300  rounded-lg`}>
+									? "bg-indigo-500 cursor-default border-2 border-transparent text-white"
+									: "border-indigo-500 text-indigo-700 border-2 hover:bg-indigo-400 hover:text-white transition-100"
+							} px-6 py-1 mt-2 text-lg   transition-colors duration-300  rounded-lg`}>
 							{pickedProduct === nickName ? "Selected" : "Select"}
 						</button>
 					</div>
@@ -99,7 +99,7 @@ const ProductCard = ({
 			</div>
 
 			<div className={` w-fit h-10   absolute right-2 bottom-2  rounded-full flex items-center gap-3 `}>
-				<p>More Info:</p>
+				<p> {cardEpanded ? "Close" : "More Info"}</p>
 				<div
 					onClick={() => setCardExpanded(!cardEpanded)}
 					className={`${
