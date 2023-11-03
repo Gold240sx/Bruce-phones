@@ -3,8 +3,9 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { auth } from "@firebase/firebaseInit"
 import { createUserWithEmailAndPassword } from "@firebase/firebaseInit"
+import { SignIn, SignUp } from "@/app/firebase/authFunctions"
 
-export default function SignUp() {
+export default function SignUpPage() {
 	const [email, setEmail] = useState("")
 	const [password, setPassword] = useState("")
 	const [remember, setRemember] = useState(false)
@@ -114,6 +115,7 @@ export default function SignUp() {
 									<div>
 										<button
 											type="button"
+											onClick={() => SignUp({ email, password })}
 											className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
 											Create account
 										</button>

@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import React from "react"
 import SiteIcon from "./siteIcon"
 import Link from "next/link"
+import { useAuth } from "@firebase/authFunctions"
 
 const navigation = [
 	{ name: "About", href: "/about" },
@@ -15,8 +16,13 @@ const navigation = [
 ]
 
 const Navbar = () => {
+	const { user, isAdmin, userData } = useAuth(true)
 	return (
 		<div className="relative w-full px-6 pt-12 pb-16 ">
+			{userData && <img alt="avatar" src={userData.avatarUrl} className="w-10 h-10 rounded-full" />}
+			{user && "user"}
+			<pre>{JSON.stringify(userData, null, 2)}</pre>
+			{isAdmin && "admin: true"}
 			<Popover>
 				<div className="px-4 mx-auto max-w-7xl sm:px-6">
 					<nav className="relative flex items-center justify-between sm:h-10 md:justify-center" aria-label="Global">
