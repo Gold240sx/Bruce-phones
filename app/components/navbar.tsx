@@ -1,12 +1,12 @@
 "use client"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/ui/tooltip"
-import { Fragment } from "react"
+import { Fragment, useEffect } from "react"
 import { Popover, Transition } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import React from "react"
 import SiteIcon from "./siteIcon"
 import Link from "next/link"
-import { useAuth } from "@firebase/authFunctions"
+import { useAuth, SignOut } from "@firebase/authFunctions"
 
 const navigation = [
 	{ name: "About", href: "/about" },
@@ -17,12 +17,10 @@ const navigation = [
 
 const Navbar = () => {
 	const { user, isAdmin, userData } = useAuth(true)
+
+	useEffect(() => {}, [useAuth])
 	return (
 		<div className="relative w-full px-6 pt-12 pb-16 ">
-			{userData && <img alt="avatar" src={userData.avatarUrl} className="w-10 h-10 rounded-full" />}
-			{user && "user"}
-			<pre>{JSON.stringify(userData, null, 2)}</pre>
-			{isAdmin && "admin: true"}
 			<Popover>
 				<div className="px-4 mx-auto max-w-7xl sm:px-6">
 					<nav className="relative flex items-center justify-between sm:h-10 md:justify-center" aria-label="Global">
@@ -58,14 +56,46 @@ const Navbar = () => {
 								</a>
 							))}
 						</div>
-						<div className="hidden md:absolute md:inset-y-0 md:right-0 md:flex md:items-center md:justify-end">
-							<span className="inline-flex rounded-md shadow">
-								<Link
-									href="/signIn"
-									className="inline-flex items-center px-4 py-2 text-base font-medium text-indigo-600 bg-white border border-transparent rounded-md hover:bg-gray-50">
-									Log in
+						<div className="hidden gap-3 md:absolute md:inset-y-0 md:right-0 md:flex md:items-center md:justify-end">
+							<div className="flex flex-col gap-2 items-right">
+								<div className="flex items-end gap-3">
+									{isAdmin && (
+										<div className="flex items-end w-full">
+											<p className="px-3 py-1 ml-auto text-right text-white bg-black rounded-full w-fit">ADMIN</p>
+										</div>
+									)}
+									{!user && (
+										<span className="inline-flex rounded-md shadow">
+											<Link
+												href="/signIn"
+												className="inline-flex items-center px-4 py-2 text-base font-medium text-indigo-600 bg-white border border-transparent rounded-md hover:bg-gray-50">
+												Log in
+											</Link>
+										</span>
+									)}
+									{user && (
+										<span className="inline-flex rounded-md shadow">
+											<button
+												onClick={SignOut}
+												className="inline-flex items-center px-4 py-2 text-base font-medium text-indigo-600 bg-white border border-transparent rounded-md whitespace-nowrap hover:bg-gray-50">
+												Log out
+											</button>
+										</span>
+									)}
+								</div>
+								<Link href={`/users/${userData?.userId}`}>
+									<div className="flex items-center gap-3 align-middle">
+										{userData && (
+											<p className="text-right ">
+												Welcome <span className="text-amber-500">{userData.username}</span>!
+											</p>
+										)}
+										{userData && (
+											<img alt="avatar" src={userData.avatarUrl} className="w-10 h-10 ml-auto rounded-full" />
+										)}
+									</div>
 								</Link>
-							</span>
+							</div>
 						</div>
 					</nav>
 				</div>

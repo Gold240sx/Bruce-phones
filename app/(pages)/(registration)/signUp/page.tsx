@@ -110,8 +110,6 @@ export default function SignUpPage() {
 										</div>
 									</div>
 
-									<button onClick={() => alert(localStorage.getItem("loginDetails"))}>Alert: Local Details</button>
-
 									<div>
 										<button
 											type="button"

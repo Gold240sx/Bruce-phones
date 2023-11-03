@@ -1,7 +1,19 @@
 import { initializeApp } from "firebase/app"
 import { getAnalytics } from "firebase/analytics"
-import { type User, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
-import { getFirestore, serverTimestamp, doc, setDoc, getDoc } from "firebase/firestore"
+import { type User, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth"
+import {
+	getFirestore,
+	serverTimestamp,
+	doc,
+	setDoc,
+	getDoc,
+	onSnapshot,
+	updateDoc,
+	collection,
+	addDoc,
+	getDocs,
+	deleteDoc,
+} from "firebase/firestore"
 import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage"
 
 const firebaseConfig = {
@@ -21,8 +33,6 @@ const firebaseConfig = {
 	appId: "1:878794485512:web:23f7122841ea9996fd06bd",
 	measurementId: "G-GVV75JG2N6",
 }
-
-// console.log(firebaseConfig.apiKey)
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
@@ -44,9 +54,16 @@ export {
 	onAuthStateChanged,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	signOut,
 	doc,
 	setDoc,
 	getDoc,
+	getDocs,
+	addDoc,
+	deleteDoc,
+	onSnapshot,
+	updateDoc,
+	collection,
 	storage,
 	timestamp,
 	analytics,

@@ -1,8 +1,43 @@
+"use client"
+import { useEffect, useState } from "react"
+import { getCollectionDocs } from "@firebase/storeFunctions"
+import { collection, getDocs } from "firebase/firestore"
+import { db } from "@/app/firebase/firebaseInit"
+
 const people = [{ name: "Lindsay Walton", title: "Front-end Developer", email: "lindsay.walton@example.com", role: "Member" }]
 
 export default function AllUsers() {
+	const [pageData, setPageData] = useState<any>()
+
+	useEffect(() => {
+		// const fetchData = async () => {
+		// 	const userDocs = await getCollectionDocs({ collectionName: "users" })
+		// 	setPageData(userDocs)
+		// 	console.log("set page data", userDocs)
+		// }
+		const fetchData = async () => {
+			const collectionRef = collection(db, "users")
+
+			try {
+				const data = await getDocs(collectionRef)
+				const filteredData = data.docs.map((doc) => ({
+					...doc.data(),
+					id: doc.id,
+				}))
+				setPageData(filteredData)
+			} catch (err) {
+				console.log(err)
+			}
+		}
+		// const userDocs = await getCollectionDocs({ collectionName: "users" })
+		// setPageData(userDocs)
+		// console.log("set page data", userDocs)
+
+		fetchData()
+	}, [])
+
 	return (
-		<div className="px-4 sm:px-6 lg:px-8">
+		<div className="px-4 py-10 bg-white sm:px-6 lg:px-8">
 			<div className="sm:flex sm:items-center">
 				<div className="sm:flex-auto">
 					<h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
@@ -19,6 +54,8 @@ export default function AllUsers() {
 				</div>
 			</div>
 			<div className="mt-8 -mx-4 sm:-mx-0">
+				{/* {pageData && <pre>{JSON.stringify(pageData, null, 2)}</pre>} */}
+				{!pageData && "no pageData"}
 				<table className="min-w-full divide-y divide-gray-300">
 					<thead>
 						<tr>
@@ -26,7 +63,7 @@ export default function AllUsers() {
 								Name
 							</th>
 							<th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
-								Title
+								Avatar
 							</th>
 							<th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
 								Email
@@ -40,27 +77,31 @@ export default function AllUsers() {
 						</tr>
 					</thead>
 					<tbody className="bg-white divide-y divide-gray-200">
-						{people.map((person) => (
-							<tr key={person.email}>
-								<td className="w-full py-4 pl-4 pr-3 text-sm font-medium text-gray-900 max-w-0 sm:w-auto sm:max-w-none sm:pl-0">
-									{person.name}
-									<dl className="font-normal lg:hidden">
-										<dt className="sr-only">Title</dt>
-										<dd className="mt-1 text-gray-700 truncate">{person.title}</dd>
-										<dt className="sr-only sm:hidden">Email</dt>
-										<dd className="mt-1 text-gray-500 truncate sm:hidden">{person.email}</dd>
-									</dl>
-								</td>
-								<td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{person.title}</td>
-								<td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{person.email}</td>
-								<td className="px-3 py-4 text-sm text-gray-500">{person.role}</td>
-								<td className="py-4 pl-3 pr-4 text-sm font-medium text-right sm:pr-0">
-									<a href="#" className="text-indigo-600 hover:text-indigo-900">
-										Edit<span className="sr-only">, {person.name}</span>
-									</a>
-								</td>
-							</tr>
-						))}
+						{/* insert map of data here */}
+						{pageData &&
+							pageData.map((person) => (
+								<tr key={person.email}>
+									<td className="w-full py-4 pl-4 pr-3 text-sm font-medium text-gray-900 max-w-0 sm:w-auto sm:max-w-none sm:pl-0">
+										{person.name}
+										<dl className="font-normal lg:hidden">
+											{/* <dt className="sr-only">Title</dt> */}
+											{/* <dd className="mt-1 text-gray-700 truncate">{person.title}</dd> */}
+											<dt className="sr-only sm:hidden">Email</dt>
+											<dd className="mt-1 text-gray-500 truncate sm:hidden">{person.email}</dd>
+										</dl>
+									</td>
+									<td className="flex items-start text-sm text-gray-500 sm:table-cell">
+										<img src={person.avatarUrl} className="flex w-8 h-8 ml-4 mr-auto rounded-full" />
+									</td>
+									<td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{person.email}</td>
+									<td className="px-3 py-4 text-sm text-gray-500">{person.role}</td>
+									<td className="py-4 pl-3 pr-4 text-sm font-medium text-right sm:pr-0">
+										<a href="#" className="text-indigo-600 hover:text-indigo-900">
+											Edit<span className="sr-only">, {person.name}</span>
+										</a>
+									</td>
+								</tr>
+							))}
 					</tbody>
 				</table>
 			</div>

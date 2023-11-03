@@ -1,4 +1,7 @@
+"use client"
 import Link from "next/link"
+import { SignIn } from "@/app/firebase/authFunctions"
+import { useState, useEffect } from "react"
 /*
   This example requires some changes to your config:
   
@@ -13,7 +16,39 @@ import Link from "next/link"
   }
   ```
 */
-export default function SignIn() {
+export default function SignInPage() {
+	const [email, setEmail] = useState("")
+	const [password, setPassword] = useState("")
+	const [remember, setRemember] = useState(false)
+
+	useEffect(() => {
+		const localLoginDetails = localStorage.getItem("loginDetails")
+		if (localLoginDetails) {
+			const { email: localEmail, remember: localRemember } = JSON.parse(localLoginDetails)
+
+			if (localEmail) {
+				setEmail(localEmail)
+			}
+
+			if (localRemember !== undefined) {
+				setRemember(localRemember)
+			}
+		}
+	}, [])
+
+	const rememberMe = (value: boolean) => {
+		setRemember(value)
+		if (value) {
+			const loginDetails = {
+				email,
+				remember,
+			}
+			localStorage.setItem("loginDetails", JSON.stringify(loginDetails)) // Stringify the object
+		} else if (!value) {
+			localStorage.removeItem("loginDetails")
+		}
+	}
+
 	return (
 		<>
 			{/*
@@ -51,6 +86,8 @@ export default function SignIn() {
 												id="email"
 												name="email"
 												type="email"
+												onChange={(e) => setEmail(e.target.value)}
+												value={email}
 												autoComplete="email"
 												required
 												className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -67,7 +104,9 @@ export default function SignIn() {
 												id="password"
 												name="password"
 												type="password"
+												onChange={(e) => setPassword(e.target.value)}
 												autoComplete="current-password"
+												value={password}
 												required
 												className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 											/>
@@ -80,6 +119,8 @@ export default function SignIn() {
 												id="remember-me"
 												name="remember-me"
 												type="checkbox"
+												onChange={() => rememberMe(!remember)}
+												checked={remember}
 												className="w-4 h-4 text-indigo-600 border-gray-300 rounded cursor-pointer focus:ring-indigo-600"
 											/>
 											<label
@@ -98,7 +139,8 @@ export default function SignIn() {
 
 									<div>
 										<button
-											type="submit"
+											type="button"
+											onClick={() => SignIn({ email, password })}
 											className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
 											Sign in
 										</button>
