@@ -51,9 +51,9 @@ const Navbar = () => {
 						</div>
 						<div className="hidden md:flex md:space-x-10">
 							{navigation.map((item) => (
-								<a key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
+								<Link key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
 									{item.name}
-								</a>
+								</Link>
 							))}
 						</div>
 						<div className="hidden gap-3 md:absolute md:inset-y-0 md:right-0 md:flex md:items-center md:justify-end">
@@ -61,7 +61,9 @@ const Navbar = () => {
 								<div className="flex items-end gap-3">
 									{isAdmin && (
 										<div className="flex items-end w-full">
-											<p className="px-3 py-1 ml-auto text-right text-white bg-black rounded-full w-fit">ADMIN</p>
+											<p className="px-3 py-1 ml-auto text-sm text-right text-white bg-black rounded-full w-fit">
+												ADMIN
+											</p>
 										</div>
 									)}
 									{!user && (

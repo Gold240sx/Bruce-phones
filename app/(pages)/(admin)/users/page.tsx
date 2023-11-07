@@ -4,7 +4,15 @@ import { getCollectionDocs } from "@firebase/storeFunctions"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "@/app/firebase/firebaseInit"
 
-const people = [{ name: "Lindsay Walton", title: "Front-end Developer", email: "lindsay.walton@example.com", role: "Member" }]
+type User = {
+	name: string
+	title?: string
+	avatarUrl: string
+	email: string
+	role: "user" | "admin"
+}
+
+// const people = [{ name: "Lindsay Walton", title: "Front-end Developer", email: "lindsay.walton@example.com", role: "Member" }]
 
 export default function AllUsers() {
 	const [pageData, setPageData] = useState<any>()
@@ -62,7 +70,7 @@ export default function AllUsers() {
 							<th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
 								Name
 							</th>
-							<th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
+							<th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 lg:table-cell">
 								Avatar
 							</th>
 							<th scope="col" className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell">
@@ -79,25 +87,25 @@ export default function AllUsers() {
 					<tbody className="bg-white divide-y divide-gray-200">
 						{/* insert map of data here */}
 						{pageData &&
-							pageData.map((person) => (
-								<tr key={person.email}>
+							pageData.map((user: User) => (
+								<tr key={user.email}>
 									<td className="w-full py-4 pl-4 pr-3 text-sm font-medium text-gray-900 max-w-0 sm:w-auto sm:max-w-none sm:pl-0">
-										{person.name}
+										{user.name}
 										<dl className="font-normal lg:hidden">
 											{/* <dt className="sr-only">Title</dt> */}
-											{/* <dd className="mt-1 text-gray-700 truncate">{person.title}</dd> */}
+											<dd className="mt-1 text-gray-700 truncate">{user.title}</dd>
 											<dt className="sr-only sm:hidden">Email</dt>
-											<dd className="mt-1 text-gray-500 truncate sm:hidden">{person.email}</dd>
+											<dd className="mt-1 text-gray-500 truncate sm:hidden">{user.email}</dd>
 										</dl>
 									</td>
 									<td className="flex items-start text-sm text-gray-500 sm:table-cell">
-										<img src={person.avatarUrl} className="flex w-8 h-8 ml-4 mr-auto rounded-full" />
+										<img src={user.avatarUrl} className="flex w-8 h-8 ml-4 mr-auto rounded-full" />
 									</td>
-									<td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{person.email}</td>
-									<td className="px-3 py-4 text-sm text-gray-500">{person.role}</td>
+									<td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{user.email}</td>
+									<td className="px-3 py-4 text-sm text-gray-500">{user.role}</td>
 									<td className="py-4 pl-3 pr-4 text-sm font-medium text-right sm:pr-0">
 										<a href="#" className="text-indigo-600 hover:text-indigo-900">
-											Edit<span className="sr-only">, {person.name}</span>
+											Edit<span className="sr-only">, {user.name}</span>
 										</a>
 									</td>
 								</tr>

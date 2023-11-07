@@ -93,3 +93,5 @@ export const getCollectionDoc = async ({ collectionName, docId }: { collectionNa
 		return null
 	}
 }
+
+export { collection, db, addDoc, getDocs, updateDoc, deleteDoc, doc, setDoc, getDoc }

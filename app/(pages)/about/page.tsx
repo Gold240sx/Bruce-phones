@@ -2,6 +2,7 @@
 import { useState } from "react"
 import { Dialog } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
+import SendEmailTestForm from "@/app/components/sendEmailTestForm"
 
 const navigation = [
 	{ name: "Product", href: "#" },
@@ -10,9 +11,9 @@ const navigation = [
 	{ name: "Company", href: "#" },
 ]
 const stats = [
-	{ label: "Transactions every 24 hours", value: "44 million" },
-	{ label: "Assets under holding", value: "$119 trillion" },
-	{ label: "New users annually", value: "46,000" },
+	{ label: "devices given every day", value: "Over 44" },
+	{ label: "worth given per day", value: "$6,594" },
+	{ label: "customers served", value: "11,000 +" },
 ]
 const values = [
 	{
@@ -154,7 +155,7 @@ export default function About() {
 		<div className="bg-transparent">
 			{/* Header */}
 
-			<main className="isolate">
+			<main className="isolate ">
 				{/* Hero section */}
 				<div className="relative isolate -z-10">
 					<svg
@@ -191,17 +192,17 @@ export default function About() {
 						/>
 					</div>
 					<div className="overflow-hidden">
-						<div className="px-6 pb-32 mx-auto max-w-7xl pt-36 sm:pt-60 lg:px-8 lg:pt-32">
+						<div className="px-6 pb-32 mx-auto max-w-7xl pt-36 sm:pt-60 lg:px-8 lg:pt-24">
 							<div className="max-w-2xl mx-auto gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
 								<div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
 									<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-										We’re changing the way people connect.
+										We’re bringing connection to the world!
 									</h1>
 									<p className="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-										Cupidatat minim id magna ipsum sint dolor qui. Sunt sit in quis cupidatat mollit aute velit. Et
-										labore commodo nulla aliqua proident mollit ullamco exercitation tempor. Sint aliqua anim nulla sunt
-										mollit id pariatur in voluptate cillum. Eu voluptate tempor esse minim amet fugiat veniam occaecat
-										aliqua.
+										With every device that we provide, we open a world of possibilities to those without the resources
+										or circumstances to retrieve a device right now. Possibilities akin to a fresh tart, a hope, and a
+										dream that we can all live in a world where every person has the ability to live according to their
+										full potential.
 									</p>
 								</div>
 								<div className="flex justify-end gap-8 mt-14 sm:-mt-44 sm:justify-start sm:pl-20 lg:mt-0 lg:pl-0">
@@ -258,38 +259,45 @@ export default function About() {
 				</div>
 
 				{/* Content section */}
-				<div className="px-6 mx-auto -mt-12 max-w-7xl sm:mt-0 lg:px-8 xl:-mt-8">
+				<div className="px-6 mx-auto -mt-12 max-w-7xl sm:mt-0 lg:px-8 xl:-mt-16">
 					<div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-none">
+						<SendEmailTestForm />
 						<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our mission</h2>
 						<div className="flex flex-col mt-6 gap-x-8 gap-y-20 lg:flex-row">
 							<div className="lg:w-full lg:max-w-2xl lg:flex-auto">
 								<p className="text-xl leading-8 text-gray-600">
-									Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam
-									eget aliquam. Quisque id at vitae feugiat egestas ac. Diam nulla orci at in viverra scelerisque eget.
-									Eleifend egestas fringilla sapien.
+									Our mission started with the belief that our short times here on earth should be to serve one another.
+									Without a doubt, mobile devices are a neccessary resource for securing work, paying bills, staying
+									connected to others and positive mental health.
 								</p>
 								<div className="max-w-xl mt-10 text-base leading-7 text-gray-700">
 									<p>
-										Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed
-										amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius
-										sit neque erat velit. Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim.
-										Mattis mauris semper sed amet vitae sed turpis id.
+										In these times our devices are not only a lifeline but renewed confidence in the world and one's own
+										abilities. With the help of our allies and the programs which provide these devices, we can make the
+										world a more prossitive and brighter one and bring joy to many faced with challenges and adversity.
 									</p>
 									<p className="mt-10">
-										Et vitae blandit facilisi magna lacus commodo. Vitae sapien duis odio id et. Id blandit molestie
-										auctor fermentum dignissim. Lacus diam tincidunt ac cursus in vel. Mauris varius vulputate et
-										ultrices hac adipiscing egestas. Iaculis convallis ac tempor et ut. Ac lorem vel integer orci.
+										We live by The Golden Rule and we are passionate about what we do. We accept partnerships and are
+										growing
 									</p>
 								</div>
 							</div>
-							<div className="lg:flex lg:flex-auto lg:justify-center">
-								<dl className="w-64 space-y-8 xl:w-80">
+							<div className="lg:flex lg:flex-auto lg:justify-center ">
+								<dl className="w-64 pb-6 space-y-8 xl:w-80">
 									{stats.map((stat) => (
 										<div key={stat.label} className="flex flex-col-reverse gap-y-4">
-											<dt className="text-base leading-7 text-gray-600">{stat.label}</dt>
+											<dt className="text-base leading-7 text-gray-600">
+												{stat.label}
+												{stat !== stats[2] && (
+													<span className="px-1 mt-3 text-lg font-semibold text-lime-600">*</span>
+												)}
+											</dt>
 											<dd className="text-5xl font-semibold tracking-tight text-gray-900">{stat.value}</dd>
 										</div>
 									))}
+									<p className="pl-2 mt-3 text-lg font-semibold text-lime-600">
+										*<span className="font-normal text-zinc-700">Average</span>
+									</p>
 								</dl>
 							</div>
 						</div>
@@ -310,9 +318,12 @@ export default function About() {
 					<div className="max-w-2xl mx-auto lg:mx-0">
 						<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our values</h2>
 						<p className="mt-6 text-lg leading-8 text-gray-600">
-							Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis in
-							accusamus quisquam.
+							With every dollar made through this we invest $0.10 to charity
 						</p>
+					</div>
+					<div>
+						<h3>This months charity: GivePower.org</h3>
+						<h3>A non-profit who provides clean water through clean energy initiatives in Africa.</h3>
 					</div>
 					<dl className="grid max-w-2xl grid-cols-1 mx-auto mt-16 text-base leading-7 gap-x-8 gap-y-16 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 						{values.map((value) => (

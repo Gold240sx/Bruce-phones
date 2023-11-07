@@ -17,21 +17,13 @@ import {
 import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage"
 
 const firebaseConfig = {
-	// apiKey: process.env.NEXT_API_KEY,
-	// authDomain: process.env.NEXT_AUTH_DOMAIN,
-	// projectId: process.env.NEXT_PROJECT_ID,
-	// storageBucket: process.env.NEXT_STORAGE_BUCKET,
-	// messagingSenderId: process.env.NEXT_MESSAGING_SENDER_ID,
-	// appId: process.env.NEXT_APP_ID,
-	// measurementId: process.env.NEXT_MEASUREMENT_ID,
-
-	apiKey: "AIzaSyAVNydyQ_jSJ9Bdr5vMIe7bJciPIBaZ98k",
-	authDomain: "freephoneformsite-mm23.firebaseapp.com",
-	projectId: "freephoneformsite-mm23",
-	storageBucket: "freephoneformsite-mm23.appspot.com",
-	messagingSenderId: "878794485512",
-	appId: "1:878794485512:web:23f7122841ea9996fd06bd",
-	measurementId: "G-GVV75JG2N6",
+	apiKey: process.env.NEXT_PUBLIC_API_KEY,
+	authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+	projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+	storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+	messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+	appId: process.env.NEXT_PUBLIC_APP_ID,
+	measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 }
 
 // Initialize Firebase
