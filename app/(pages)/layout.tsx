@@ -9,7 +9,7 @@ import "../globals.css"
 import PopupModal from "../components/popupModal"
 
 export const metadata: Metadata = {
-	title: "Free Phones Today",
+	title: "Always There Wireless",
 	description:
 		"Claim your free* phone or tablet today! (free phone or tablet dependant upon eligibility. We do not in any way guarantee eligibilty. Offer subject to availability. )",
 }

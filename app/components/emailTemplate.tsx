@@ -10,9 +10,6 @@ export const EmailTemplate: any = ({ firstName, email }: PageProps) => {
 		<div>
 			<h1>Hey {firstName}!</h1>
 			<p>Email: {email}</p>
-			{/* <section>
-				<pre>BodyData: {bodyData}</pre>
-			</section> */}
 		</div>
 	)
 }

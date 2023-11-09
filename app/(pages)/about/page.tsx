@@ -3,6 +3,7 @@ import { useState } from "react"
 import { Dialog } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
 import SendEmailTestForm from "@/app/components/sendEmailTestForm"
+import SheetsTestForm from "../../components/ sheetsTestForm"
 
 const navigation = [
 	{ name: "Product", href: "#" },
@@ -261,6 +262,7 @@ export default function About() {
 				{/* Content section */}
 				<div className="px-6 mx-auto -mt-12 max-w-7xl sm:mt-0 lg:px-8 xl:-mt-16">
 					<div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-none">
+						<SheetsTestForm />
 						<SendEmailTestForm />
 						<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our mission</h2>
 						<div className="flex flex-col mt-6 gap-x-8 gap-y-20 lg:flex-row">

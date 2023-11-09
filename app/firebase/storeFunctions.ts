@@ -33,9 +33,35 @@ const readDocument = async ({ collectionName, documentId }: { collectionName: st
 	}
 }
 
-const createDocument = async ({ collectionName, data }: { collectionName: string; data: any[] }) => {
-	const docRef = await addDoc(collection(db, collectionName), data)
-	// Handle the newly created document reference
+const createDocument = async ({ collectionName, data }: { collectionName: string; data: any }) => {
+	try {
+		const docRef = await addDoc(collection(db, collectionName), data)
+		return { status: "success", message: "Document successfully created", docRef }
+	} catch (error) {
+		return { status: "error", message: "Error creating document", error }
+	}
+
+	{
+		/* To USE:
+    async function onSubmit(data: FormValues) {
+        try {
+            const response = await createDocument({ collectionName: "supportRequests", data: data });
+
+            if (response.status === "success") {
+                showAlert({ text: "The form was successfully submitted", status: "OK" });
+                    console.log("Document Reference:", response.docRef);
+            } else {
+                    showAlert({ text: "There was an error submitting the form", status: "ERR" });
+                    console.error(response.error);
+            }
+        } catch (err) {
+            console.error("Unexpected error:", err);
+            showAlert({ text: "An unexpected error occurred", status: "ERR" });
+        }
+    }
+
+    */
+	}
 }
 
 const updateDocument = async ({ collectionName, documentId, data }: { collectionName: string; documentId: string; data: any }) => {
@@ -94,4 +120,4 @@ export const getCollectionDoc = async ({ collectionName, docId }: { collectionNa
 	}
 }
 
-export { collection, db, addDoc, getDocs, updateDoc, deleteDoc, doc, setDoc, getDoc }
+export { collection, db, addDoc, getDocs, updateDoc, deleteDoc, doc, setDoc, getDoc, createDocument }
