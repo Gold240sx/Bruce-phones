@@ -4,6 +4,7 @@ import {
 	onAuthStateChanged,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	serverTimestamp,
 	signOut,
 	db,
 	addDoc,
@@ -34,8 +35,13 @@ const readDocument = async ({ collectionName, documentId }: { collectionName: st
 }
 
 const createDocument = async ({ collectionName, data }: { collectionName: string; data: any }) => {
+	// add the created at timestamp to any document being added to the store
+	const newDocData = {
+		...data,
+		createdAt: serverTimestamp(),
+	}
 	try {
-		const docRef = await addDoc(collection(db, collectionName), data)
+		const docRef = await addDoc(collection(db, collectionName), newDocData)
 		return { status: "success", message: "Document successfully created", docRef }
 	} catch (error) {
 		return { status: "error", message: "Error creating document", error }

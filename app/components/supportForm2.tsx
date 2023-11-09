@@ -4,7 +4,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid"
 import { Switch } from "@headlessui/react"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/app/components/ui/card"
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid"
-import { type FormDataProps, SupportFormSchema, showAlert, formatPhoneNo, classNames } from "./FormSupport"
+import { type SupportFormDataProps, SupportFormSchema, showAlert, formatPhoneNo, classNames, SendSupportEmail } from "./FormSupport"
 import Swal from "sweetalert2"
 import { NextPage } from "next"
 import Link from "next/link"
@@ -15,6 +15,20 @@ import { createDocument } from "@firebase/storeFunctions"
 
 type FormValues = z.infer<typeof SupportFormSchema>
 
+type SupportFormData = {
+	firstName: string
+	lastName: string
+	email: string
+	phoneDetails?: {
+		phoneNo?: "US" | "MX" | "CA"
+		phoneCountryCode?: string
+	}
+	phone?: string // Adjust the type based on your actual data
+	phoneCountryCode: string // Adjust the type based on your actual data
+	message: string
+	status?: "unread" | "viewed" | "completed" | "in talk"
+}
+
 export default function SupportForm() {
 	// Errors handled by Zod
 	// const [formErrors, setFormErrors] = useState({
@@ -24,6 +38,7 @@ export default function SupportForm() {
 	// 	email: "",
 	// 	agreed: false,
 	// })
+	const [loading, setIsLoading] = useState(false)
 	const [formData, setFormData] = useState({
 		firstName: "First",
 		lastName: "Person",
@@ -55,16 +70,17 @@ export default function SupportForm() {
 
 	useEffect(() => {
 		// here for the button. Later I'll focus on a better prevented button solution.
-		// along with a loading state option.
 	}, [formData])
 
 	async function onSubmit(data: FormValues) {
+		setIsLoading(true)
 		try {
 			const response = await createDocument({ collectionName: "supportRequests", data: data })
 
 			if (response.status === "success") {
-				showAlert({ text: "The form was successfully submitted", status: "OK" })
-				console.log("Document Reference:", response.docRef)
+				//  @ts-expect-error
+				await SendSupportEmail({ formData: data as SupportFormData })
+				console.log("the email should be sent correctly")
 			} else {
 				showAlert({ text: "There was an error submitting the form", status: "ERR" })
 				console.error(response.error)
@@ -80,6 +96,8 @@ export default function SupportForm() {
 		} catch (err) {
 			console.log("error: ", err)
 			showAlert({ text: " there was an error submitting the form", status: "ERR" })
+		} finally {
+			setIsLoading(false) // Set loading state back to false
 		}
 	}
 
@@ -333,18 +351,20 @@ export default function SupportForm() {
 									errors.firstName !== undefined ||
 									errors.lastName !== undefined ||
 									errors.message !== undefined ||
-									formData.agreed !== true
+									formData.agreed !== true ||
+									loading
 								}
 								className={`${
 									errors.email !== undefined ||
 									errors.firstName !== undefined ||
 									errors.lastName !== undefined ||
 									errors.message !== undefined ||
-									formData.agreed !== true
+									formData.agreed !== true ||
+									loading
 										? "bg-zinc-300 cursor-not-allowed"
 										: "bg-indigo-600 hover:bg-indigo-500 focus-visible:outline-indigo-600"
 								}block w-full rounded-md px-3.5 py-2.5 text-center duration-200 ease-in-out transition-colors text-sm font-semibold text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 `}>
-								Let's talk
+								{loading ? "submitting" : "Let's talk"}
 							</button>
 						</div>
 					</form>

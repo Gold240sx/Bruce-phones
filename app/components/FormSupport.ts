@@ -3,6 +3,8 @@ import { FormEvent } from "react"
 import Swal from "sweetalert2"
 
 // Form Schemas
+const SubscribeComponentSchema = z.object({ email: z.string().email("Please enter a valid email") })
+
 const SupportFormSchema = z.object({
 	firstName: z
 		.string()
@@ -37,8 +39,8 @@ const SupportFormSchema = z.object({
 })
 
 //  Form Types
-type FormDataProps = {
-	e: FormEvent<HTMLFormElement>
+type SupportFormDataProps = {
+	e?: FormEvent<HTMLFormElement>
 	formData?: {
 		firstName: string
 		lastName: string
@@ -48,11 +50,18 @@ type FormDataProps = {
 		}
 		email: string
 		message: string
-		agreed: boolean
+		agreed?: boolean
+		status?: "unread" | "viewed" | "completed" | "in talk"
+	}
+}
+type SubscribeFormDataProps = {
+	e?: FormEvent<HTMLFormElement>
+	formData?: {
+		email: string
 	}
 }
 
-// Functions
+// Form Functions
 function showAlert({ text, status }: { text: string; status: "OK" | "ERR" }) {
 	Swal.fire({
 		title: status === "OK" ? "Success" : "UH-OH",
@@ -61,7 +70,6 @@ function showAlert({ text, status }: { text: string; status: "OK" | "ERR" }) {
 		confirmButtonText: status === "OK" ? "Nice!" : "Aww Man",
 	})
 }
-
 const formatPhoneNo = (inputValue: string) => {
 	const sanitizedValue = inputValue.replace(/[^\d]/g, "")
 	let formattedValue = ""
@@ -81,6 +89,67 @@ function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ")
 }
 
-export { SupportFormSchema }
-export { type FormDataProps }
-export { showAlert, formatPhoneNo, classNames }
+// Email Functions
+const SendSupportEmail = async ({ formData }: SupportFormDataProps) => {
+	try {
+		const response = await fetch("/api/support", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(
+				formData && {
+					firstName: formData.firstName,
+					lastName: formData.firstName,
+					email: formData.email,
+					phone: formData.phoneDetails.phoneNo,
+					phoneCountryCode: formData.phoneDetails.phoneCountryCode,
+					message: formData.message,
+				}
+			),
+		})
+
+		if (response.ok) {
+			const data = await response.json()
+			console.log(data)
+			showAlert({ text: "Email sent successfully", status: "OK" })
+		} else {
+			showAlert({ text: "Error sending the email", status: "ERR" })
+		}
+	} catch (err) {
+		showAlert({ text: "Error Fetching Resend API", status: "ERR" })
+		console.error(err)
+	}
+}
+
+const SendSubscribeEmail = async ({ formData }: SubscribeFormDataProps) => {
+	try {
+		const response = await fetch("/api/subscribe", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(
+				formData && {
+					email: formData.email,
+				}
+			),
+		})
+
+		if (response.ok) {
+			const data = await response.json()
+			console.log(data)
+			showAlert({ text: "Email sent successfully", status: "OK" })
+		} else {
+			showAlert({ text: "Error sending the email", status: "ERR" })
+		}
+	} catch (err) {
+		showAlert({ text: "Error Fetching Resend API", status: "ERR" })
+		console.error(err)
+	}
+}
+
+export { SupportFormSchema, SubscribeComponentSchema } // Schemas
+export { type SupportFormDataProps } // Types
+export { showAlert, formatPhoneNo, classNames } //  Functions
+export { SendSupportEmail, SendSubscribeEmail } // Email  specific functions

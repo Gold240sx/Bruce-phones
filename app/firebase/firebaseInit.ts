@@ -46,6 +46,7 @@ export {
 	onAuthStateChanged,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
+	serverTimestamp,
 	signOut,
 	doc,
 	setDoc,
