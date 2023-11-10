@@ -8,9 +8,11 @@ import Link from "next/link"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Selector from "./select"
+import Select from "react-select"
 import { FileInput, Label } from "flowbite-react"
 import { createDocument, updateDocument } from "@firebase/storeFunctions"
 import { type UploadResult, uploadToFirebaseStorage, fileSizeValidator, fileExtensionValidator } from "../firebase/storageFunctions"
+import ControlledSelect from "./controlled-select"
 
 type FormValues = z.infer<typeof JobFormSchema>
 
@@ -34,8 +36,6 @@ type JobFormData = {
 
 export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 	const [loading, setIsLoading] = useState(false)
-	const [uploading, setIsUploading] = useState(false)
-	const [uploadResult, setUploadResult] = useState<UploadResult | null>(null)
 	const [fileError, setFileError] = useState<string | null>(null)
 	const resumeInputRef = useRef<HTMLInputElement | null>(null)
 	const [formData, setFormData] = useState({
@@ -57,6 +57,7 @@ export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 	})
 	const {
 		register,
+		control,
 		handleSubmit,
 		formState: { errors },
 	} = useForm<FormValues>({
@@ -64,73 +65,98 @@ export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 	})
 	// useEffect(() => {}, [formData])
 
-	// async function onSubmit(data: FormValues) {
-	// 	setIsLoading(true)
-	// 	// validate that the file is the right size and type before proceeding
-	// 	const file = resumeInputRef.current?.files?.[0]
-	// 	if (!file) {
-	// 		setFileError("Please upload your resume.")
-	// 		setIsLoading(false)
-	// 		return
-	// 	}
-	// 	if (fileSizeValidator(file) && fileExtensionValidator(file.name)) {
-	// 		try {
-	// 			setFileError(null)
-	// 			// add status to form data before submission to insert in each DB file
-	// 			const newData = {
-	// 				...data,
-	// 				status: "unread",
-	// 			}
-	// 			const response = await createDocument({ collectionName: "jobApplicants", data: newData })
-	// 			if (response.status === "success") {
-	// 				const folderId = response.docId
-	// 				// @ts-expect-error
-	// 				const filePath = `jobApplications/${folderId}/${resumeInputRef.current.files[0].name}`
-	// 				// @ts-expect-error
-	// 				const result = await uploadToFirebaseStorage({ file: resumeInputRef.current.files[0], filePath })
+	async function onSubmit(data: FormValues) {
+		setIsLoading(true)
+		// validate that the file is the right size and type before proceeding
+		const file = resumeInputRef.current?.files?.[0]
+		if (!file) {
+			setFileError("Please upload your resume.")
+			setIsLoading(false)
+			return
+		}
+		if (fileSizeValidator(file) && fileExtensionValidator(file.name)) {
+			try {
+				setFileError(null)
+				// add status to form data before submission to insert in each DB file
+				const newData = {
+					...data,
+					status: "unread",
+				}
+				const response = await createDocument({ collectionName: "jobApplicants", data: newData })
+				if (response.status === "success") {
+					const folderId = response.docId
+					// @ts-expect-error
+					const filePath = `jobApplications/${folderId}/${resumeInputRef.current.files[0].name}`
+					// @ts-expect-error
+					const result = await uploadToFirebaseStorage({ file: resumeInputRef.current.files[0], filePath })
 
-	// 				const updateResponse = await updateDocument({
-	// 					collectionName: "jobApplicants",
-	// 					docId: folderId!,
-	// 					data: { resumeLink: result.url },
-	// 				})
-	// 				if (updateResponse.status == "success") {
-	// 					showAlert({ text: "Upload Success", status: "OK" })
-	// 					setFormData({
-	// 						name: "",
-	// 						resumeLInk: "",
-	// 					})
-	// 					resumeInputRef.value = ""
-	// 				} else alert("everything but the doc rewrite worked")
-	// 			} else {
-	// 				showAlert({ text: "There was an error submitting the form", status: "ERR" })
-	// 				console.error(response.error)
-	// 			}
-	// 		} catch (err) {
-	// 			console.log("error: ", err)
-	// 			showAlert({ text: " there was an error sending your application", status: "ERR" })
-	// 		} finally {
-	// 			setIsLoading(false) // Set loading state back to false
-	// 		}
-	// 	} else {
-	// 		if (fileSizeValidator(file) && !fileExtensionValidator(file.name)) {
-	// 			setFileError("Invalid file Type. Accepted Formats: '.pdf', '.doc', '.docx', '.word', '.rtf'")
-	// 		} else if (!fileSizeValidator(file) && fileExtensionValidator(file.name)) {
-	// 			setFileError("Max file size exceeded. File uploads must be less that 10MB.")
-	// 		} else if (!fileSizeValidator(file) && !fileExtensionValidator(file.name)) {
-	// 			setFileError(
-	// 				"Invalid file Type. Accepted Formats: '.pdf', '.doc', '.docx', '.word', '.rtf'. Max file size exceeded. File uploads must be less that 10MB."
-	// 			)
-	// 			setIsLoading(false)
-	// 			return
-	// 		}
-	// 		setIsLoading(false)
-	// 	}
+					const updateResponse = await updateDocument({
+						collectionName: "jobApplicants",
+						docId: folderId!,
+						data: { resumeLink: result.url },
+					})
+					if (updateResponse.status == "success") {
+						showAlert({ text: "Upload Success", status: "OK" })
+						setFormData({
+							name: "",
+							birthday: "",
+							phoneDetails: {
+								phoneCountryCode: "US",
+								phoneNo: "",
+							},
+							email: "",
+							cityState: "",
+							aspiration: "",
+							resumeLInk: "",
+							availibility: "",
+							usCitizen: true,
+							language: "english only",
+							preferredContact: "phone",
+							filePurpose: "",
+						})
+						resumeInputRef.value = ""
+					} else alert("everything but the doc rewrite worked")
+				} else {
+					showAlert({ text: "There was an error submitting the form", status: "ERR" })
+					console.error(response.error)
+				}
+			} catch (err) {
+				console.log("error: ", err)
+				showAlert({ text: " there was an error sending your application", status: "ERR" })
+			} finally {
+				setIsLoading(false) // Set loading state back to false
+			}
+		} else {
+			if (fileSizeValidator(file) && !fileExtensionValidator(file.name)) {
+				setFileError("Invalid file Type. Accepted Formats: '.pdf', '.doc', '.docx', '.word', '.rtf'")
+			} else if (!fileSizeValidator(file) && fileExtensionValidator(file.name)) {
+				setFileError("Max file size exceeded. File uploads must be less that 10MB.")
+			} else if (!fileSizeValidator(file) && !fileExtensionValidator(file.name)) {
+				setFileError(
+					"Invalid file Type. Accepted Formats: '.pdf', '.doc', '.docx', '.word', '.rtf'. Max file size exceeded. File uploads must be less that 10MB."
+				)
+				setIsLoading(false)
+				return
+			}
+			setIsLoading(false)
+		}
+	}
+
+	// async function onSubmit(data: FormValues) {
+	// 	console.log(data)
 	// }
 
-	async function onSubmit(data: FormValues) {
-		console.log(data)
-	}
+	const purposeSchema = z.object({
+		label: z.string(),
+		value: z.string(),
+	})
+
+	type purposeReason = z.infer<typeof purposeSchema>
+
+	const purposeOptions: purposeReason[] = [
+		{ label: "Resume", value: "resume" },
+		{ label: "Letter of Intention", value: "letterOfIntention" },
+	]
 
 	return (
 		<Card className="w-full h-full">
@@ -155,7 +181,7 @@ export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 							}}
 						/>
 					</div>
-					<form onSubmit={handleSubmit(onSubmit)} className="w-4/5 max-w-2xl mx-auto scrollbar-hide lg:mt-20 sm:mt-10">
+					<form onSubmit={handleSubmit(onSubmit)} className="w-4/5 max-w-2xl mx-auto scrollbar-hide sm:mt-10">
 						<div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
 							<div>
 								<div className="flex justify-between">
@@ -376,7 +402,7 @@ export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 							)} */}
 							</div>
 							<div className="flex flex-col items-center justify-center w-full mx-auto my-2">
-								<Selector
+								{/* <Selector
 									placeholder="Select"
 									options={valueToDropdownConversion(["Resume", "Letter of reccomendation"])}
 									{...register("filePurpose")}
@@ -384,7 +410,36 @@ export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 									handleOnChange={(e: any) => setFormData({ ...formData, filePurpose: e.target.value })}
 									name="filePurpose"
 									className="w-full max-w-md mt-8 mb-4"
+								/> */}
+								<ControlledSelect<FormValues, purposeReason, true>
+									name="filePurpose"
+									control={control}
+									label="purpose"
+									placeholder="Describe the file content"
+									options={purposeOptions}
+									className="bg-white rounded-md"
+									useBasicStyles
 								/>
+								{/* <Select
+									className=""
+									// 	options={[
+									// 		{ label: "Resume", value: "Resume" },
+									// 		{ label: "Letter of reccomendation", value: "LetterOfReccomendation" },
+									// 	]}
+									// 	placeholder="Select"
+									// 	{...register("filePurpose")}
+									// 	value={selectedFilePurpose} // pass the selected value
+									// 	onChange={handleSelect}
+									// 	name="filePurpose"
+									// />
+									isMulti
+									name="signupReasons"
+									control={control}
+									label="Reasons for Sign Up (at least 2)"
+									placeholder="Select some reasons"
+									options={reasonOptions}
+									useBasicStyles
+								/> */}
 							</div>
 						</div>
 

@@ -5,6 +5,7 @@ import Navbar from "../components/navbar"
 import Footer from "../components/footer"
 import BgPattern from "../components/bgPattern"
 import { cn } from "../libs/utils"
+import { ChakraProvider } from "@chakra-ui/react"
 import "../globals.css"
 import PopupModal from "../components/popupModal"
 
@@ -13,8 +14,6 @@ export const metadata: Metadata = {
 	description:
 		"Claim your free* phone or tablet today! (free phone or tablet dependant upon eligibility. We do not in any way guarantee eligibilty. Offer subject to availability. )",
 }
-
-
 
 export const fontSans = FontSans({
 	subsets: ["latin"],
@@ -29,15 +28,17 @@ const messages = [
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<body className={`${cn(fontSans.variable)} relative p-0 m-0`}>
-				<BgPattern />
-				<div className="">
-					<Banner messages={messages} />
-					<Navbar />
-					{children}
-					<Footer />
-				</div>
-			</body>
+			<ChakraProvider>
+				<body className={`${cn(fontSans.variable)} relative p-0 m-0`}>
+					<BgPattern />
+					<div className="">
+						<Banner messages={messages} />
+						<Navbar />
+						{children}
+						<Footer />
+					</div>
+				</body>
+			</ChakraProvider>
 		</html>
 	)!
 }
