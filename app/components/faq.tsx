@@ -11,15 +11,15 @@ type formState = {
 const faqs = [
 	{
 		question: "Are these really free?",
-		answer: "Yes. Upon submission of your info, we will verify that you meet the needed criteria. If you at one of our stands, we will be able to hand you a phone or tablet at that time?",
+		answer: "Yes. Upon submission of your information, we will verify that you meet the needed criteria to qualify for these tablets and phones.",
 	},
 	{
-		question: "How do you guys make your money?",
-		answer: "We are paid for every product you get! believe me, We want you to qualify!",
+		question: "How much is the plan? Are there any costs related to the service?",
+		answer: "Absolutely not. As long as you use cellular data at any point within the month, your data plan will be 100% free. Same goes with phone and texts.",
 	},
 	{
-		question: "Where is my data stored?",
-		answer: "Upon Form entry: The data is sent to be verified by the program verificaiton team. Upon subscription: Your data is stored by our servers with the only purpose to reach out to you with future product offers. We do not spam, share or sell your data to any 3rd parties. ",
+		question: "What happens next?",
+		answer: "Once you fill out the criteria a consultant will contact you to verify the information. Upon verifying that the qualifications have been met, we will ship or provide the device to you by the method which makes the most sense and that you prefer.",
 	},
 	{
 		question: "How do I know if I qualify?",

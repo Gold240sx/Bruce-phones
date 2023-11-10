@@ -31,6 +31,11 @@
 
 
 ### TODO list (More important)
+[ ] make job application form
+[ ] firebase function to delete firebase storage within a firebase storage folder after 90 days.
+[ ] make job application email
+[ ] get document uploader to run
+[ ] add public and private site links to the db with role based permissions
 - Main form validation, and zod form hookup w/ db and custom email
 - document uploader ( both for submitting supporting docs as well as for resumes)
 

@@ -11,6 +11,7 @@ import FormWrapper from "../formWrapper"
 import { FileInput, Label } from "flowbite-react"
 import RadioBoxList from "./RadioBoxList"
 import CustomCalendar from "../customCalendar"
+import { valueToDropdownConversion } from "../../FormSupport"
 // import "react-calendar/dist/Calendar.css"
 
 type BenefitData = {
@@ -29,12 +30,7 @@ type Item = {
 type ValuePiece = Date | null
 type Value = ValuePiece | [ValuePiece, ValuePiece]
 
-const valueToDropdownConversion = (stringArray: string[]) => {
-	const objectArray = stringArray.map((string: string) => {
-		return { label: string, value: string }
-	})
-	return objectArray
-}
+
 
 const radioItems: Item[] = [
 	{

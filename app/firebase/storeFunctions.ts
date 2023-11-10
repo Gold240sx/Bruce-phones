@@ -19,6 +19,7 @@ import {
 	ref,
 	uploadString,
 	getDownloadURL,
+	type Firestore,
 } from "@firebase/firebaseInit"
 import { useState, useEffect } from "react"
 
@@ -42,7 +43,8 @@ const createDocument = async ({ collectionName, data }: { collectionName: string
 	}
 	try {
 		const docRef = await addDoc(collection(db, collectionName), newDocData)
-		return { status: "success", message: "Document successfully created", docRef }
+		const docId = docRef.id
+		return { status: "success", message: "Document successfully created", docRef, docId }
 	} catch (error) {
 		return { status: "error", message: "Error creating document", error }
 	}
@@ -70,17 +72,45 @@ const createDocument = async ({ collectionName, data }: { collectionName: string
 	}
 }
 
-const updateDocument = async ({ collectionName, documentId, data }: { collectionName: string; documentId: string; data: any }) => {
-	const docRef = doc(db, collectionName, documentId)
-	await updateDoc(docRef, data)
+interface UpdateDocumentParams {
+	collectionName: string
+	docId: string
+	data: Record<string, any>
+}
 
-	/* 
-    alternate: 
-    const updateMovieTitle = async  (id) => {
-        const movieDoc = doc(db, "movies", id)
-        await updateDoc(movieDoc, { title: updatedTitle })
-    }
-    */
+interface UpdateDocumentResult {
+	status: "success" | "error"
+	error?: string
+}
+
+const updateDocument = async ({ collectionName, docId, data }: UpdateDocumentParams): Promise<UpdateDocumentResult> => {
+	try {
+		const docRef = doc(db, collectionName, docId)
+		await updateDoc(docRef, data)
+		return { status: "success" }
+	} catch (error: any) {
+		return { status: "error", error: error.message }
+	}
+	{
+		/* TO USE
+         const updateResponse = await updateDocument({
+            collectionName: "jobApplicants",
+            docId: docId,
+            data: { resumeLink: resumeURL },
+        });
+
+        if (updateResponse.status === "success") {
+            // Clear the form data if everything is successful
+            setFormData({
+                name: "",
+                resumeLink: "",
+            });
+        } else {
+            showAlert({ text: "Error updating document with resume URL", status: "ERR" });
+            console.error(updateResponse.error);
+        }
+     */
+	}
 }
 
 const deleteDocument = async ({ collectionName, documentId }: { collectionName: string; documentId: string }) => {
@@ -126,4 +156,4 @@ export const getCollectionDoc = async ({ collectionName, docId }: { collectionNa
 	}
 }
 
-export { collection, db, addDoc, getDocs, updateDoc, deleteDoc, doc, setDoc, getDoc, createDocument }
+export { collection, db, addDoc, getDocs, updateDocument, updateDoc, deleteDoc, doc, setDoc, getDoc, createDocument }

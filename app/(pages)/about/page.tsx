@@ -12,9 +12,9 @@ const navigation = [
 	{ name: "Company", href: "#" },
 ]
 const stats = [
-	{ label: "devices given every day", value: "Over 44" },
-	{ label: "worth given per day", value: "$6,594" },
-	{ label: "customers served", value: "11,000 +" },
+	{ label: "devices given every day", value: "10,000+" },
+	{ label: "worth given per day", value: "$500,000+" },
+	{ label: "customers served ( and growing )", value: "85,000 +" },
 ]
 const values = [
 	{
@@ -48,15 +48,7 @@ const values = [
 			"Ipsa in earum deserunt aut. Quos minus aut animi et soluta. Ipsum dicta ut quia eius. Possimus reprehenderit iste aspernatur ut est velit consequatur distinctio.",
 	},
 ]
-const team = [
-	{
-		name: "Michael Foster",
-		role: "Co-Founder / CTO",
-		imageUrl:
-			"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-	},
-	// More people...
-]
+
 const blogPosts = [
 	{
 		id: 1,
@@ -262,8 +254,8 @@ export default function About() {
 				{/* Content section */}
 				<div className="px-6 mx-auto -mt-12 max-w-7xl sm:mt-0 lg:px-8 xl:-mt-16">
 					<div className="max-w-2xl mx-auto lg:mx-0 lg:max-w-none">
-						<SheetsTestForm />
-						<SendEmailTestForm />
+						{/* <SheetsTestForm />
+						<SendEmailTestForm /> */}
 						<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our mission</h2>
 						<div className="flex flex-col mt-6 gap-x-8 gap-y-20 lg:flex-row">
 							<div className="lg:w-full lg:max-w-2xl lg:flex-auto">
@@ -280,7 +272,7 @@ export default function About() {
 									</p>
 									<p className="mt-10">
 										We live by The Golden Rule and we are passionate about what we do. We accept partnerships and are
-										growing
+										growing larger day by day.
 									</p>
 								</div>
 							</div>
@@ -316,7 +308,7 @@ export default function About() {
 				</div>
 
 				{/* Values section */}
-				<div className="px-6 mx-auto mt-32 max-w-7xl sm:mt-40 lg:px-8">
+				{/* <div className="px-6 mx-auto mt-32 max-w-7xl sm:mt-40 lg:px-8">
 					<div className="max-w-2xl mx-auto lg:mx-0">
 						<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our values</h2>
 						<p className="mt-6 text-lg leading-8 text-gray-600">
@@ -335,10 +327,10 @@ export default function About() {
 							</div>
 						))}
 					</dl>
-				</div>
+				</div> */}
 
 				{/* Logo cloud */}
-				<div className="relative mt-32 isolate -z-10 sm:mt-48">
+				{/* <div className="relative mt-32 isolate -z-10 sm:mt-48">
 					<div className="absolute inset-x-0 top-1/2 -z-10 flex -translate-y-1/2 justify-center overflow-hidden [mask-image:radial-gradient(50%_45%_at_50%_55%,white,transparent)]">
 						<svg className="h-[40rem] w-[80rem] flex-none stroke-gray-200" aria-hidden="true">
 							<defs>
@@ -401,29 +393,7 @@ export default function About() {
 							/>
 						</div>
 					</div>
-				</div>
-
-				{/* Team section */}
-				<div className="px-6 mx-auto mt-32 max-w-7xl sm:mt-48 lg:px-8">
-					<div className="max-w-2xl mx-auto lg:mx-0">
-						<h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our team</h2>
-						<p className="mt-6 text-lg leading-8 text-gray-600">
-							Sit facilis neque ab nulla vel. Cum eos in laudantium. Temporibus eos totam in dolorum. Nemo vel facere
-							repellendus ut eos dolores similique.
-						</p>
-					</div>
-					<ul
-						role="list"
-						className="grid max-w-2xl grid-cols-2 mx-auto mt-20 text-center gap-x-8 gap-y-16 sm:grid-cols-3 md:grid-cols-4 lg:mx-0 lg:max-w-none lg:grid-cols-5 xl:grid-cols-6">
-						{team.map((person) => (
-							<li key={person.name}>
-								<img className="w-24 h-24 mx-auto rounded-full" src={person.imageUrl} alt="" />
-								<h3 className="mt-6 text-base font-semibold leading-7 tracking-tight text-gray-900">{person.name}</h3>
-								<p className="text-sm leading-6 text-gray-600">{person.role}</p>
-							</li>
-						))}
-					</ul>
-				</div>
+				</div> */}
 
 				{/* Blog section */}
 				{/* <div className="px-6 mx-auto mt-32 max-w-7xl sm:mt-40 lg:px-8">

@@ -12,14 +12,14 @@ import { FileInput, Label } from "flowbite-react"
 import { format } from "date-fns"
 import { AiFillInfoCircle } from "react-icons/ai"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../components/ui/tooltip"
-
+import { valueToDropdownConversion, states } from "../FormSupport"
 import "react-datepicker/dist/react-datepicker.css"
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ")
 }
 
-
+const stateDropdown = valueToDropdownConversion(states)
 
 type UserData = {
 	firstName: string

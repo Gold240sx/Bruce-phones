@@ -23,7 +23,7 @@ type SupportFormData = {
 		phoneNo?: "US" | "MX" | "CA"
 		phoneCountryCode?: string
 	}
-	phone?: string // Adjust the type based on your actual data
+	// phone?: string // Adjust the type based on your actual data
 	phoneCountryCode: string // Adjust the type based on your actual data
 	message: string
 	status?: "unread" | "viewed" | "completed" | "in talk"
@@ -75,11 +75,30 @@ export default function SupportForm() {
 	async function onSubmit(data: FormValues) {
 		setIsLoading(true)
 		try {
-			const response = await createDocument({ collectionName: "supportRequests", data: data })
-
+			// add status to form data before submission to insert in each DB file
+			const newData = {
+				...data,
+				status: "unread",
+			}
+			const response = await createDocument({ collectionName: "supportRequests", data: newData })
 			if (response.status === "success") {
+				// ensure that when phoneNo is not filled out, undefined or null, set to ""
+				if (data.phoneDetails.phoneNo === undefined || data.phoneDetails.phoneNo === null) {
+					data.phoneDetails.phoneNo = ""
+				}
 				//  @ts-expect-error
 				await SendSupportEmail({ formData: data as SupportFormData })
+				setFormData({
+					firstName: "",
+					lastName: "",
+					phoneDetails: {
+						phoneCountryCode: "US",
+						phoneNo: "",
+					},
+					email: "",
+					message: "",
+					agreed: false,
+				})
 				console.log("the email should be sent correctly")
 			} else {
 				showAlert({ text: "There was an error submitting the form", status: "ERR" })

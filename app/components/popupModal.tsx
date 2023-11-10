@@ -2,21 +2,32 @@
 import React, { ReactNode } from "react"
 import SignupForm from "./SignupForm"
 import SupportForm from "./supportForm2"
+
+// import JobAppForm from "./JobApply"
+import JobAppForm from "./JobApplyTest"
 import { Card } from "./ui/card"
 
 interface PopupModalProps {
 	toggleMainForm: () => void
 	formOpen: boolean
-	form: "SignupForm" | "SupportForm" | ""
+	form: "SignupForm" | "SupportForm" | "JobApplication" | ""
+	subCategory?: ""
 }
 
-const forms = {
-	SignupForm: <SignupForm />,
-	SupportForm: <SupportForm />,
+interface FormComponents {
+	SignupForm: React.ComponentType<any>
+	SupportForm: React.ComponentType<any>
+	JobApplication: React.ComponentType<any>
+}
+const forms: FormComponents = {
+	SignupForm: SignupForm,
+	SupportForm: SupportForm,
+	JobApplication: JobAppForm,
 }
 
-const PopupModal = ({ toggleMainForm, formOpen, form }: PopupModalProps) => {
+const PopupModal = ({ toggleMainForm, formOpen, form, subCategory }: PopupModalProps) => {
 	if (form !== "") {
+		// const SelectedForm = forms[form]
 		const SelectedForm = forms[form]
 
 		return (
@@ -29,7 +40,7 @@ const PopupModal = ({ toggleMainForm, formOpen, form }: PopupModalProps) => {
 					onClick={toggleMainForm}>
 					X
 				</button>
-				{SelectedForm}
+				<SelectedForm subCategory={subCategory} />
 			</div>
 		)
 	}

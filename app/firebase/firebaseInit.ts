@@ -13,8 +13,9 @@ import {
 	addDoc,
 	getDocs,
 	deleteDoc,
+	type Firestore,
 } from "firebase/firestore"
-import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage"
+import { getStorage, ref, uploadString, uploadBytes, getDownloadURL } from "firebase/storage"
 
 const firebaseConfig = {
 	apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -56,6 +57,7 @@ export {
 	deleteDoc,
 	onSnapshot,
 	updateDoc,
+	uploadBytes,
 	collection,
 	storage,
 	timestamp,
@@ -63,4 +65,5 @@ export {
 	ref,
 	uploadString,
 	getDownloadURL,
+	type Firestore,
 }

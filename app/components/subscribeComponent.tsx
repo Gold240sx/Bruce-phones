@@ -1,21 +1,12 @@
 "use client"
 import React from "react"
-import Link from "next/link"
 import { z } from "zod"
-import { FormEvent, useEffect, useState } from "react"
-import { Controller, FieldErrors, useForm } from "react-hook-form"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createDocument } from "@firebase/storeFunctions"
 import { SubscribeComponentSchema } from "./FormSupport"
-import {
-	type SupportFormDataProps,
-	SupportFormSchema,
-	showAlert,
-	formatPhoneNo,
-	classNames,
-	SendSupportEmail,
-	SendSubscribeEmail,
-} from "./FormSupport"
+import { showAlert, SendSubscribeEmail } from "./FormSupport"
 
 type FormValues = z.infer<typeof SubscribeComponentSchema>
 

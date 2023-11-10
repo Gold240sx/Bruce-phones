@@ -5,13 +5,18 @@ import Image from "next/image"
 import Banner from "@/app/components/banner/banner"
 import { getCollectionDocs, collection, db, getDoc, getDocs } from "@firebase/storeFunctions"
 import CareerHeaderImage from "@/app/assets/images/careerHeaderImage.jpg"
+import PopupModal from "@/app/components/popupModal"
 
 const Careers = () => {
+	const [formOpen, setFormOpen] = useState(false)
+	const [form, setForm] = useState("")
 	const [pageData, setPageData] = useState<any>()
+	const [position, setPosition] = useState<string>("")
 	const jobCount = pageData?.length
-	// get docs from firebase [x]
-	// get the length of jobs to output into the title [x]
-	// pass the jobs into the JobCard and map over them
+	const toggleMainForm = () => {
+		setFormOpen(!formOpen)
+	}
+	// get the popup to show up
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -34,6 +39,10 @@ const Careers = () => {
 
 	return (
 		<main className="flex flex-col items-center justify-between p-24">
+			{/* <PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} /> */}
+			{formOpen && form === "JobApplication" && (
+				<PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} subCategory={position} />
+			)}
 			<div className="flex flex-col items-center justify-between w-full max-w-5xl font-mono text-sm">
 				<div className="object-fill " style={{ maxHeight: Math.max(window.innerHeight * 0.5, 800) + "px" }}>
 					<Image
@@ -46,20 +55,26 @@ const Careers = () => {
 					/>
 				</div>
 				<p className="flex pt-5 pr-10 ml-auto text-right">
-					Photo by{" "}
-					<a href="https://unsplash.com/@goian?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+					Photo by
+					<a
+						className="pl-1"
+						href="https://unsplash.com/@goian?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
 						Ian Schneider
 					</a>{" "}
 					on{" "}
-					<a href="https://unsplash.com/photos/two-person-standing-on-gray-tile-paving-TamMbr4okv4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
+					<a
+						className="pl-1"
+						href="https://unsplash.com/photos/two-person-standing-on-gray-tile-paving-TamMbr4okv4?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">
 						Unsplash
 					</a>
 				</p>
 				{jobCount && <h1 className="pt-32 pb-8 text-4xl">{jobCount} Jobs available</h1>}
 				{/* map section */}
 				{pageData &&
-					pageData.map((job: any) => (
-						<div className="grid w-full grid-cols-6 p-6 m-6 text-lg bg-white border rounded-xl border-zinc-200 hover:shadow-lg">
+					pageData.map((job: any, index: number) => (
+						<div
+							key={index}
+							className="grid w-full grid-cols-6 p-6 m-6 text-lg bg-white border rounded-xl border-zinc-200 hover:shadow-lg">
 							<div className="col-span-full md:col-span-3">
 								<h2 className="text-4xl">{job.title}</h2>
 								<div className="flex gap-2">
@@ -86,6 +101,11 @@ const Careers = () => {
 								</h2>
 								<p className="flex gap-2 py-3 pl-1 text-zinc-500">{job.description}</p>
 								<button
+									onClick={() => {
+										setPosition(job.title)
+										setForm("JobApplication")
+										toggleMainForm()
+									}}
 									className={` bg-lime-500 mt-4 text-black py-4 px-16 rounded-md hover:bg-lime-400 cursor-pointer text-semi-bold`}>
 									Apply
 								</button>
