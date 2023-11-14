@@ -48,7 +48,7 @@ const SupportFormSchema = z.object({
 			})
 			.optional(),
 	}),
-	email: z.string().email("Please enter a valid email"),
+	email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
 	message: z.string(),
 	// agreed: z.boolean().refine((value) => value === true, {
 	// 	message: "You must agree to the terms and conditions.",
@@ -82,13 +82,210 @@ const JobFormSchema = z.object({
 	availibility: z.string(),
 	usCitizen: z.boolean(),
 	language: z.string(),
-	email: z.string().email("Please enter a valid email"),
+	email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
 	cityState: z.string().max(30),
 	aspiration: z.string().optional(),
 	resumeLInk: FileURLSchema,
 	filePurpose: z.string(),
 	preferedContact: z.enum(["text", "phone", "email"]),
 })
+
+const PasswordNullSchema = z.object({
+	firstName: z
+		.string()
+		.regex(/^[a-zA-Z .]+$/, {
+			message: "Name can only contain letters, spaces, and periods",
+		})
+		.min(1, "Please include your first name")
+		.max(25, "max: 25 characters"),
+	lastName: z
+		.string()
+		.regex(/^[a-zA-Z .]+$/, {
+			message: "Name can only contain letters, spaces, and periods",
+		})
+		.min(1, "Please include your first name")
+		.max(25, "max: 25 characters"),
+	phoneDetails: z.object({
+		phoneCountryCode: z.enum(["US", "CA", "EU"]),
+		phoneNo: z
+			.string()
+			.min(10, "Invalid phone number")
+			.max(14, "National Phone Number only")
+			.refine((value) => /^\(\d{3}\) \d{3}-\d{4}$/.test(value), {
+				message: "Phone number should match the format (XXX) XXX-XXXX.",
+			})
+			.optional(),
+	}),
+	email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
+	userAccount: z.literal("false"),
+	// DOB: z
+	// 	.string()
+	// 	.max(10, "Expected format: MM/DD/YYYY.")
+	// 	.regex(/^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/, {
+	// 		message: "Expected format: MM/DD/YYYY.",
+	// 	}),
+	address: z.object({
+		docEqDelivAddress: z.boolean(),
+		document: z.object({
+			addressLn1: z.string(),
+			city: z.string(),
+			state: z.string().min(2).max(2),
+			zip: z.string().min(5).max(5),
+		}),
+		physical: z.object({
+			addressLn1: z.string(),
+			city: z.string(),
+			state: z.string().min(2).max(2),
+			zip: z.string().min(5).max(5),
+		}),
+	}),
+	// userAccount: z.string().refine((value) => value === "true" || value === "false", {
+	// 	message: "Select either 'true' or 'false' for userAccount",
+	// }),
+	// benefits: z.string(),
+	// qualifications: z.string(),
+	// lastFour: z.string().min(4).max(4),
+	// pickedProduct: z.string(),
+	// status: z.enum(["applied", "reviewed", "denied", "approved", "provided"]),
+})
+
+const ContactFormSchema = z.object({
+		password: z
+			.string()
+			.refine(
+				() => {
+					return true
+				},
+				{
+					message: "Password is required when userAccount is set to 'true'",
+				}
+			)
+			.optional(),
+		userAccount: z.string().refine((value) => value === "true" || value === "false", {
+			message: "Select either 'true' or 'false' for userAccount",
+		}),
+		phoneDetails: z.object({
+			phoneCountryCode: z.enum(["US", "CA", "EU"]),
+			phoneNo: z
+				.string()
+				.min(10, "Invalid phone number")
+				.max(14, "National Phone Number only")
+				.refine((value) => /^\(\d{3}\) \d{3}-\d{4}$/.test(value), {
+					message: "Phone number should match the format (XXX) XXX-XXXX.",
+				})
+				.optional(),
+		}),
+			email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
+	})
+	.superRefine((values, context) => {
+		if (values.userAccount === "true" && !values.password) {
+			context.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: "password required",
+				path: ["password"],
+			})
+		}
+	})
+const UserFormSchema = z.object({
+	firstName: z
+		.string()
+		.regex(/^[a-zA-Z .]+$/, {
+			message: "Name can only contain letters, spaces, and periods",
+		})
+		.min(1, "Please include your first name")
+		.max(25, "max: 25 characters"),
+	address: z.object({
+		docEqDelivAddress: z.boolean(),
+		document: z.object({
+			addressLn1: z.string(),
+			city: z.string(),
+			state: z.string().min(2).max(2),
+			zip: z.string().min(5).max(5),
+		}),
+		physical: z.object({
+			addressLn1: z.string(),
+			city: z.string(),
+			state: z.string().min(2).max(2),
+			zip: z.string().min(5).max(5),
+		}),
+	}),
+	lastName: z
+		.string()
+		.regex(/^[a-zA-Z .]+$/, {
+			message: "Name can only contain letters, spaces, and periods",
+		})
+		.min(1, "Please include your first name")
+		.max(25, "max: 25 characters"),
+})
+
+const ApplicationFormSchema = z.object({
+		password: z
+			.string()
+			.refine(
+				() => {
+					return true
+				},
+				{
+					message: "Password is required when userAccount is set to 'true'",
+				}
+			)
+			.optional(),
+		userAccount: z.string().refine((value) => value === "true" || value === "false", {
+			message: "Select either 'true' or 'false' for userAccount",
+		}),
+		phoneDetails: z.object({
+			phoneCountryCode: z.enum(["US", "CA", "EU"]),
+			phoneNo: z
+				.string()
+				.min(10, "Invalid phone number")
+				.max(14, "National Phone Number only")
+				.refine((value) => /^\(\d{3}\) \d{3}-\d{4}$/.test(value), {
+					message: "Phone number should match the format (XXX) XXX-XXXX.",
+				})
+				.optional(),
+		}),
+		email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
+		firstName: z
+			.string()
+			.regex(/^[a-zA-Z .]+$/, {
+				message: "Name can only contain letters, spaces, and periods",
+			})
+			.min(1, "Please include your first name")
+			.max(25, "max: 25 characters"),
+		address: z.object({
+			docEqDelivAddress: z.boolean(),
+			document: z.object({
+				addressLn1: z.string(),
+				city: z.string(),
+				state: z.string().min(2).max(2),
+				zip: z.string().min(5).max(5),
+			}),
+			physical: z.object({
+				addressLn1: z.string(),
+				city: z.string(),
+				state: z.string().min(2).max(2),
+				zip: z.string().min(5).max(5),
+			}),
+		}),
+		lastName: z
+			.string()
+			.regex(/^[a-zA-Z .]+$/, {
+				message: "Name can only contain letters, spaces, and periods",
+			})
+			.min(1, "Please include your first name")
+			.max(25, "max: 25 characters"),
+	})
+	.superRefine((values, context) => {
+		if (values.userAccount === "true" && !values.password) {
+			context.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: "password required",
+				path: ["password"],
+			})
+		}
+	})
+
+// const ApplicationFormSchema = z.discriminatedUnion("userAccount", [PasswordNullSchema, PasswordRequiredSchema])
 
 //  Form Types
 type SupportFormDataProps = {
@@ -105,6 +302,38 @@ type SupportFormDataProps = {
 		agreed?: boolean
 		status?: "unread" | "viewed" | "completed" | "in talk"
 	}
+}
+type ApplicationFormDataProps = {
+	e?: FormEvent<HTMLFormElement>
+	firstName: string
+	lastName: string
+	phoneDetails: {
+		phoneCountryCode: "US" | "CA" | "MX"
+		phoneNo: string
+	}
+	address: {
+		docEqDelivAddress: boolean
+		document: {
+			addressLn1: string
+			city: string
+			state: string
+			zip: string
+		}
+		physical: {
+			addressLn1: string
+			city: string
+			state: string
+			zip: string
+		}
+	}
+	email: string
+	pickedProduct: string
+	lastFour: string
+	qualifications: string
+	benefits: string
+	userCreated: string
+	DOB: string
+	status?: "applied" | "reviewed" | "denied" | "approved" | "provided"
 }
 type SubscribeFormDataProps = {
 	e?: FormEvent<HTMLFormElement>
@@ -135,7 +364,6 @@ const formatPhoneNo = (inputValue: string) => {
 	}
 	return formattedValue
 }
-
 const valueToDropdownConversion = (stringArray: string[]) => {
 	const objectArray = stringArray.map((string: string) => {
 		return { label: string, value: string }
@@ -180,7 +408,6 @@ const SendSupportEmail = async ({ formData }: SupportFormDataProps) => {
 		console.error(err)
 	}
 }
-
 const SendSubscribeEmail = async ({ formData }: SubscribeFormDataProps) => {
 	try {
 		const response = await fetch("/api/subscribe", {
@@ -208,8 +435,8 @@ const SendSubscribeEmail = async ({ formData }: SubscribeFormDataProps) => {
 	}
 }
 
-export { SupportFormSchema, SubscribeComponentSchema, JobFormSchema } // Schemas
-export { type SupportFormDataProps } // Types
+export { SupportFormSchema, SubscribeComponentSchema, JobFormSchema, ApplicationFormSchema, ContactFormSchema, UserFormSchema } // Schemas
+export { type SupportFormDataProps, type ApplicationFormDataProps } // Types
 export { showAlert, formatPhoneNo, classNames, valueToDropdownConversion } //  Functions
 export { SendSupportEmail, SendSubscribeEmail } // Email  specific functions
 

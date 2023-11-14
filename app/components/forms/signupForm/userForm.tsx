@@ -12,11 +12,17 @@ type UserData = {
 	firstName: string
 	lastName: string
 	address: Addresses
+	formData: any
+	setFormData: any
+	register: any
+	unregister: any
+	watch: any
+	errors: any
 }
 
 type UserFormProps = UserData & {
 	// this type means we can update any or all fields that belong to the user Data.
-	updateFields: (fields: Partial<UserData>) => void
+	updateFields: (fields: Partial<UserData>) => any
 }
 
 function classNames(...classes: string[]) {
@@ -84,32 +90,19 @@ const valueToDropdownConversion = (stringArray: string[]) => {
 }
 const stateDropdown = valueToDropdownConversion(states)
 
-const UserForm = ({ updateFields, firstName, lastName, address }: UserFormProps) => {
+const UserForm = ({
+	updateFields,
+	firstName,
+	lastName,
+	address,
+	formData,
+	setFormData,
+	register,
+	unregister,
+	watch,
+	errors,
+}: UserFormProps) => {
 	const [sameAsBilling, setSameAsBiling] = useState(true)
-	// useEffect(() => {
-	// 	console.log()
-	// }, [])
-
-	const showData = () => {
-		// console.log("password", password)
-		// console.log("email", email)
-		// console.log("subscribed", subscribed)
-		// console.log("phoneNo", phoneDetails)
-	}
-
-	const formatPhoneNo = (inputValue: string) => {
-		if (!inputValue) return inputValue
-		const sanitizedValue = inputValue.replace(/[^\d]/g, "")
-		let formattedValue = ""
-		if (sanitizedValue.length <= 3) {
-			formattedValue = sanitizedValue
-		} else if (sanitizedValue.length <= 6) {
-			formattedValue = `(${sanitizedValue.slice(0, 3)}) ${sanitizedValue.slice(3)}`
-		} else {
-			formattedValue = `(${sanitizedValue.slice(0, 3)}) ${sanitizedValue.slice(3, 6)}-${sanitizedValue.slice(6, 10)}`
-		}
-		return formattedValue
-	}
 
 	return (
 		<FormWrapper className="" title="User Details">
@@ -134,60 +127,73 @@ const UserForm = ({ updateFields, firstName, lastName, address }: UserFormProps)
 						/>
 					</div>
 					{/* form questions go below here */}
-					<div className="col-span-12 md:col-span-6">
+					<div>
 						<div className="flex justify-between">
 							<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
 								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-								First name
+								First Name
 							</label>
-							<span className="text-sm leading-6 text-gray-500" id="email-optional">
+							<span className="text-sm leading-6 text-gray-500" id="first-name-required">
 								Required
 							</span>
 						</div>
-						<div className="mt-2.5">
+						<div className="mt-2.5 relative">
 							<input
-								autoFocus
-								type="text"
-								name="first-name"
 								id="first-name"
-								required
+								type="text"
+								// name="first-name"
 								autoComplete="given-name"
-								onChange={(e: ChangeEvent<HTMLInputElement>) =>
-									updateFields({
-										firstName: e.target.value,
-									})
-								}
-								value={firstName}
-								className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								className="block w-full focus:placeholder:opacity-0 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								placeholder="Your First Name"
+								{...register("firstName")}
+								value={formData.firstName}
+								onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
 							/>
+							{errors.firstName && (
+								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+								</div>
+							)}
 						</div>
+						{errors.firstName && (
+							<p className="pl-2 mt-2 text-sm text-red-600" id="first-name-error">
+								{errors.firstName.message}
+							</p>
+						)}
 					</div>
-					<div className="col-span-12 md:col-span-6">
+					<div>
 						<div className="flex justify-between">
 							<label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
 								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-								Last name
+								Last Name
 							</label>
-							<span className="text-sm leading-6 text-gray-500" id="email-optional">
+							<span className="text-sm leading-6 text-gray-500" id="last-name-required">
 								Required
 							</span>
 						</div>
-						<div className="mt-2.5">
+						<div className="mt-2.5 relative">
 							<input
-								type="text"
-								name="last-name"
 								id="last-name"
-								required
+								type="text"
+								// name="last-name"
 								autoComplete="family-name"
-								onChange={(e) =>
-									updateFields({
-										lastName: e.target.value,
-									})
-								}
-								value={lastName}
-								className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								className="block w-full focus:placeholder:opacity-0 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								placeholder="Your Last Name"
+								{...register("lastName")}
+								value={formData.lastName}
+								onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
 							/>
+							{errors.lastName && (
+								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+								</div>
+							)}
 						</div>
+						{errors.lastName && (
+							<p className="pl-2 mt-2 text-sm text-red-600" id="last-name-error">
+								{errors.lastName.message}
+							</p>
+						)}
 					</div>
 					<div className="col-span-full gap-y-4">
 						<div className="pt-2">
@@ -197,7 +203,7 @@ const UserForm = ({ updateFields, firstName, lastName, address }: UserFormProps)
 						<div className="flex justify-between">
 							<label htmlFor="street-address" className="block text-sm font-semibold leading-6 text-gray-900">
 								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-								Street address
+								Street Address
 							</label>
 							<span className="text-sm leading-6 text-gray-500" id="email-optional">
 								Required
@@ -209,6 +215,7 @@ const UserForm = ({ updateFields, firstName, lastName, address }: UserFormProps)
 								name="street-address"
 								id="street-address"
 								required
+								placeholder="Your Address: (XXXX adams st Apt 104)"
 								onChange={(e: ChangeEvent<HTMLInputElement>) =>
 									updateFields({
 										address: {
@@ -220,9 +227,12 @@ const UserForm = ({ updateFields, firstName, lastName, address }: UserFormProps)
 										},
 									})
 								}
-								value={address.document.street}
+								// value={address.document.street}
 								autoComplete="street-address"
 								className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								{...register("addressLn1")}
+								value={formData.addressLn1}
+								onChange={(e) => setFormData({ ...formData, addressLn1: e.target.value })}
 							/>
 						</div>
 					</div>

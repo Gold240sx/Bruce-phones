@@ -6,6 +6,7 @@ import Banner from "@/app/components/banner/banner"
 import { getCollectionDocs, collection, db, getDoc, getDocs } from "@firebase/storeFunctions"
 import CareerHeaderImage from "@/app/assets/images/careerHeaderImage.jpg"
 import PopupModal from "@/app/components/popupModal"
+import BgBlur from "@/app/components/bgBlur"
 
 const Careers = () => {
 	const [formOpen, setFormOpen] = useState(false)
@@ -41,7 +42,10 @@ const Careers = () => {
 		<main className="flex flex-col items-center justify-between p-24">
 			{/* <PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} /> */}
 			{formOpen && form === "JobApplication" && (
-				<PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} subCategory={position} />
+				<>
+					<BgBlur toggleMainForm={toggleMainForm} />
+					<PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} subCategory={position} />
+				</>
 			)}
 			<div className="flex flex-col items-center justify-between w-full max-w-5xl font-mono text-sm">
 				<div className="object-fill " style={{ maxHeight: Math.max(window.innerHeight * 0.5, 800) + "px" }}>

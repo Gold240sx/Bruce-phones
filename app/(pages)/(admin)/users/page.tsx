@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { getCollectionDocs } from "@firebase/storeFunctions"
 import { collection, getDocs } from "firebase/firestore"
 import { db } from "@/app/firebase/firebaseInit"
+import Link from "next/link"
 
 type User = {
 	name: string
@@ -104,9 +105,9 @@ export default function AllUsers() {
 									<td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{user.email}</td>
 									<td className="px-3 py-4 text-sm text-gray-500">{user.role}</td>
 									<td className="py-4 pl-3 pr-4 text-sm font-medium text-right sm:pr-0">
-										<a href="#" className="text-indigo-600 hover:text-indigo-900">
+										<Link href="#" className="text-indigo-600 hover:text-indigo-900">
 											Edit<span className="sr-only">, {user.name}</span>
-										</a>
+										</Link>
 									</td>
 								</tr>
 							))}

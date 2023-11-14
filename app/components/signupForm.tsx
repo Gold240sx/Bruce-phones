@@ -1,6 +1,6 @@
 import React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "../components/ui/card"
-import MultiStepForm from "./forms/multistep-form"
+import MultiStepForm from "./forms/multistep-form2"
 const SignupForm = () => {
 	return (
 		<Card className="w-full h-full">

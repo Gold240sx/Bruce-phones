@@ -9,8 +9,8 @@ const CareerSlider = () => {
 			<Link
 				href="/careers"
 				className="flex items-center p-1 pr-2 text-white bg-black rounded-full hover:text-gray-200 sm:text-base lg:text-sm xl:text-base">
-				<span className="rounded-full bg-indigo-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white">We're hiring</span>
-				<span className="ml-4 text-sm">Visit our careers page</span>
+				<p className="rounded-full bg-indigo-500 px-3 py-0.5 text-sm font-semibold leading-5 text-white">We're hiring</p>
+				<p className="ml-4 text-sm">Visit our careers page</p>
 				<ChevronRightIcon className="w-5 h-5 ml-2 text-gray-500" aria-hidden="true" />
 			</Link>
 		</div>

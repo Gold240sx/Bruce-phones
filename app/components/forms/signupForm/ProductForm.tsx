@@ -24,6 +24,7 @@ type ProductData = {
 type ProductFormProps = ProductData & {
 	// this type means we can update any or all fields that belong to the user Data.
 	updateFields: (fields: Partial<ProductData>) => void
+	pickedProduct: string
 }
 
 export type Product = {

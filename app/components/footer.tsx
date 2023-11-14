@@ -82,7 +82,7 @@ export default function Footer() {
 					<div className="flex justify-center space-x-6 md:order-2 ">
 						{navigation.social.map((item) => (
 							<Link key={item.name} href={item.href} className="text-gray-400 hover:text-gray-500">
-								<span className="sr-only">{item.name}</span>
+								<p className="sr-only">{item.name}</p>
 								<item.icon className="w-10 h-10 lg:h-6 lg:w-6" aria-hidden="true" />
 							</Link>
 						))}

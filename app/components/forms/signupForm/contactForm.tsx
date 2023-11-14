@@ -9,17 +9,23 @@ import FormWrapper from "../formWrapper"
 
 type ContactData = {
 	email: string
-	subscribed: boolean
+	userAccount: boolean
 	phoneDetails: {
 		phoneNo: string
 		phoneCountryCode: string
 	}
 	password: string
+	formData: any
+	setFormData: any
+	register: any
+	unregister: any
+	watch: any
+	errors: any
 }
 
 type ContactFormProps = ContactData & {
 	// this type means we can update any or all fields that belong to the user Data.
-	updateFields: (fields: Partial<ContactData>) => void
+	updateFields: (fields: Partial<ContactData>) => any
 }
 
 const valueToDropdownConversion = (stringArray: string[]) => {
@@ -30,7 +36,19 @@ const valueToDropdownConversion = (stringArray: string[]) => {
 }
 // const stateDropdown = valueToDropdownConversion(states)
 
-const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }: ContactFormProps) => {
+const ContactForm = ({
+	updateFields,
+	email,
+	userAccount,
+	phoneDetails,
+	password,
+	formData,
+	setFormData,
+	register,
+	unregister,
+	watch,
+	errors,
+}: ContactFormProps) => {
 	// useEffect(() => {
 	// 	console.log()
 	// }, [])
@@ -38,7 +56,7 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 	const showData = () => {
 		console.log("password", password)
 		console.log("email", email)
-		console.log("subscribed", subscribed)
+		console.log("subscribed", userAccount)
 		console.log("phoneNo", phoneDetails)
 	}
 
@@ -56,9 +74,18 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 		return formattedValue
 	}
 
+	const userAccountCheck = watch("userAccount")
+
+	useEffect(() => {
+		if (userAccount === "true") {
+			register("password")
+		} else {
+			unregister("password")
+		}
+	}, [register, unregister, userAccountCheck])
+
 	return (
 		<FormWrapper className="" title="Contact Info">
-			{" "}
 			{/* form */}
 			<div className="flex flex-wrap-reverse justify-between w-full mx-auto ">
 				{/* left/bottom collumn/row */}
@@ -81,7 +108,7 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 						{/*  */}
 					</div>
 
-					<div id="email-container" className="pt-6 col-span-full">
+					<div className="sm:col-span-2">
 						<div className="flex justify-between">
 							<label htmlFor="email" className="block text-sm font-semibold leading-6 text-gray-900">
 								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
@@ -91,95 +118,97 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 								Required
 							</span>
 						</div>
-						<div className="relative w-full mt-2 rounded-md sm:col-span-2">
+						<div className="mt-2.5 relative">
 							<input
-								type="email"
-								name="email"
-								placeholder="you@example.com"
-								defaultValue="adamwathan"
-								aria-invalid="true"
-								required
-								aria-describedby="email-error"
 								id="email"
+								type="email"
+								// name="email"
+								className="block w-full focus:placeholder:opacity-0 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								placeholder="Your Email"
 								autoComplete="email"
-								onChange={(e) =>
-									updateFields({
-										email: e.target.value,
-									})
-								}
-								value={email}
-								className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 ring-1 ring-gray-300 placeholder:text-gray-400 focus:ring-2 ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								{...register("email")}
+								value={formData.email}
+								onChange={(e) => setFormData({ ...formData, email: e.target.value })}
 							/>
-							<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-								<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
-							</div>
+							{errors.email && (
+								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+								</div>
+							)}
 						</div>
-						<p className="mt-2 text-sm text-red-600" id="email-error">
-							Not a valid email address.
-						</p>
+						{errors.email && (
+							<p className="pl-2 mt-2 text-sm text-red-600" id="email-error">
+								{errors.email.message}
+							</p>
+						)}
 					</div>
-					<div className="col-span-full group">
+					<div className="relative sm:col-span-2">
 						<div className="flex justify-between">
-							<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
+							<label htmlFor="phone" className="block text-sm font-semibold leading-6 text-gray-900">
 								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
 								Phone Number
 							</label>
-							<span className="text-sm leading-6 text-gray-500" id="phone-required">
+							<span className="text-sm leading-6 text-gray-500" id="email-required">
 								Required
 							</span>
 						</div>
 						<div className="relative mt-2.5">
-							<div className="absolute inset-y-0 left-0 flex items-center -translate-x-[3px] border rounded-l-lg rounded-r-none bg-zinc-50">
+							<div className="absolute inset-y-0 left-0 flex items-center">
 								<label htmlFor="country" className="sr-only">
 									Country
 								</label>
 								<select
 									id="country"
-									name="country"
-									onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-										const newPhoneDetails = {
-											...phoneDetails,
-											phoneCountryCode: e.target.value,
-										}
-										updateFields({
-											phoneDetails: newPhoneDetails,
+									// name="country"
+									className="h-full py-0 pl-4 text-gray-400 bg-transparent border-0 rounded-md bg-none pr-9 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+									value={formData.phoneDetails.phoneCountryCode}
+									autoComplete="tel-country-code"
+									{...register("phoneDetails.phoneCountryCode")}
+									onChange={(e) =>
+										setFormData({
+											...formData,
+											phoneDetails: {
+												...formData.phoneDetails,
+												phoneCountryCode: e.target.value,
+											},
 										})
-									}}
-									value={phoneDetails.phoneCountryCode}
-									className="h-full py-0 pl-4 text-gray-400 bg-transparent border-0 rounded-md rounded-r-none ring-t-none ring-b-none border-t-none border-b-none bg-none pr-9 focus:ring-2 focus:ring-inset group-hover:ring-indigo-600 sm:text-sm">
+									}>
 									<option>US</option>
 									<option>CA</option>
-									<option>MX</option>
+									<option>EU</option>
 								</select>
 							</div>
 							<input
-								type="text"
-								name="phone-number"
+								type="tel"
+								// name="phone-number"
 								id="phone-number"
-								required
-								autoComplete="tel"
-								maxLength="15"
-								onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-									const result = e.target.value.replace(/\D/g, "")
-									const newPhoneDetails = {
-										...phoneDetails,
-										phoneNo: result,
-									}
-
-									updateFields({
-										phoneDetails: newPhoneDetails,
+								className="block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+								placeholder="Your Phone Number"
+								autoComplete="tel-national"
+								{...register("phoneDetails.phoneNo")}
+								value={formData.phoneDetails.phoneNo}
+								onChange={(e) => {
+									const formattedNumber = formatPhoneNo(e.target.value)
+									setFormData({
+										...formData,
+										phoneDetails: {
+											...formData.phoneDetails,
+											phoneNo: formattedNumber,
+										},
 									})
 								}}
-								value={formatPhoneNo(phoneDetails.phoneNo)}
-								className="block w-full rounded-md ring-t-none ring-b-none border-t-none border-b-none border-0 px-3.5 py-2 pl-[5.5rem] text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
 							/>
-							<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-								<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
-							</div>
+							{errors.phoneDetails && (
+								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+								</div>
+							)}
 						</div>
-						<p className="mt-2 text-sm text-red-600" id="email-error">
-							Please enter your phone number.
-						</p>
+						{errors.phoneDetails && (
+							<p className="pl-2 mt-2 text-sm text-red-600" id="phoneNo-error">
+								please enter a valid phone number
+							</p>
+						)}
 					</div>
 					<div className="flex flex-col items-start mx-2 text-xl align-middle ">
 						<label className="text-xl font-semibold text-gray-900">Notifications</label>
@@ -195,20 +224,21 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 							<div className="mx-6 space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
 								<div className="flex items-center">
 									<input
-										id="subscribed-no"
-										name="subscribed"
+										id="userAccount-no"
+										name="userAccount"
 										type="radio"
-										value="no"
-										checked={!subscribed}
-										onChange={(e) =>
+										value="false"
+										// checked={!userAccount}
+										onChange={(e: any) =>
 											updateFields({
-												subscribed: false,
+												userAccount: e.target.value,
 											})
 										}
+										{...register("userAccount")}
 										className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
 									/>
 									<label
-										htmlFor="subscribed-no"
+										htmlFor="userAccount-no"
 										className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
 										No
 									</label>
@@ -216,29 +246,36 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 
 								<div className="flex items-center">
 									<input
-										id="subscribed-yes"
-										name="subscribed"
+										id="userAccount-yes"
+										name="userAccount"
 										type="radio"
-										value="yes"
-										checked={subscribed}
-										onChange={(e) =>
+										value="true"
+										// checked={userAccount}
+										onChange={(e: any) =>
 											updateFields({
-												subscribed: true,
+												userAccount: e.target.value,
 											})
 										}
+										{...register("userAccount")}
 										className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
 									/>
 									<label
-										htmlFor="subscribed-yes"
+										htmlFor="userAccount-yes"
 										className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
 										Yes, I like free stuff!
 									</label>
 								</div>
+								{errors.userAccount && (
+									<p className="mt-2 text-sm text-red-600" id="email-error">
+										{errors.userAccount.message}
+									</p>
+								)}
 							</div>
+							{/* {userAccountCheck} */}
 						</fieldset>
 					</div>
 					{/* account creation */}
-					{subscribed && (
+					{userAccountCheck === "true" && (
 						<div className="mx-4 col-span-full group">
 							<div className="flex justify-between">
 								<label htmlFor="phone-number" className="block text-sm font-semibold leading-6 text-gray-900">
@@ -255,23 +292,26 @@ const ContactForm = ({ updateFields, email, phoneDetails, subscribed, password }
 									type="password"
 									name="password"
 									id="password"
-									maxLength="16"
-									required={subscribed}
-									onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-										updateFields({
-											password: e.target.value,
-										})
-									}}
-									value={password}
+									maxLength={16}
+									// required={userAccount}
+									// onChange={(e: any) => {
+									// 	updateFields({
+									// 		password: e.target.value,
+									// 	})
+									// }}
+									{...register("password")}
+									// value={password}
 									className="block w-full rounded-md ring-t-none ring-b-none border-t-none border-b-none border-0 px-3.5 py-2  text-gray-900 shadow-sm ring-1  ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset  sm:text-sm sm:leading-6"
 								/>
 								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+									{errors.password && <ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />}
 								</div>
 							</div>
-							<p className="mt-2 text-sm text-red-600" id="email-error">
-								Please enter a valid password.
-							</p>
+							{errors.password && (
+								<p className="mt-2 text-sm text-red-600" id="email-error">
+									Please enter a valid password.
+								</p>
+							)}
 						</div>
 					)}
 				</div>

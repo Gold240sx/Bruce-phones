@@ -315,7 +315,7 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 								<div className="flex justify-between">
 									<label htmlFor="street-address" className="block text-sm font-semibold leading-6 text-gray-900">
 										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-										Street address
+										Street Address
 									</label>
 									<span className="text-sm leading-6 text-gray-500" id="email-optional">
 										Required

@@ -402,15 +402,6 @@ export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 							)} */}
 							</div>
 							<div className="flex flex-col items-center justify-center w-full mx-auto my-2">
-								{/* <Selector
-									placeholder="Select"
-									options={valueToDropdownConversion(["Resume", "Letter of reccomendation"])}
-									{...register("filePurpose")}
-									// value={formData.filePurpose}
-									handleOnChange={(e: any) => setFormData({ ...formData, filePurpose: e.target.value })}
-									name="filePurpose"
-									className="w-full max-w-md mt-8 mb-4"
-								/> */}
 								<ControlledSelect<FormValues, purposeReason, true>
 									name="filePurpose"
 									control={control}
@@ -420,26 +411,6 @@ export default function JobApplyForm({ subCategory }: { subCategory: string }) {
 									className="bg-white rounded-md"
 									useBasicStyles
 								/>
-								{/* <Select
-									className=""
-									// 	options={[
-									// 		{ label: "Resume", value: "Resume" },
-									// 		{ label: "Letter of reccomendation", value: "LetterOfReccomendation" },
-									// 	]}
-									// 	placeholder="Select"
-									// 	{...register("filePurpose")}
-									// 	value={selectedFilePurpose} // pass the selected value
-									// 	onChange={handleSelect}
-									// 	name="filePurpose"
-									// />
-									isMulti
-									name="signupReasons"
-									control={control}
-									label="Reasons for Sign Up (at least 2)"
-									placeholder="Select some reasons"
-									options={reasonOptions}
-									useBasicStyles
-								/> */}
 							</div>
 						</div>
 

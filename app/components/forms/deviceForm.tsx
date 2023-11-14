@@ -79,7 +79,7 @@ const DeviceForm = ({ device, subscribed, updateFields }: DeviceFormProps) => {
 									<Image
 										className="object-cover ml-auto bg-center "
 										src={DIALNX65}
-										alt="People enjoying mobile phone use"
+										alt={'People enjoying mobile phone use'}
 										sizes="100vw"
 										style={{
 											width: "auto",

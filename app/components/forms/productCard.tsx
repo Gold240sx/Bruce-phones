@@ -11,7 +11,7 @@ const ProductCard = ({
 }: {
 	product: Product
 	pickedProduct: string
-	setPickedProduct: () => void
+	setPickedProduct: (card: string) => void
 }) => {
 	const { name, brand, price, os, screen, connectivity, storage, cameras, tagline, nickName, image } = product
 	const [cardEpanded, setCardExpanded] = useState(false)

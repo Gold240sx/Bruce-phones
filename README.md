@@ -11,7 +11,7 @@
     - user acounts
     - role-based authentication ( admin / user )
     - user database docs tied to docs
-    - storage tied to users upon signup
+    - storage tied to users upon signup ( documents tied to user's as well as applicants)
 - Admin dashboard w/ controls
 - Additional Form Validation with Zod
 - React-Hook-Form (Form State Manager)
@@ -31,16 +31,18 @@
 
 
 ### TODO list (More important)
-[ ] make job application form
-[ ] firebase function to delete firebase storage within a firebase storage folder after 90 days.
-[ ] make job application email
-[ ] get document uploader to run
+[x] make job application form
+[x] get document uploader to run
+[x] firebase function to delete firebase storage within a firebase storage folder after 90 days.
+[x] document uploader ( both for submitting supporting docs as well as for resumes)
+[x] document the how to and reusable component on notion 
+[ ] double check and verify that the resend emails are sent to new subscribers from the new  domain name (waiting on domain purchase)
 [ ] add public and private site links to the db with role based permissions
+[ ] find a potential issue with the job form concerning the react-select / chakra UI dropdown.
 - Main form validation, and zod form hookup w/ db and custom email
-- document uploader ( both for submitting supporting docs as well as for resumes)
 
 ### Still needs work (less important)
+[ ] make job application email
 - DOB Calendar form input doesn't allow direcly editing the value
 - Add a support Requests page w/ dynamic page for viewing and marking the requests as viewed / complete
 - add a scrollable notification banner and tie it to context and local storage
-- double check and verify that the resend emails are sent to new subscribers from the new  domain name (waiting on domain purchase)

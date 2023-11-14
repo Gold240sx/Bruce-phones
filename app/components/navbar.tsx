@@ -27,7 +27,7 @@ const Navbar = () => {
 						<div className="flex items-center flex-1 md:absolute md:inset-y-0 md:left-0">
 							<div className="flex items-center justify-between w-full md:w-auto">
 								<Link href="/">
-									<span className="sr-only">Free Phones Today</span>
+									<h1 className="sr-only">Free Phones Today</h1>
 									{/*  */}
 									<TooltipProvider>
 										<Tooltip>
@@ -42,7 +42,7 @@ const Navbar = () => {
 								</Link>
 								<div className="flex items-center -mr-2 md:hidden">
 									<Popover.Button className="relative inline-flex items-center justify-center p-2 text-gray-400 rounded-md bg-gray-50 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-										<span className="absolute -inset-0.5" />
+										<div className="absolute -inset-0.5" />
 										<span className="sr-only">Open main menu</span>
 										<Bars3Icon className="w-6 h-6" aria-hidden="true" />
 									</Popover.Button>
@@ -118,7 +118,7 @@ const Navbar = () => {
 								</div>
 								<div className="-mr-2">
 									<Popover.Button className="relative inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
-										<span className="absolute -inset-0.5" />
+										<div className="absolute -inset-0.5" />
 										<span className="sr-only">Close menu</span>
 										<XMarkIcon className="w-6 h-6" aria-hidden="true" />
 									</Popover.Button>
