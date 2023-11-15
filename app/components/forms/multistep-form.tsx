@@ -146,7 +146,7 @@ const MultistepForm = () => {
 				<Image
 					className="object-cover ml-auto bg-center"
 					src={imageSrc}
-					alt="People enjoying mobile phone use"
+					alt="Friends talking"
 					sizes="100vh"
 					style={{
 						width: "cover",
@@ -167,7 +167,7 @@ const MultistepForm = () => {
 							<Image
 								className="object-cover ml-auto bg-center"
 								src={imageSrc}
-								alt="People enjoying mobile phone use"
+								alt="Friends talking"
 								sizes="100vh"
 								style={{
 									width: "cover",

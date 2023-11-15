@@ -127,73 +127,73 @@ const UserForm = ({
 						/>
 					</div>
 					{/* form questions go below here */}
-					<div>
-						<div className="flex justify-between">
-							<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
-								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-								First Name
-							</label>
-							<span className="text-sm leading-6 text-gray-500" id="first-name-required">
-								Required
-							</span>
-						</div>
-						<div className="mt-2.5 relative">
-							<input
-								id="first-name"
-								type="text"
-								// name="first-name"
-								autoComplete="given-name"
-								className="block w-full focus:placeholder:opacity-0 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-								placeholder="Your First Name"
-								{...register("firstName")}
-								value={formData.firstName}
-								onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-							/>
-							{errors.firstName && (
-								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+					<div className="col-span-full md:col-span-6">
+								<div className="flex justify-between">
+									<label htmlFor="first-name" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										First Name
+									</label>
+									<span className="text-sm leading-6 text-gray-500" id="first-name-required">
+										Required
+									</span>
 								</div>
-							)}
-						</div>
-						{errors.firstName && (
-							<p className="pl-2 mt-2 text-sm text-red-600" id="first-name-error">
-								{errors.firstName.message}
-							</p>
-						)}
+								<div className="mt-2.5 relative">
+									<input
+										id="first-name"
+										type="text"
+										// name="first-name"
+										autoComplete="given-name"
+										className="block w-full focus:placeholder:opacity-0 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+										placeholder="Your First Name"
+										{...register("firstName")}
+										value={formData.firstName}
+										onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+									/>
+									{errors.firstName && (
+										<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+											<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+										</div>
+									)}
+								</div>
+								{errors.firstName && (
+									<p className="pl-2 mt-2 text-sm text-red-600" id="first-name-error">
+										{errors.firstName.message}
+									</p>
+								)}
 					</div>
-					<div>
-						<div className="flex justify-between">
-							<label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
-								<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
-								Last Name
-							</label>
-							<span className="text-sm leading-6 text-gray-500" id="last-name-required">
-								Required
-							</span>
-						</div>
-						<div className="mt-2.5 relative">
-							<input
-								id="last-name"
-								type="text"
-								// name="last-name"
-								autoComplete="family-name"
-								className="block w-full focus:placeholder:opacity-0 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-								placeholder="Your Last Name"
-								{...register("lastName")}
-								value={formData.lastName}
-								onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-							/>
-							{errors.lastName && (
-								<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-									<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+					<div className="col-span-full md:col-span-6">
+								<div className="flex justify-between">
+									<label htmlFor="last-name" className="block text-sm font-semibold leading-6 text-gray-900">
+										<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+										Last Name
+									</label>
+									<span className="text-sm leading-6 text-gray-500" id="last-name-required">
+										Required
+									</span>
 								</div>
-							)}
-						</div>
-						{errors.lastName && (
-							<p className="pl-2 mt-2 text-sm text-red-600" id="last-name-error">
-								{errors.lastName.message}
-							</p>
-						)}
+								<div className="mt-2.5 relative">
+									<input
+										id="last-name"
+										type="text"
+										// name="last-name"
+										autoComplete="family-name"
+										className="block w-full focus:placeholder:opacity-0 rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+										placeholder="Your Last Name"
+										{...register("lastName")}
+										value={formData.lastName}
+										onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+									/>
+									{errors.lastName && (
+										<div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+											<ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+										</div>
+									)}
+								</div>
+								{errors.lastName && (
+									<p className="pl-2 mt-2 text-sm text-red-600" id="last-name-error">
+										{errors.lastName.message}
+									</p>
+								)}
 					</div>
 					<div className="col-span-full gap-y-4">
 						<div className="pt-2">
@@ -232,7 +232,7 @@ const UserForm = ({
 								className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 								{...register("addressLn1")}
 								value={formData.addressLn1}
-								onChange={(e) => setFormData({ ...formData, addressLn1: e.target.value })}
+								// onChange={(e) => setFormData({ ...formData, addressLn1: e.target.value })}
 							/>
 						</div>
 					</div>
@@ -251,8 +251,8 @@ const UserForm = ({
 								type="text"
 								name="city"
 								id="city"
-								autoComplete="address-level2"
-								required
+								autoComplete="address-city"
+                                placeholder="City"
 								onChange={(e: ChangeEvent<HTMLInputElement>) =>
 									updateFields({
 										address: {
@@ -264,7 +264,10 @@ const UserForm = ({
 										},
 									})
 								}
-								value={address.document.city}
+                                		{...register("addressDetails.document.city")}
+								value={formData.addressLn1}
+								// onChange={(e) => setFormData({ ...formData, addressLn1: e.target.value })}
+								// value={address.document.city}
 								className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							/>
 						</div>
@@ -290,13 +293,16 @@ const UserForm = ({
 								}
 								options={stateDropdown}
 								name="region"
+                                {...register("addressDetails.document.city")}
+								value={formData.state}
+								// onChange={(e) => setFormData({ ...formData, addressDetails.document.city: e.target.value })}
 								className="h-full mb-4"
 							/>
 						</div>
 					</div>
 					<div className="sm:col-span-3">
-						<label htmlFor="postal-code" className="block text-sm font-semibold leading-6 text-gray-900">
-							<span className="mr-1.5 text-lg font-bold text-red-600">*</span>
+						<label htmlFor="postal-code" className="block text-sm font-semibold leading-6 text-gray-900 whitespace-nowrap">
+							<span className="mr-1.5 text-lg font-bold text-red-600 ">*</span>
 							Zip Code
 						</label>
 						<div className="mt-2">
@@ -304,7 +310,7 @@ const UserForm = ({
 								type="text"
 								name="postal-code"
 								id="postal-code"
-								required
+								placeholder="Zip / Postal"
 								maxLength="5"
 								onChange={(e: ChangeEvent<HTMLInputElement>) => {
 									const result = e.target.value.replace(/\D/g, "")
@@ -318,8 +324,11 @@ const UserForm = ({
 										},
 									})
 								}}
-								value={address.document.zip}
+								// value={address.document.zip}
 								autoComplete="postal-code"
+                                {...register("addressDetails.document.zip")}
+								value={formData.addressLn1}
+								// onChange={(e) => setFormData({ ...formData, zip: e.target.value })}
 								className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 							/>
 						</div>
@@ -389,6 +398,7 @@ const UserForm = ({
 										type="text"
 										name="street-address-deliv"
 										id="street-address-deliv"
+                                        placeholder="Your Address: (XXXX adams st Apt 104)"
 										autoComplete="street-address"
 										handleOnChange={(e: ChangeEvent<HTMLInputElement>) => {
 											updateFields({
@@ -422,6 +432,7 @@ const UserForm = ({
 										type="text"
 										name="city-deliv"
 										id="city-deliv"
+                                        placeholder="City"
 										autoComplete="address-level2"
 										handleOnChange={(e: ChangeEvent<HTMLInputElement>) => {
 											updateFields({
@@ -478,6 +489,7 @@ const UserForm = ({
 										name="postal-code-deliv"
 										id="postal-code-deliv"
 										autoComplete="postal-code"
+                                        placeholder="Zip / Postal"
 										handleOnChange={(e: ChangeEvent<HTMLInputElement>) => {
 											updateFields({
 												address: {

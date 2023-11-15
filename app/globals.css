@@ -54,6 +54,28 @@ body {
     input[id^='react-select-']:focus {
         box-shadow: none;
     }
+
+    /*  remove the autofill icon in safari from text inputs */
+    input::-webkit-contacts-auto-fill-button {
+        visibility: hidden;
+        display: none !important;
+        pointer-events: none;
+        position: absolute;
+        right: 0;
+     }
+
+    input::-ms-clear {
+          display: none;
+    }
+
+    input::-ms-reveal {
+          display: none;
+    }
+
+    #react-select-3-listbox {
+        max-height: 200px;
+        overflow-y: scroll;
+    }
 }
 
 @layer components {

@@ -82,8 +82,8 @@ const Careers = () => {
 							<div className="col-span-full md:col-span-3">
 								<h2 className="text-4xl">{job.title}</h2>
 								<div className="flex gap-2">
-									{job.specializations.map((specialty: string) => (
-										<p className="text-white capitalize my-3 bg-zinc-300 rounded-full py-0.5 px-3">{specialty}</p>
+									{job.specializations.map((specialty: string, index: number) => (
+										<p key={index} className="text-white capitalize my-3 bg-zinc-300 rounded-full py-0.5 px-3">{specialty}</p>
 									))}
 								</div>
 								<p

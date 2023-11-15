@@ -23,50 +23,19 @@ import Image from "next/image"
 
 type FormValues = z.infer<typeof ApplicationFormSchema>
 
-const INITIAL_DATA: FormData = {
-	firstName: "",
-	lastName: "",
-	lastFour: "",
-	DOB: new Date(),
-	phoneDetails: {
-		phoneNo: "",
-		phoneCountryCode: "US",
-	},
-	email: "",
-	address: {
-		docEqDelivAdd: true,
-		document: {
-			street: "",
-			city: "",
-			state: "",
-			zip: "",
-		},
-		physical: {
-			street: "",
-			city: "",
-			state: "",
-			zip: "",
-		},
-	},
-	documents: [],
-	device: "x10",
-	userAccount: true,
-	benefits: "SNAP",
-	password: "",
-}
-
 type Step = {
 	id: number
 	label: string
 	name: string
 	status: string
+    fields: string[]
 }
 
 const Steps: Step[] = [
-	{ id: 1, label: "Step 1", name: "Contact Info", status: "current" },
-	{ id: 2, label: "Step 2", name: "User Details", status: "upcoming" },
-	{ id: 3, label: "Step 3", name: "Benefits Info", status: "upcoming" },
-	{ id: 4, label: "Step 4", name: "Product Select", status: "upcoming" },
+	{ id: 1, label: "Step 1", name: "Contact Info", status: "current", fields: ['email', 'phoneDetails', 'userAccount', 'password'] },
+	{ id: 2, label: "Step 2", name: "User Details", status: "upcoming", fields: ['firstName', 'lastName', 'addressDetails.document.addressLn1', 'addressDetails.document.city', 'addressDetails.document.state', 'addressDetails.document.zip', 'addressDetails.docEqDelivAdd',  'addressDetails.physical.addressLn1', 'addressDetails.physical.city', 'addressDetails.physical.state', 'addressDetails.physical.zip', ] },
+	{ id: 3, label: "Step 3", name: "Benefits Info", status: "upcoming", fields: ['qualifications', 'DOB', 'lastFour'] },
+	{ id: 4, label: "Step 4", name: "Product Select", status: "upcoming", fields: ['pickedProduct'] },
 ]
 
 const MultiStepForm = () => {
@@ -105,6 +74,7 @@ const MultiStepForm = () => {
 		benefits: "SNAP",
 		password: "",
 		status: "",
+        pickedProduct: "x10"
 	})
 	const {
 		control,
@@ -113,6 +83,7 @@ const MultiStepForm = () => {
 		watch,
 		unregister,
 		setValue,
+        trigger,
 		formState: { errors },
 	} = useForm<FormValues>({
 		resolver: zodResolver(ContactFormSchema),
@@ -166,7 +137,7 @@ const MultiStepForm = () => {
 		/>,
 		// <BenefitForm {...data} data={data} updateFields={updateFields} />,
 		// <ProductForm {...data} updateFields={updateFields} />,
-	])
+	], trigger)
 
 	const onSubmit = (data: FormValues) => {
 		console.log("data", data)
