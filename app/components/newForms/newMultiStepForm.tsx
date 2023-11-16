@@ -1,21 +1,45 @@
 "use client"
 import { z } from "zod"
 import { motion } from 'framer-motion'
-import React, { useState, useEffect, FormEvent } from "react"
+import React, { useState, useEffect, FormEvent  } from "react"
 import { type step } from './newAppSchema'
 import StepperNav from "./stepperNav"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { ApplicationFormSchema } from "./newAppSchema"
 import ContactForm from "./Forms/newContactForm"
-import ProductForm from "./Forms/productForm"
+import ProductForm from "./Forms/newProductForm"
 import UserForm from "./Forms/newUserForm"
-import QualificationForm from "./Forms/qualificationForm"
+import QualificationForm from "./Forms/newQualificationForm"
 import { ToggleSwitch } from "flowbite-react"
+import lottie from 'lottie-web';
+import { defineElement } from 'lord-icon-element';
+import { MoonLoader } from 'react-spinners'
+import { formSubmission } from './formSubmission'
+defineElement(lottie.loadAnimation);
+
+interface LordIconProps extends React.HTMLAttributes<HTMLElement> {
+  src: any;
+  trigger: string;
+  colors: { primary: string; secondary: string };
+  style?: any
+  className?: any
+}
+
+const LordIconCelebrate = (props: LordIconProps) => {
+  return (
+    <lord-icon
+      src="https://cdn.lordicon.com/ihyatngg.json"
+      trigger="loop"
+      colors={{ primary: '#4be1ec', secondary: '#cb5eee' }}
+      style={{ width: '400px', height: '400px' }}
+      className="w-full h-full"
+    />
+  );
+};
 
 
-
-type Inputs = z.infer<typeof ApplicationFormSchema>
+export type Inputs = z.infer<typeof ApplicationFormSchema>
 
 const steps: step[] = [
   {
@@ -28,26 +52,27 @@ const steps: step[] = [
     name: 'User Info',
     fields: ['firstName', 'lastName',  'address']
     },
-    //  {  id: "step 3",  name: "Qualification Info", fields:  ['qualifications', 'DOB', 'lastFour']  },
-    // {  id: "step 3",  name: "Qualification Info", fields: ['pickedProduct'] },
+     {  id: "step 3",  name: "Qualification Info", fields:  ['qualification', 'DOB', 'lastFour']  },
+    {  id: "step 4",  name: "Product Selection", fields: ['pickedProduct'] },
     { id: 'Step 5', name: 'Complete' }
 ]
 
-export default function MultiForm() {
+export default function MultiForm(toggleMainForm: any ) {
   const [previousStep, setPreviousStep] = useState(0)
   const [currentStep, setCurrentStep] = useState(0)
+    const [isLoading, setIsLoading] = useState(false);
   	const [formData, setFormData] = useState({
         firstName: "Billy",
 		lastName: "Mason",
 		lastFour: "",
-		DOB: new Date(),
+		DOB: "12/16/2000",
 		phoneDetails: {
 			phoneNo: "(410) 411-5604",
 			phoneCountryCode: "US",
 		},
-		email: "nreinrsrsn@nernrss.com",
+		email: "BillyMason@newManRoads.com",
 		address: {
-			docDifDelivAdd: "false",
+			docDifDelivAdd: "true",
 			document: {
 				addressLn1: "1111 Nimrod Ave",
 				city: "Carlston",
@@ -55,18 +80,16 @@ export default function MultiForm() {
 				zip: "11111",
 			},
 			physical: {
-				addressLn1: "",
-				city: "",
-				state: {label: '' , value: ''},
-				zip: "",
+				addressLn1: "2100 Moonlander Rd",
+				city: "Mars Rover Ave",
+				state: {label: 'TN' , value: 'TN'},
+				zip: "54689",
 			},
 		},
-		documents: [],
-		device: "x10",
 		userAccount: "false",
-		benefits: "SNAP",
+		qualification: "SNAP",
 		status: "",
-        pickedProduct: "x10"
+        pickedProduct: ""
     })
   
   const delta = currentStep - previousStep
@@ -91,8 +114,15 @@ export default function MultiForm() {
 		})
 	}
 
-   const processForm: SubmitHandler<Inputs> = data => {
-    console.log("Form Data", data)
+   const processForm: SubmitHandler<Inputs> = async (data ) => {
+     setIsLoading(true); // Set loading state to true while submitting
+
+    // Simulate an asynchronous process, like sending data to the server
+    // await new Promise((resolve) => setTimeout(resolve, 6000)); // Replace this with your actual data submission logic
+    await formSubmission(data)
+    console.log('Form Data', data);
+    setIsLoading(false);
+    setCurrentStep(steps.length - 1);
     // reset()
   }
 
@@ -129,11 +159,12 @@ export default function MultiForm() {
   }
 
     return (
-        <section className="inset-0 flex flex-row justify-between gap-8 px-4 py-10 lg:p-24 md:p-12 md:gap-0 md:flex-col">
+        <section className="inset-0 flex flex-row justify-between min-h-full gap-8 lg:items-center lg:pl-0 bg-zinc-50 lg:pt-24 md:pt-12 md:gap-0 md:flex-col">
             {/*  steps */}
             <StepperNav steps={steps} currentStep={currentStep} />
 
-            <div className="">
+        <div className="flex flex-col w-full min-h-full px-6 py-10 bg-white">
+            <div className="flex flex-col w-full max-w-[54rem] mx-auto">
                 {/*  form */}
                 <form className="md:py-12"  onSubmit={handleSubmit(processForm)}>
                 
@@ -185,7 +216,17 @@ export default function MultiForm() {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                     >
-                        <QualificationForm />
+                        <QualificationForm  
+                            {...formData}
+                            formData={formData}
+                            setFormData={setFormData}
+                            updateFields={updateFields} 
+                            setValue={setValue}
+                            errors={errors}
+                            register={register}
+                            unregister={unregister}
+                            control={control}
+                            watch={watch}  />
                     </motion.div>
                 ) }
                  {currentStep === 3 && (
@@ -194,24 +235,48 @@ export default function MultiForm() {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 0.3, ease: 'easeInOut' }}
                     >
-                       <ProductForm />
+                       <ProductForm
+                          {...formData}
+                            formData={formData}
+                            updateFields={updateFields} 
+                            setValue={setValue}
+                            errors={errors}
+                            register={register}
+                        />
                     </motion.div>
                 ) }
 
                 {currentStep === 4 && (
                    <>
-                        <h2 className='text-base font-semibold leading-7 text-gray-900'>
-                        Complete
-                        </h2>
-                        <p className='mt-1 text-sm leading-6 text-gray-600'>
-                        Thank you for your submission.
-                        </p>
+                        {isLoading ? (
+                        <div className="flex flex-col items-center justify-center w-full">
+                            {/* Show a loading indicator */}
+                            Sending Form Data...
+                             <div className="relative flex items-center justify-center w-full h-full rounded-xl">
+
+                  <MoonLoader
+                    color="#B2B2B4"
+                    className="h-1/2"
+                    size={150}
+                    speedMultiplier={0.75}
+                  />
+                </div>
+
+                        </div>
+                        ) : (
+                        <>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900">Complete</h2>
+                            <p className="mt-1 text-sm leading-6 text-gray-600">Thank you for your submission.</p>
+                            <LordIconCelebrate />
+                        </>
+                        )}
                     </>
                 ) }
                 </form>
             
                 {/* Navigation */}
-                <div className='pt-8'>
+                      {currentStep < steps.length - 1 && (
+                <div className='pt-8 pr-14 md:pr-0'>
         <div className='flex justify-between'>
           <button
             type='button'
@@ -257,6 +322,8 @@ export default function MultiForm() {
           </button>
         </div>
                 </div>
+                      )}
+            </div>
             </div>
         </section>
     )

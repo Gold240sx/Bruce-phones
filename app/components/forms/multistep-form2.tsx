@@ -135,8 +135,8 @@ const MultiStepForm = () => {
 			watch={watch}
 			errors={errors}
 		/>,
-		// <BenefitForm {...data} data={data} updateFields={updateFields} />,
-		// <ProductForm {...data} updateFields={updateFields} />,
+		<BenefitForm {...formData} data={formData} updateFields={updateFields} />,
+		<ProductForm {...formData} updateFields={updateFields} />,
 	], trigger)
 
 	const onSubmit = (data: FormValues) => {

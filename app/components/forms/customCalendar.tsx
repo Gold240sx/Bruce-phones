@@ -31,6 +31,8 @@ export const CustomCalendar = ({ updateFields, dob, setDOB, DOB }) => {
 		inputRef.current ? inputRef.current.focus() : null
 	}
 
+    const formattedValue = format(value, "MM-DD-YYYY")
+
 	return (
 		<div className="relative w-full">
 			<div
@@ -53,7 +55,7 @@ export const CustomCalendar = ({ updateFields, dob, setDOB, DOB }) => {
 					setDOB(date)
 				}}
 				onClick={() => setShowPicker(!showPicker)}
-				value={format(value, "MM-dd-yyyy")}
+				value={ formattedValue}
 				className="block w-full px-2 py-2 text-center text-gray-900 border-0 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
 			/>
 

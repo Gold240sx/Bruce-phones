@@ -73,7 +73,7 @@ const UserForm = ({updateFields, address, formData, setFormData, setValue, contr
         </p>
         <div className='grid grid-cols-12 mt-10 gap-x-6 gap-y-8'>
             {/* start individual inputs */}
-            <div className='sm:col-span-full md:col-span-6 '>
+            <div className='col-span-full md:col-span-6 '>
                 <div className="flex justify-between px-1">
 					<Label
                         htmlFor='firstName'
@@ -110,7 +110,7 @@ const UserForm = ({updateFields, address, formData, setFormData, setValue, contr
                 </div>
             </div>
             {/*  */}
-            <div className='sm:col-span-full md:col-span-6 '>
+            <div className='col-span-full md:col-span-6 '>
                 <div className="flex justify-between px-1">
 					<Label
                         htmlFor='lastName'
@@ -356,63 +356,6 @@ const UserForm = ({updateFields, address, formData, setFormData, setValue, contr
             </div>
             {/*  */}
             	{/* toggle for address being same as the billing */}
-
-      
- 
-        {/* <div className='col-span-full'>
-                <Controller
-        name="address.docDifDelivAdd"
-        control={control}
-        defaultValue="false"
-        // className="w-full col-span-full"
-        // {...register('address.docDifDelivAdd')}
-        render={({ field: { onChange, value } }) => (
-          <ToggleSwitch
-            checked={value === 'true'}
-            label="Document address same as shipping address?"
-            onChange={(isChecked) => {
-              updateFields({
-                address: {
-                  ...address,
-                  docDifDelivAdd: isChecked ? 'true' : 'false',
-                },
-              });
-              onChange(isChecked ? 'true' : 'false');
-            }}
-          />
-        )}
-      />
-      </div> */}
-      {/* <div className='col-span-full'>
-        <ToggleSwitch
-          {...register('address.docDifDelivAdd')}
-          checked={address.docDifDelivAdd === 'true'}
-          label="Document address same as shipping address?"
-          onChange={(isChecked) => {
-            updateFields({
-              address: {
-                ...address,
-                docDifDelivAdd: isChecked ? 'true' : 'false',
-              },
-            });
-          }}
-        />
-      </div> */}
-            {/* <div className='flex gap-3 col-span-full'>
-                <Label
-                    htmlFor='docDifDelivAdd'
-                    value="Document address different than billing address?"
-                    className='block leading-6 text-gray-700 text-md'
-                    />
-
-        <ToggleSwitch
-            id="docDifDelivAdd"
-          {...register('address.docDifDelivAdd')}
-          checked={docDifDelivCheck === 'true'}
-          label=""
-          onChange={(isChecked) => setValue('address.docDifDelivAdd', isChecked ? 'true' : 'false')}
-        />
-      </div> */}
  <div className='flex gap-3 ml-auto col-span-full'>
         <Label
             htmlFor='docDifDelivAdd'
@@ -640,11 +583,11 @@ const UserForm = ({updateFields, address, formData, setFormData, setValue, contr
 
               {/* end individual inputs */}
             </div>
-            <Button
+            {/* <Button
                 type="button"
                 className='w-full m-4'
                 onClick={(e) => console.log(formData)}
-            >Show data</Button>
+            >Show data</Button> */}
     </div>
   )
 }

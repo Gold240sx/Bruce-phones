@@ -23,6 +23,6 @@
 			"@firebase*": ["./app/firebase*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/forms/signupForm"],
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/forms/signupForm", "next-env.d.ts", "**/*.ts", "**/*.tsx", "additional.d.ts"],
 	"exclude": ["node_modules"]
 }

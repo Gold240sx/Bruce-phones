@@ -43,7 +43,7 @@ const PopupModal = ({ toggleMainForm, formOpen, form, subCategory }: PopupModalP
 					onClick={toggleMainForm}>
 					X
 				</button>
-				<SelectedForm subCategory={subCategory} />
+				<SelectedForm subCategory={subCategory} toggleMainForm={toggleMainForm} />
 			</div>
 		)
 	}

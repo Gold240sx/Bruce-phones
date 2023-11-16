@@ -55,7 +55,47 @@ export const ApplicationFormSchema = z.object({
 				zip: z.string().min(5).max(5).optional(),
 			}).optional(),
 		}),
-	}).superRefine((values, context) => {
+        qualification: z.enum(["SNAP", "WIC", "Medicaid","Pell Grant", "Section 8", "National School Lunch", "Veterans Pension and Survivors Benefit Program", "Income below $26,000 / year"]),
+        DOB: z.string()
+            .min(10, { message: "DOB Required"})
+            .max(10, { message: "Invalid date of birth format. Use MM-DD-YYYY."})
+            .refine((value) => /^\d{2}-\d{2}-\d{4}$/.test(value), {
+                message: "Invalid date of birth format. Use MM-DD-YYYY.",
+            })
+            .refine((value) => {
+                const [month, day, year] = value.split("-");
+                const date = new Date(`${year}-${month}-${day}`);
+                return !isNaN(date.getTime());
+            }, {
+                message: "Invalid date of birth. Please enter a valid date.",
+            })
+            .refine((value) => {
+                const [month, day] = value.split("-").map(Number);
+                return month <= 12 && day <= 30;
+            }, {
+                message: "Invalid date of birth. Month should be between 01 and 12, and day should be between 01 and 30.",
+            }),
+            //  .refine((value) => {
+            //     const [month, day, year] = value.split("-").map(Number);
+            //     const date = new Date(`${year}-${month}-${day}`);
+            //     const minDate = new Date(1920, 0, 1); // January 1, 1920
+            //     const maxDate = new Date(); // Current date
+
+            //     return date > minDate && date < maxDate;
+            // }, {
+            //     message: "Invalid date of birth. Year should be between 1920 and the current year.",
+            // }),
+        lastFour: z.string()
+            .refine((value) => /^\d{4}$/.test(value), {
+                message: "Invalid format. Use exactly four digits.",
+            }),
+        pickedProduct: z.enum(["x10", "x65"]),
+        status:z.enum(["submitted", "reviewed", "denied", "approved", "provided" ]).optional()
+        // SSN: z.string()
+        //     .refine((value) => /^\d{3}-\d{2}-\d{4}$/.test(value), {
+        //         message: "Invalid Social Security Number format. Use XXX-XX-XXXX.",
+        //     }), // full SSN Schema
+    }).superRefine((values, context) => {
 		if (values.userAccount === "true" && !values.password) {
 			context.addIssue({
 				code: z.ZodIssueCode.custom,
@@ -77,7 +117,7 @@ export const ApplicationFormSchema = z.object({
 				path: ["address.physical.city"],
 			})
         }
-           if (values.address.docDifDelivAdd === "true" &&  !values.address.physical!.state.label) {
+           if (values.address.docDifDelivAdd === "true" &&  !values.address.physical!.state?.label) {
             context.addIssue({
 				code: z.ZodIssueCode.custom,
 				message: "Select State",

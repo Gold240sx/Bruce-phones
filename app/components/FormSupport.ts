@@ -89,7 +89,6 @@ const JobFormSchema = z.object({
 	filePurpose: z.string(),
 	preferedContact: z.enum(["text", "phone", "email"]),
 })
-
 const ContactFormSchema = z.object({
 		password: z
 			.string()
@@ -158,7 +157,6 @@ const UserFormSchema = z.object({
 		.min(1, "Please include your first name")
 		.max(25, "max: 25 characters"),
 })
-
 const ApplicationFormSchema = z.object({
 		password: z
 			.string()
@@ -304,7 +302,7 @@ type ApplicationFormDataProps = {
 	benefits: string
 	userCreated: string
 	DOB: string
-	status?: "applied" | "reviewed" | "denied" | "approved" | "provided"
+	status?: "submitted" | "reviewed" | "denied" | "approved" | "provided"
 }
 type SubscribeFormDataProps = {
 	e?: FormEvent<HTMLFormElement>
@@ -405,11 +403,48 @@ const SendSubscribeEmail = async ({ formData }: SubscribeFormDataProps) => {
 		console.error(err)
 	}
 }
+const SendApplicationEmail = async ({ formData }: ApplicationFormDataProps) => {
+	try {
+		const response = await fetch("/api/application", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(
+				formData && {
+					firstName: formData.firstName,
+					lastName: formData.firstName,
+					email: formData.email,
+                    address: formData.address,
+					phone: formData.phoneDetails.phoneNo,
+                    userAccount: formData.userAccount,
+					phoneCountryCode: formData.phoneDetails.phoneCountryCode,
+                    qualification: formData.qualification,
+					DOB: formData.DOB,
+                    lastFour: formData.lastFour,
+                    pickedProduct: formData.pickedProduct,
+                    status: formData.status
+				}
+			),
+		})
+
+		if (response.ok) {
+			const data = await response.json()
+			console.log(data)
+			showAlert({ text: "Email sent successfully", status: "OK" })
+		} else {
+			showAlert({ text: "Error sending the email", status: "ERR" })
+		}
+	} catch (err) {
+		showAlert({ text: "Error Fetching Resend API", status: "ERR" })
+		console.error(err)
+	}
+}
 
 export { SupportFormSchema, SubscribeComponentSchema, JobFormSchema, ApplicationFormSchema, ContactFormSchema, UserFormSchema } // Schemas
 export { type SupportFormDataProps, type ApplicationFormDataProps } // Types
 export { showAlert, formatPhoneNo, classNames, valueToDropdownConversion } //  Functions
-export { SendSupportEmail, SendSubscribeEmail } // Email  specific functions
+export { SendSupportEmail, SendSubscribeEmail, SendApplicationEmail } // Email  specific functions
 
 // libraries
 const states = [
