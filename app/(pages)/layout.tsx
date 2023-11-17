@@ -21,7 +21,8 @@ export const fontSans = FontSans({
 })
 
 const messages = [
-	{ message: "Fresh Product supply! Claim your's today! ", link: "View products", href: "/products" },
+	// { message: "Fresh Product supply! Claim your's today! ", link: "View products", href: "/products" },
+	{ message: "Fresh Product supply! Claim your's today! ", link: "View products", href: "/" },
 	// { message: "Fresh Product supply! Claim your's today! ", link: "products", href: "/products" },
 ]
 

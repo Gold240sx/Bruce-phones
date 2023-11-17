@@ -118,8 +118,8 @@ function timeAgo(timestamp: Date | string) {
 									</td>
 									<td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{app.pickedProduct}</td>
 									{/* <td className="px-3 py-4 text-sm text-gray-500">{app.createdAt && timeAgo(app.createdAt.toDate().toString())}</td> */}
-                                    		{/* <td className="px-3 py-4 text-sm text-gray-500">{app.createdAt && app.createdAt.toDate().toString()}</td> */}
-                                            	<td className="px-3 py-4 text-sm text-gray-500">id: <pre>{JSON.stringify(pageData.id, "null", 2)}</pre></td>
+                                    		<td className="px-3 py-4 text-sm text-gray-500">{app.createdAt && app.createdAt.toDate().toString()}</td>
+                                            	{/* <td className="px-3 py-4 text-sm text-gray-500">id: <pre>{JSON.stringify(pageData.id, "null", 2)}</pre></td> */}
                                         <td className="py-4 pl-3 pr-4 text-sm font-medium text-right sm:pr-0">
                                               <Link href={`/applicants/${pageData.id}`} className="text-indigo-600 hover:text-indigo-900">
 											View<span className="sr-only"></span>

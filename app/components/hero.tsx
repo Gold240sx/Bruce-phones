@@ -77,7 +77,7 @@ const Hero = ({ toggleMainForm, formOpen, form, setForm }: hero) => {
 					<div className="rounded-md shadow">
 						<button
 							onClick={() => {
-								setForm("SignupForm")
+								setForm("NewApplicationForm")
 								toggleMainForm()
 							}}
 							className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-md animate-pulse whitespace-nowrap hover:bg-indigo-700 md:px-10 md:py-4 md:text-lg">
