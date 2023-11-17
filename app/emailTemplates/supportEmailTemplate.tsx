@@ -12,39 +12,32 @@ function getCurrentTimeAndDate() {
 	const formattedTime = format(currentDate, "hh:mm a")
 	return { time: formattedTime, date: formattedDate }
 }
-
 const tr = {
 	borderTopStyle: "solid",
 	borderTopWidth: "1px",
 	borderColor: "#e6ebf1",
 }
-
 const main = {
 	fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Ubuntu,sans-serif',
 }
-
 const hr = {
 	borderColor: "#e6ebf1",
 	margin: "20px 0",
 }
-
 const table = {
 	display: "table",
 	borderStyle: "solid",
 	borderWidth: "1px",
 	borderColor: "#000000",
 }
-
 const paragraph = {
 	fontSize: "16px",
 	lineHeight: "24px",
 	textAlign: "left" as const,
 }
-
 const anchor = {
 	color: "#0FB4CC",
 }
-
 const backgroundStyle = {
 	background:
 		'url("https://media3.giphy.com/media/rTIXh5JftLoic/giphy_s.gif?cid=ecf05e47ns87kpg6322l90pgf11et0q0hdaghciynma0fgqj&ep=v1_gifs_search&rid=giphy_s.gif&ct=g")',
@@ -55,7 +48,6 @@ const backgroundStyle = {
 	backgroundColor: "white",
 	imageRendering: "crisp-edges",
 }
-
 const borderLeft = (depth: number, position: string) => {
 	// Define shadow properties based on the position
 	let shadowX = "0"
@@ -74,9 +66,7 @@ const borderLeft = (depth: number, position: string) => {
 		boxShadow: `${shadowX} ${shadowY} 0 rgba(0, 0, 0, 0.4)`,
 	}
 }
-
 const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : ""
-
 type emailProps = {
 	firstName: string
 	lastName: string

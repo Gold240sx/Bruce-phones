@@ -64,7 +64,7 @@ export default function MultiForm(toggleMainForm: any ) {
   	const [formData, setFormData] = useState({
         firstName: "Billy",
 		lastName: "Mason",
-		lastFour: "",
+		lastFour: "4444",
 		DOB: "12/16/2000",
 		phoneDetails: {
 			phoneNo: "(410) 411-5604",

@@ -7,7 +7,7 @@ import { SendApplicationEmail, showAlert } from '../FormSupport';
 
 
 type dataFormProps = Inputs
-type newDataFormProps =  Omit<dataFormProps, 'password'> & {
+type newDataFormProps =  Omit<dataFormProps, 'password'> & Omit<dataFormProps, 'address'> & {
   status: "submitted";
     address: {
         document: {
@@ -50,13 +50,13 @@ const createUserAndAccountWithData = async (data: dataFormProps) => {
         if ( data.password ) {
             delete newData.password
         }
-        if (data.address.physical?.addressLn1 === undefined){ 
-            delete newData.address.physical.addressLn1
-             delete newData.address.physical.city
-              delete newData.address.physical.state
-               delete newData.address.physical.zip
-                // delete newData.address.physical
-        }
+        // if (data.address.physical?.addressLn1 === undefined){ 
+        //     delete newData.address.physical.addressLn1
+        //      delete newData.address.physical.city
+        //       delete newData.address.physical.state
+        //        delete newData.address.physical.zip
+        //         // delete newData.address.physical
+        // }
         if (data.password === undefined ) {
             delete newData.password
         }
@@ -88,7 +88,7 @@ const createUserAndAccountWithData = async (data: dataFormProps) => {
             const userDocRef = doc(db, "users", userId)
             const userDocData = { email: email, role: "user", username: email, avatarUrl: avatarUrl, userId: userId }
             const appDocRef = doc(db, "applicants", userId)
-            const appDocData = { newData }
+            const appDocData =  newData 
 
             // Set the user document in Firestore with the updated data
             try {
@@ -124,8 +124,8 @@ export const formSubmission = async (data: dataFormProps) => {
     if (data.userAccount === "true") {
         console.log( "user account needs to be made")
     } else {  console.log( "userAccount: False, no user account will be made")}
+    // const { address, password, ...newDataWithoutAddressOrPassword } = data
 
-        const formatData = () => {
         const newData = { 
             ... data, 
             status: "submitted" ,
@@ -141,24 +141,20 @@ export const formSubmission = async (data: dataFormProps) => {
                 },
             },
         }
-        if ( data.password ) {
+        if ( data.password || data.password === undefined ) {
             delete newData.password
         }
-        return newData
-    }
-    const newData = formatData()
 
     //handle all the firebase stuff
     try {
-    await createUserAndAccountWithData(data)
+    // await createUserAndAccountWithData(data)
     console.log("user and docs created successfully")
     } catch { console.log("data upload attempt unsuccessfull")}
     // submit the email to bruce as a notification
     try {
-    await SendApplicationEmail(newData)
-        console.log("email sent successfully")
-        showAlert({ text: "Upload and email complete Success", status: "OK" })
-    console.log("form submission complete")
-       } catch { console.log("unsuccessful email attempt")}
+        const emailResult = await SendApplicationEmail({ formData: newData as newDataFormProps })
+        console.log("email data: ", newData)
+        console.log(emailResult)
+    } catch(err) { console.log("unsuccessful email attempt", err)}
     return
 }

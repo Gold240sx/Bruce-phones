@@ -299,11 +299,13 @@ type ApplicationFormDataProps = {
 	pickedProduct: string
 	lastFour: string
 	qualifications: string
-	benefits: string
 	userCreated: string
 	DOB: string
 	status?: "submitted" | "reviewed" | "denied" | "approved" | "provided"
+    qualification: string, 
+    userAccount: string, 
 }
+
 type SubscribeFormDataProps = {
 	e?: FormEvent<HTMLFormElement>
 	formData?: {
@@ -413,15 +415,14 @@ const SendApplicationEmail = async ({ formData }: ApplicationFormDataProps) => {
 			body: JSON.stringify(
 				formData && {
 					firstName: formData.firstName,
-					lastName: formData.firstName,
+					lastName: formData.lastName,
 					email: formData.email,
+					phoneDetails: formData.phoneDetails,
                     address: formData.address,
-					phone: formData.phoneDetails.phoneNo,
-                    userAccount: formData.userAccount,
-					phoneCountryCode: formData.phoneDetails.phoneCountryCode,
                     qualification: formData.qualification,
 					DOB: formData.DOB,
                     lastFour: formData.lastFour,
+                    userAccount: formData.userAccount,
                     pickedProduct: formData.pickedProduct,
                     status: formData.status
 				}
@@ -433,6 +434,7 @@ const SendApplicationEmail = async ({ formData }: ApplicationFormDataProps) => {
 			console.log(data)
 			showAlert({ text: "Email sent successfully", status: "OK" })
 		} else {
+            console.log(response)
 			showAlert({ text: "Error sending the email", status: "ERR" })
 		}
 	} catch (err) {

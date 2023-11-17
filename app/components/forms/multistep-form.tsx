@@ -42,7 +42,6 @@ export type FormData = {
 	device: string
 	subscribed: boolean
 	documents: string[]
-	benefits: string
 	password: string
 }
 
@@ -75,7 +74,7 @@ const INITIAL_DATA: FormData = {
 	documents: [],
 	device: "x10",
 	subscribed: true,
-	benefits: "SNAP",
+	qualification: "SNAP",
 	password: "",
 }
 
