@@ -15,12 +15,14 @@ type hero = {
 	toggleMainForm: any
 	formOpen: any
 	setForm: any
+    form: any
 }
 
 const Hero = ({ toggleMainForm, formOpen, form, setForm }: hero) => {
 	return (
 		<section id="hero" className={`${formOpen === true && "overflow-hidden"} relative px-4 mx-auto max-w-7xl sm:mt-12`}>
 			{/* {formOpen && <SignupForm toggleMainForm={toggleMainForm} formOpen={formOpen} />} */}
+            {formOpen && form === "NewApplicationForm" && <PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} />}
 			{formOpen && form === "SignupForm" && <PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} />}
 			<div className="items-center justify-center w-5/6 mx-auto text-center md:max-w-3/4 xl:max-w-1/2">
 				<CareerSlider />
@@ -83,11 +85,14 @@ const Hero = ({ toggleMainForm, formOpen, form, setForm }: hero) => {
 						</button>
 					</div>
 					<div className="mt-3 rounded-md shadow sm:ml-3 sm:mt-0">
-						<Link
-							href="#"
+                        <button
+							onClick={() => {
+								setForm("NewApplicationForm")
+								toggleMainForm()
+							}}
 							className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-indigo-600 bg-white border border-transparent rounded-md cursor-pointer whitespace-nowrap hover:bg-gray-50 md:px-10 md:py-4 md:text-lg">
 							Process Overview
-						</Link>
+						</button>
 					</div>
 				</div>
 				<p className="pt-16 pr-24 mb-12 text-xl text-center cursor-pointer text-zinc-600 lg:pr-32 hover:underline lg:text-right">

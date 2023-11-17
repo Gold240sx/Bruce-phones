@@ -48,7 +48,7 @@ const SupportFormSchema = z.object({
 			})
 			.optional(),
 	}),
-	email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
+	email: z.string().min(1, "Email is required").email("Please enter a valid email"),
 	message: z.string(),
 	// agreed: z.boolean().refine((value) => value === true, {
 	// 	message: "You must agree to the terms and conditions.",
@@ -82,73 +82,13 @@ const JobFormSchema = z.object({
 	availibility: z.string(),
 	usCitizen: z.boolean(),
 	language: z.string(),
-	email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
+	email: z.string().min(1, "Email is required").email("Please enter a valid email"),
 	cityState: z.string().max(30),
 	aspiration: z.string().optional(),
 	resumeLInk: FileURLSchema,
 	filePurpose: z.string(),
 	preferedContact: z.enum(["text", "phone", "email"]),
 })
-
-const PasswordNullSchema = z.object({
-	firstName: z
-		.string()
-		.regex(/^[a-zA-Z .]+$/, {
-			message: "Name can only contain letters, spaces, and periods",
-		})
-		.min(1, "Please include your first name")
-		.max(25, "max: 25 characters"),
-	lastName: z
-		.string()
-		.regex(/^[a-zA-Z .]+$/, {
-			message: "Name can only contain letters, spaces, and periods",
-		})
-		.min(1, "Please include your first name")
-		.max(25, "max: 25 characters"),
-	phoneDetails: z.object({
-		phoneCountryCode: z.enum(["US", "CA", "EU"]),
-		phoneNo: z
-			.string()
-			.min(10, "Invalid phone number")
-			.max(14, "National Phone Number only")
-			.refine((value) => /^\(\d{3}\) \d{3}-\d{4}$/.test(value), {
-				message: "Phone number should match the format (XXX) XXX-XXXX.",
-			})
-			.optional(),
-	}),
-	email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
-	userAccount: z.literal("false"),
-	// DOB: z
-	// 	.string()
-	// 	.max(10, "Expected format: MM/DD/YYYY.")
-	// 	.regex(/^(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])\/\d{4}$/, {
-	// 		message: "Expected format: MM/DD/YYYY.",
-	// 	}),
-	address: z.object({
-		docEqDelivAddress: z.boolean(),
-		document: z.object({
-			addressLn1: z.string(),
-			city: z.string(),
-			state: z.string().min(2).max(2),
-			zip: z.string().min(5).max(5),
-		}),
-		physical: z.object({
-			addressLn1: z.string(),
-			city: z.string(),
-			state: z.string().min(2).max(2),
-			zip: z.string().min(5).max(5),
-		}),
-	}),
-	// userAccount: z.string().refine((value) => value === "true" || value === "false", {
-	// 	message: "Select either 'true' or 'false' for userAccount",
-	// }),
-	// benefits: z.string(),
-	// qualifications: z.string(),
-	// lastFour: z.string().min(4).max(4),
-	// pickedProduct: z.string(),
-	// status: z.enum(["applied", "reviewed", "denied", "approved", "provided"]),
-})
-
 const ContactFormSchema = z.object({
 		password: z
 			.string()
@@ -175,7 +115,7 @@ const ContactFormSchema = z.object({
 				})
 				.optional(),
 		}),
-			email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
+			email: z.string().min(1, "Email is required").email("Please enter a valid email"),
 	})
 	.superRefine((values, context) => {
 		if (values.userAccount === "true" && !values.password) {
@@ -217,7 +157,6 @@ const UserFormSchema = z.object({
 		.min(1, "Please include your first name")
 		.max(25, "max: 25 characters"),
 })
-
 const ApplicationFormSchema = z.object({
 		password: z
 			.string()
@@ -244,7 +183,7 @@ const ApplicationFormSchema = z.object({
 				})
 				.optional(),
 		}),
-		email: z.string().min(1, "Last name is required").email("Please enter a valid email"),
+		email: z.string().min(1, "Email is required").email("Please enter a valid email"),
 		firstName: z
 			.string()
 			.regex(/^[a-zA-Z .]+$/, {
@@ -252,8 +191,17 @@ const ApplicationFormSchema = z.object({
 			})
 			.min(1, "Please include your first name")
 			.max(25, "max: 25 characters"),
+        lastName: z
+			.string()
+			.regex(/^[a-zA-Z .]+$/, {
+				message: "Name can only contain letters, spaces, and periods",
+			})
+			.min(1, "Please include your first name")
+			.max(25, "max: 25 characters"),
 		address: z.object({
-			docEqDelivAddress: z.boolean(),
+			docEqDelivAddress: z.string().refine((value) => value === "true" || value === "false", {
+			    message: "Select either 'true' or 'false' for doqEqDelivAddress",
+		    }),
 			document: z.object({
 				addressLn1: z.string(),
 				city: z.string(),
@@ -265,15 +213,8 @@ const ApplicationFormSchema = z.object({
 				city: z.string(),
 				state: z.string().min(2).max(2),
 				zip: z.string().min(5).max(5),
-			}),
+			}).optional(),
 		}),
-		lastName: z
-			.string()
-			.regex(/^[a-zA-Z .]+$/, {
-				message: "Name can only contain letters, spaces, and periods",
-			})
-			.min(1, "Please include your first name")
-			.max(25, "max: 25 characters"),
 	})
 	.superRefine((values, context) => {
 		if (values.userAccount === "true" && !values.password) {
@@ -283,6 +224,34 @@ const ApplicationFormSchema = z.object({
 				path: ["password"],
 			})
 		}
+        if (values.address.docEqDelivAddress === "true" && !values.address.physical!.addressLn1 ) {
+            context.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: "Please provide your shipping address otherwise, if it is the same as the address on your documents, click on the toggle above",
+				path: ["address.physical.addressLn1"],
+			})
+        }
+           if (values.address.docEqDelivAddress === "true" &&  !values.address.physical!.city) {
+            context.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: "Provide your City",
+				path: ["address.physical.city"],
+			})
+        }
+           if (values.address.docEqDelivAddress === "true" &&  !values.address.physical!.state) {
+            context.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: "Select State",
+				path: ["address.physical.state"],
+			})
+        }
+           if (values.address.docEqDelivAddress === "true" && !values.address.physical!.zip) {
+            context.addIssue({
+				code: z.ZodIssueCode.custom,
+				message: "Provide your Shipping Zip Code / Postal Code",
+				path: ["address.physical.zip"],
+			})
+        }
 	})
 
 // const ApplicationFormSchema = z.discriminatedUnion("userAccount", [PasswordNullSchema, PasswordRequiredSchema])
@@ -330,11 +299,13 @@ type ApplicationFormDataProps = {
 	pickedProduct: string
 	lastFour: string
 	qualifications: string
-	benefits: string
 	userCreated: string
 	DOB: string
-	status?: "applied" | "reviewed" | "denied" | "approved" | "provided"
+	status?: "submitted" | "reviewed" | "denied" | "approved" | "provided"
+    qualification: string, 
+    userAccount: string, 
 }
+
 type SubscribeFormDataProps = {
 	e?: FormEvent<HTMLFormElement>
 	formData?: {
@@ -434,11 +405,48 @@ const SendSubscribeEmail = async ({ formData }: SubscribeFormDataProps) => {
 		console.error(err)
 	}
 }
+const SendApplicationEmail = async ({ formData }: ApplicationFormDataProps) => {
+	try {
+		const response = await fetch("/api/application", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(
+				formData && {
+					firstName: formData.firstName,
+					lastName: formData.lastName,
+					email: formData.email,
+					phoneDetails: formData.phoneDetails,
+                    address: formData.address,
+                    qualification: formData.qualification,
+					DOB: formData.DOB,
+                    lastFour: formData.lastFour,
+                    userAccount: formData.userAccount,
+                    pickedProduct: formData.pickedProduct,
+                    status: formData.status
+				}
+			),
+		})
+
+		if (response.ok) {
+			const data = await response.json()
+			console.log(data)
+			showAlert({ text: "Email sent successfully", status: "OK" })
+		} else {
+            console.log(response)
+			showAlert({ text: "Error sending the email", status: "ERR" })
+		}
+	} catch (err) {
+		showAlert({ text: "Error Fetching Resend API", status: "ERR" })
+		console.error(err)
+	}
+}
 
 export { SupportFormSchema, SubscribeComponentSchema, JobFormSchema, ApplicationFormSchema, ContactFormSchema, UserFormSchema } // Schemas
 export { type SupportFormDataProps, type ApplicationFormDataProps } // Types
 export { showAlert, formatPhoneNo, classNames, valueToDropdownConversion } //  Functions
-export { SendSupportEmail, SendSubscribeEmail } // Email  specific functions
+export { SendSupportEmail, SendSubscribeEmail, SendApplicationEmail } // Email  specific functions
 
 // libraries
 const states = [

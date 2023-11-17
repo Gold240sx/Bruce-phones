@@ -18,25 +18,19 @@ const RadioBox = ({ item, value, setterFunc, setVals }: RadioBoxProps) => {
 		<label
 			htmlFor={`radio-${name}`}
 			className={`${
-				name === setVals.benefits ? "ring-2 ring-indigo-500" : "hover:ring-2 hover:ring-indigo-300 active:ring-indigo-600"
+				name === setVals.qualification ? "ring-2 ring-indigo-500" : "hover:ring-2 hover:ring-indigo-300 active:ring-indigo-600"
 			} flex items-center px-4 py-2 border rounded-lg cursor-pointer border-zinc-300 `}>
 			<input
 				id={`radio-${name}`}
-				name="notification-method" // Set this to a common name for the radio group
+				name="notification-method"
 				type="radio"
-				// onChange={(e: ChangeEvent<HTMLInputElement>) => {
-				// 	if (e.target.checked === true) {
-				// 		setterFunc({ value: name })
-				// 	}
-				// }}
 				onChange={(e) => {
-					// console.log(setterFunc)
 					setterFunc({
+                        // @ts-expect-error
 						[value]: name,
 					})
 				}}
-				// checked={value === name}
-				checked={name === setVals.benefits}
+				checked={name === setVals.qualification}
 				className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
 			/>
 			<p className="block ml-3 text-base font-medium leading-6 text-gray-700 cursor-pointer ">{name}</p>
@@ -46,7 +40,7 @@ const RadioBox = ({ item, value, setterFunc, setVals }: RadioBoxProps) => {
 
 type RadioBoxListProps = {
 	items: Item[]
-	value: string
+	value: [key: string]
 	setterFunc: any
 	setVals: any
 }

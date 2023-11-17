@@ -15,10 +15,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../
 import { valueToDropdownConversion, states } from "../FormSupport"
 import "react-datepicker/dist/react-datepicker.css"
 
-function classNames(...classes: string[]) {
-	return classes.filter(Boolean).join(" ")
-}
-
 const stateDropdown = valueToDropdownConversion(states)
 
 type UserData = {
@@ -59,13 +55,6 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 		return arr
 	}
 	const yearOptions = generateYearOptions()
-
-	// const replaceWithAstrx = (string: string) => {
-	// 	const characters = string.split("")
-	// 	const asterisks = characters.map((char) => "*")
-	// 	const output = asterisks.join("")
-	// 	return output
-	// }
 
 	const formatPhoneNo = (inputValue: string) => {
 		if (!inputValue) return inputValue
@@ -353,7 +342,7 @@ const UserForm = ({ firstName, middleInitial, lastName, phoneNo, email, updateFi
 										name="city"
 										id="city"
 										autoComplete="address-level2"
-										required
+                                        placeholder="city"
 										onChange={(e) =>
 											updateFields({
 												city: e.target.value,

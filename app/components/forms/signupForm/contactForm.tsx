@@ -77,7 +77,7 @@ const ContactForm = ({
 	const userAccountCheck = watch("userAccount")
 
 	useEffect(() => {
-		if (userAccount === "true") {
+		if (userAccount === true) {
 			register("password")
 		} else {
 			unregister("password")
@@ -224,7 +224,7 @@ const ContactForm = ({
 							<div className="mx-6 space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
 								<div className="flex items-center">
 									<input
-										id="userAccount-no"
+										id="userAccountOld-no"
 										name="userAccount"
 										type="radio"
 										value="false"
@@ -238,7 +238,7 @@ const ContactForm = ({
 										className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
 									/>
 									<label
-										htmlFor="userAccount-no"
+										htmlFor="userAccountOld-no"
 										className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
 										No
 									</label>
@@ -246,7 +246,7 @@ const ContactForm = ({
 
 								<div className="flex items-center">
 									<input
-										id="userAccount-yes"
+										id="userAccountOld-yes"
 										name="userAccount"
 										type="radio"
 										value="true"
@@ -260,7 +260,7 @@ const ContactForm = ({
 										className="w-4 h-4 text-indigo-600 border-gray-300 cursor-pointer focus:ring-indigo-600"
 									/>
 									<label
-										htmlFor="userAccount-yes"
+										htmlFor="userAccountOld-yes"
 										className="block ml-3 font-medium leading-6 text-gray-900 cursor-pointer">
 										Yes, I like free stuff!
 									</label>
@@ -271,7 +271,6 @@ const ContactForm = ({
 									</p>
 								)}
 							</div>
-							{/* {userAccountCheck} */}
 						</fieldset>
 					</div>
 					{/* account creation */}
@@ -316,9 +315,6 @@ const ContactForm = ({
 					)}
 				</div>
 			</div>
-			{/* <button onClick={showData} className="mx-4 my-1 text-white bg-indigo-400">
-				Show Data
-			</button> */}
 		</FormWrapper>
 	)
 }

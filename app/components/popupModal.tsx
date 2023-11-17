@@ -2,6 +2,7 @@
 import React, { ReactNode } from "react"
 import SignupForm from "./SignupForm"
 import SupportForm from "./supportForm2"
+import NewMultiStep from "../components/newForms/newMultiStepForm"
 
 // import JobAppForm from "./JobApply"
 import JobAppForm from "./JobApplyTest"
@@ -18,11 +19,13 @@ interface FormComponents {
 	SignupForm: React.ComponentType<any>
 	SupportForm: React.ComponentType<any>
 	JobApplication: React.ComponentType<any>
+    NewApplicationForm: React.ComponentType<any>
 }
 const forms: FormComponents = {
 	SignupForm: SignupForm,
 	SupportForm: SupportForm,
 	JobApplication: JobAppForm,
+     NewApplicationForm: NewMultiStep
 }
 
 const PopupModal = ({ toggleMainForm, formOpen, form, subCategory }: PopupModalProps) => {
@@ -40,7 +43,7 @@ const PopupModal = ({ toggleMainForm, formOpen, form, subCategory }: PopupModalP
 					onClick={toggleMainForm}>
 					X
 				</button>
-				<SelectedForm subCategory={subCategory} />
+				<SelectedForm subCategory={subCategory} toggleMainForm={toggleMainForm} />
 			</div>
 		)
 	}

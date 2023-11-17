@@ -25,7 +25,7 @@ export default function Home() {
 				// } relative items-center justify-between w-full font-mono text-sm`}>*/}
 				{formOpen && <BgBlur toggleMainForm={toggleMainForm} />}
 				{formOpen && <PopupModal toggleMainForm={toggleMainForm} form={form} />}
-				<Hero toggleMainForm={toggleMainForm} formOpen={formOpen} setForm={setForm} />
+				<Hero toggleMainForm={toggleMainForm} formOpen={formOpen} setForm={setForm} form={form} />
 				<TestimonialSection />
 				<Faq toggleMainForm={toggleMainForm} formOpen={formOpen} setForm={setForm} />
 			</div>

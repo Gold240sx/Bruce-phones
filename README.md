@@ -13,7 +13,7 @@
     - user database docs tied to docs
     - storage tied to users upon signup ( documents tied to user's as well as applicants)
 - Admin dashboard w/ controls
-- Additional Form Validation with Zod
+- Additional TypeSafe Form Validation with Zod ( with optionally required form Fields)
 - React-Hook-Form (Form State Manager)
 - Next 13 app router
 - React context api

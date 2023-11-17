@@ -42,7 +42,6 @@ export type FormData = {
 	device: string
 	subscribed: boolean
 	documents: string[]
-	benefits: string
 	password: string
 }
 
@@ -75,7 +74,7 @@ const INITIAL_DATA: FormData = {
 	documents: [],
 	device: "x10",
 	subscribed: true,
-	benefits: "SNAP",
+	qualification: "SNAP",
 	password: "",
 }
 
@@ -146,7 +145,7 @@ const MultistepForm = () => {
 				<Image
 					className="object-cover ml-auto bg-center"
 					src={imageSrc}
-					alt="People enjoying mobile phone use"
+					alt="Friends talking"
 					sizes="100vh"
 					style={{
 						width: "cover",
@@ -167,7 +166,7 @@ const MultistepForm = () => {
 							<Image
 								className="object-cover ml-auto bg-center"
 								src={imageSrc}
-								alt="People enjoying mobile phone use"
+								alt="Friends talking"
 								sizes="100vh"
 								style={{
 									width: "cover",

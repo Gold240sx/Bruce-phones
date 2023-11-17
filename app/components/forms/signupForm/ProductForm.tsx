@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, ChangeEvent, FormEvent, JSXElementConstructor, ReactElement, ReactNode, useEffect } from "react"
+import { type ImageType } from "../../newForms/Forms/newProductForm"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../../../components/ui/tooltip"
 import { ExclamationCircleIcon } from "@heroicons/react/20/solid"
 import { AiFillInfoCircle } from "react-icons/ai"
@@ -31,7 +32,7 @@ export type Product = {
 	name: string
 	nickName: string
 	tagline: string
-	image: HTMLImageElement
+	image: ImageType
 	brand: string
 	price: string
 	screen: string
@@ -102,9 +103,9 @@ const ProductForm = ({ updateFields, pickedProduct }: ProductFormProps) => {
 					</div>
 
 					{/* this is where the questions go */}
-					{productData.map((product: Product) => (
-						<ProductCard product={product} pickedProduct={pickedDevice} setPickedProduct={setPickedDevice} />
-					))}
+					{/* {productData.map((product: Product) => (
+						// <ProductCard product={product} setValue={pickedProduct} pickedProduct={pickedDevice} setPickedProduct={setPickedDevice} />
+					))} */}
 				</div>
 			</div>
 			{/* <button onClick={showData} className="mx-4 my-1 text-white bg-indigo-400">

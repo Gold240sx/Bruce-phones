@@ -28,8 +28,8 @@ const messages = [
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
-			<ChakraProvider>
-				<body className={`${cn(fontSans.variable)} relative p-0 m-0`}>
+			<body className={`${cn(fontSans.variable)} relative p-0 m-0`}>
+                <ChakraProvider>
 					<BgPattern />
 					<div className="">
 						<Banner messages={messages} />
@@ -37,8 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						{children}
 						<Footer />
 					</div>
-				</body>
-			</ChakraProvider>
+                </ChakraProvider>
+			</body>
 		</html>
 	)!
 }
