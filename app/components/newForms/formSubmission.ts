@@ -147,7 +147,7 @@ export const formSubmission = async (data: dataFormProps) => {
 
     //handle all the firebase stuff
     try {
-    // await createUserAndAccountWithData(data)
+    await createUserAndAccountWithData(data)
     console.log("user and docs created successfully")
     } catch { console.log("data upload attempt unsuccessfull")}
     // submit the email to bruce as a notification

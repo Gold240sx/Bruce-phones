@@ -48,7 +48,7 @@ const App = ({ params }: any) => {
 		
 			<button
 				type="button"
-				onClick={() => router.push("/users")}
+				onClick={() => router.push("/applicants")}
 				className="py-3 my-6 text-white bg-red-600 rounded-lg cursor-pointer">
 				See all Applications
 			</button>

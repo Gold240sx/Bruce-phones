@@ -10,6 +10,7 @@ type User = {
 	title?: string
 	avatarUrl: string
 	email: string
+    userId: string
 	role: "user" | "admin"
 }
 
@@ -104,6 +105,11 @@ export default function AllUsers() {
 									</td>
 									<td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">{user.email}</td>
 									<td className="px-3 py-4 text-sm text-gray-500">{user.role}</td>
+                                    <td className="py-4 pl-3 pr-4 text-sm font-medium text-right sm:pr-0">
+										<Link href={`/users/${user.userId}`} className="text-indigo-600 hover:text-indigo-900">
+											View<span className="sr-only">, {user.name}</span>
+										</Link>
+									</td>
 									<td className="py-4 pl-3 pr-4 text-sm font-medium text-right sm:pr-0">
 										<Link href="#" className="text-indigo-600 hover:text-indigo-900">
 											Edit<span className="sr-only">, {user.name}</span>

@@ -14,6 +14,10 @@ const navigation = [
 	// { name: "Reviews", href: "/reviews" },
 	{ name: "Careers", href: "/careers" },
 ]
+const adminNavigation = [
+    { name: "Users", href: "/users" },
+	{ name: "Applications", href: "/applicants" },
+]
 
 const Navbar = () => {
 	const { user, isAdmin, userData } = useAuth(true)
@@ -50,7 +54,12 @@ const Navbar = () => {
 							</div>
 						</div>
 						<div className="hidden md:flex md:space-x-10">
-							{navigation.map((item) => (
+							{!isAdmin && navigation.map((item) => (
+								<Link key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
+									{item.name}
+								</Link>
+							))}
+                            {isAdmin && adminNavigation.map((item) => (
 								<Link key={item.name} href={item.href} className="font-medium text-gray-500 hover:text-gray-900">
 									{item.name}
 								</Link>
@@ -113,18 +122,28 @@ const Navbar = () => {
 					<Popover.Panel focus className="absolute inset-x-0 top-0 z-40 p-2 transition origin-top-right transform md:hidden">
 						<div className="overflow-hidden bg-white rounded-lg shadow-md ring-1 ring-black ring-opacity-5">
 							<div className="flex items-center justify-between px-5 pt-4">
-								<div className="h-fit">
-									<SiteIcon className="w-10 h-10 mb-6 text-3xl" textClassName="font-outline mt-[5px] hover:ml-1" />
-								</div>
+								<Link href="/" className="border-0 border-opacity-0 ring-0 ring-opacity-0">
+                                    <div className="h-fit">
+                                        <SiteIcon className="w-10 h-10 mb-6 text-3xl" textClassName="font-outline mt-[5px] hover:ml-1" />
+                                    </div>
+                                </Link>
 								<div className="-mr-2">
 									<Popover.Button className="relative inline-flex items-center justify-center p-2 text-gray-400 bg-white rounded-md hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
 										<div className="absolute -inset-0.5" />
 										<span className="sr-only">Close menu</span>
 										<XMarkIcon className="w-6 h-6" aria-hidden="true" />
 									</Popover.Button>
-								</div>
+								i</div>
 							</div>
-							<div className="px-2 pt-2 pb-3 text-3xl">
+							<div className="px-2 pt-12 pb-3 text-3xl">
+                                {isAdmin && adminNavigation.map((item) => (
+									<a
+										key={item.name}
+										href={item.href}
+										className="block px-3 py-2 text-xl font-medium text-gray-700 rounded-md hover:bg-gray-50 hover:text-gray-900">
+										{item.name}
+									</a>
+								))}
 								{navigation.map((item) => (
 									<a
 										key={item.name}
@@ -134,11 +153,20 @@ const Navbar = () => {
 									</a>
 								))}
 							</div>
-							<Link
-								href="/signIn"
-								className="block w-full px-5 py-3 font-medium text-center text-indigo-600 bg-gray-50 hover:bg-gray-100">
-								Log in
-							</Link>
+							{!user && 
+                                <Link
+                                    href="/signIn"
+                                    className="block w-full px-5 py-3 font-medium text-center text-indigo-600 bg-gray-50 hover:bg-gray-100">
+                                    Log in
+                                </Link>
+                            }
+                            {user && 
+                                <div
+                                    onClick={SignOut}
+                                    className="block w-full px-5 py-3 font-medium text-center text-indigo-600 cursor-pointer bg-gray-50 hover:bg-gray-100">
+                                    Sign Out
+                                </div>
+                            }
 						</div>
 					</Popover.Panel>
 				</Transition>
