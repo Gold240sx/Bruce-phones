@@ -1,6 +1,13 @@
 import { initializeApp } from "firebase/app"
 import { getAnalytics } from "firebase/analytics"
-import { type User, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "firebase/auth"
+import {
+	type User,
+	getAuth,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	onAuthStateChanged,
+	signOut,
+} from "firebase/auth"
 import {
 	getFirestore,
 	serverTimestamp,
@@ -13,9 +20,16 @@ import {
 	addDoc,
 	getDocs,
 	deleteDoc,
+	type DocumentData,
 	type Firestore,
 } from "firebase/firestore"
-import { getStorage, ref, uploadString, uploadBytes, getDownloadURL } from "firebase/storage"
+import {
+	getStorage,
+	ref,
+	uploadString,
+	uploadBytes,
+	getDownloadURL,
+} from "firebase/storage"
 
 const firebaseConfig = {
 	apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -38,7 +52,15 @@ const storage = getStorage(app)
 // Timestamp
 const timestamp = serverTimestamp()
 // Analytics
-const analytics = getAnalytics(app)
+const analytics = () => {
+	if (getAnalytics) {
+		const analytics = getAnalytics(app)
+		// Your analytics initialization code here
+		return analytics
+	} else {
+		console.warn("Firebase Analytics is not supported in this environment.")
+	}
+}
 
 export {
 	db,
@@ -65,5 +87,6 @@ export {
 	ref,
 	uploadString,
 	getDownloadURL,
+	type DocumentData,
 	type Firestore,
 }

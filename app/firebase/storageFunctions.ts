@@ -21,7 +21,10 @@ const fileSizeValidator = (value: File) => {
 	return value.size <= maxFileSizeInBytes
 }
 
-const uploadToFirebaseStorage = async ({ file, filePath }: UploadParamTypes): Promise<UploadResult> => {
+const uploadToFirebaseStorage = async ({
+	file,
+	filePath,
+}: UploadParamTypes): Promise<UploadResult> => {
 	try {
 		// Create a storage reference with the specified file path
 		const storageRef = ref(storage, filePath)

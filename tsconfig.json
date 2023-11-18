@@ -20,9 +20,30 @@
 		],
 		"paths": {
 			"@/*": ["./*"],
-			"@firebase*": ["./app/firebase*"]
+			"@app/*": ["./app/*"],
+			"@api/*": ["./api/*"],
+			"@lib/*": ["./app/lib/*"],
+			"@assets/*": ["./assets/*"],
+			"@images/*": ["./assets/images/*"],
+			"@icons/*": ["./assets/icons/*"],
+			"@components/*": ["./app/components/*"],
+			"@functions/*": ["./app/functions/*"],
+			"@types/*": ["./app/types/*"],
+			"@shadcn/*": ["./app/components/shadcn/*"],
+			"@firebase/*": ["./app/firebase/*"],
+			"@admin/*": ["./app/(pages)/(admin)/*"]
 		}
 	},
-	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/components/forms/signupForm", "next-env.d.ts", "**/*.ts", "**/*.tsx", "additional.d.ts"],
+	"include": [
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts",
+		"app/components/forms/signupForm",
+		"next-env.d.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		"additional.d.ts"
+	],
 	"exclude": ["node_modules"]
 }

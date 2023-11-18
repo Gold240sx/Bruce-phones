@@ -1,11 +1,11 @@
 import {
-	auth,
-	User,
-	onAuthStateChanged,
-	createUserWithEmailAndPassword,
-	signInWithEmailAndPassword,
+	// auth,
+	// User,
+	// onAuthStateChanged,
+	// createUserWithEmailAndPassword,
+	// signInWithEmailAndPassword,
 	serverTimestamp,
-	signOut,
+	// signOut,
 	db,
 	addDoc,
 	getDocs,
@@ -15,27 +15,39 @@ import {
 	doc,
 	setDoc,
 	getDoc,
-	storage,
-	ref,
-	uploadString,
-	getDownloadURL,
-	type Firestore,
+	// storage,
+	// ref,
+	// uploadString,
+	// getDownloadURL,
+	// type Firestore,
 } from "@firebase/firebaseInit"
-import { useState, useEffect } from "react"
+// import { useState, useEffect } from "react"
 
-const readDocument = async ({ collectionName, documentId }: { collectionName: string; documentId: string }) => {
-	const docRef = doc(db, collectionName, documentId)
-	const docSnapshot = await getDoc(docRef)
+// const readDocument = async ({
+// 	collectionName,
+// 	documentId,
+// }: {
+// 	collectionName: string
+// 	documentId: string
+// }) => {
+// 	const docRef = doc(db, collectionName, documentId)
+// 	const docSnapshot = await getDoc(docRef)
 
-	if (docSnapshot.exists()) {
-		const data = docSnapshot.data()
-		// Handle the data
-	} else {
-		// Document doesn't exist
-	}
-}
+// 	if (docSnapshot.exists()) {
+// 		const data = docSnapshot.data()
+// 		// Handle the data
+// 	} else {
+// 		// Document doesn't exist
+// 	}
+// }
 
-const createDocument = async ({ collectionName, data }: { collectionName: string; data: any }) => {
+const createDocument = async ({
+	collectionName,
+	data,
+}: {
+	collectionName: string
+	data: any
+}) => {
 	// add the created at timestamp to any document being added to the store
 	const newDocData = {
 		...data,
@@ -44,7 +56,12 @@ const createDocument = async ({ collectionName, data }: { collectionName: string
 	try {
 		const docRef = await addDoc(collection(db, collectionName), newDocData)
 		const docId = docRef.id
-		return { status: "success", message: "Document successfully created", docRef, docId }
+		return {
+			status: "success",
+			message: "Document successfully created",
+			docRef,
+			docId,
+		}
 	} catch (error) {
 		return { status: "error", message: "Error creating document", error }
 	}
@@ -83,7 +100,11 @@ interface UpdateDocumentResult {
 	error?: string
 }
 
-const updateDocument = async ({ collectionName, docId, data }: UpdateDocumentParams): Promise<UpdateDocumentResult> => {
+const updateDocument = async ({
+	collectionName,
+	docId,
+	data,
+}: UpdateDocumentParams): Promise<UpdateDocumentResult> => {
 	try {
 		const docRef = doc(db, collectionName, docId)
 		await updateDoc(docRef, data)
@@ -113,13 +134,23 @@ const updateDocument = async ({ collectionName, docId, data }: UpdateDocumentPar
 	}
 }
 
-const deleteDocument = async ({ collectionName, documentId }: { collectionName: string; documentId: string }) => {
-	const docRef = doc(db, collectionName, documentId)
-	await deleteDoc(docRef)
-	// Handle the delete operation
-}
+// const deleteDocument = async ({
+// 	collectionName,
+// 	documentId,
+// }: {
+// 	collectionName: string
+// 	documentId: string
+// }) => {
+// 	const docRef = doc(db, collectionName, documentId)
+// 	await deleteDoc(docRef)
+// 	// Handle the delete operation
+// }
 
-export const getCollectionDocs = async ({ collectionName }: { collectionName: string }) => {
+export const getCollectionDocs = async ({
+	collectionName,
+}: {
+	collectionName: string
+}) => {
 	const collectionRef = collection(db, collectionName)
 	try {
 		const data = await getDocs(collectionRef)
@@ -133,7 +164,13 @@ export const getCollectionDocs = async ({ collectionName }: { collectionName: st
 	}
 }
 
-export const getCollectionDoc = async ({ collectionName, docId }: { collectionName: string; docId: string }) => {
+export const getCollectionDoc = async ({
+	collectionName,
+	docId,
+}: {
+	collectionName: string
+	docId: string
+}) => {
 	const docRef = doc(db, collectionName, docId)
 	const docSnapshot = await getDoc(docRef)
 
@@ -146,7 +183,9 @@ export const getCollectionDoc = async ({ collectionName, docId }: { collectionNa
 			}
 			return filteredData
 		} else {
-			console.log("Document not found or there was an error with the data retrieval.")
+			console.log(
+				"Document not found or there was an error with the data retrieval."
+			)
 			return null
 		}
 	} catch (err) {
@@ -156,4 +195,16 @@ export const getCollectionDoc = async ({ collectionName, docId }: { collectionNa
 	}
 }
 
-export { collection, db, addDoc, getDocs, updateDocument, updateDoc, deleteDoc, doc, setDoc, getDoc, createDocument }
+export {
+	collection,
+	db,
+	addDoc,
+	getDocs,
+	updateDocument,
+	updateDoc,
+	deleteDoc,
+	doc,
+	setDoc,
+	getDoc,
+	createDocument,
+}
