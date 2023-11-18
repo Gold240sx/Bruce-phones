@@ -3,7 +3,13 @@ import React, { useEffect, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import Banner from "@/app/components/banner/banner"
-import { getCollectionDocs, collection, db, getDoc, getDocs } from "@firebase/storeFunctions"
+import {
+	getCollectionDocs,
+	collection,
+	db,
+	getDoc,
+	getDocs,
+} from "@firebase/storeFunctions"
 import CareerHeaderImage from "@/app/assets/images/careerHeaderImage.jpg"
 import PopupModal from "@/app/components/popupModal"
 import BgBlur from "@/app/components/bgBlur"
@@ -44,11 +50,21 @@ const Careers = () => {
 			{formOpen && form === "JobApplication" && (
 				<>
 					<BgBlur toggleMainForm={toggleMainForm} />
-					<PopupModal toggleMainForm={toggleMainForm} formOpen={formOpen} form={form} subCategory={position} />
+					<PopupModal
+						toggleMainForm={toggleMainForm}
+						formOpen={formOpen}
+						form={form}
+						subCategory={position}
+					/>
 				</>
 			)}
 			<div className="flex flex-col items-center justify-between w-full max-w-5xl font-mono text-sm">
-				<div className="object-fill " style={{ maxHeight: Math.max(window.innerHeight * 0.5, 800) + "px" }}>
+				<div
+					className="object-fill "
+					style={{
+						maxHeight:
+							Math.max(window.innerHeight * 0.5, 800) + "px",
+					}}>
 					<Image
 						src={CareerHeaderImage}
 						alt="header image: passion led us here"
@@ -72,7 +88,11 @@ const Careers = () => {
 						Unsplash
 					</a>
 				</p>
-				{jobCount && <h1 className="pt-32 pb-8 text-4xl">{jobCount} Jobs available</h1>}
+				{jobCount && (
+					<h1 className="pt-32 pb-8 text-4xl">
+						{jobCount} Jobs available
+					</h1>
+				)}
 				{/* map section */}
 				{pageData &&
 					pageData.map((job: any, index: number) => (
@@ -82,28 +102,37 @@ const Careers = () => {
 							<div className="col-span-full md:col-span-3">
 								<h2 className="text-4xl">{job.title}</h2>
 								<div className="flex gap-2">
-									{job.specializations.map((specialty: string, index: number) => (
-										<p key={index} className="text-white capitalize my-3 bg-zinc-300 rounded-full py-0.5 px-3">{specialty}</p>
-									))}
+									{job.specializations.map(
+										(specialty: string, index: number) => (
+											<p
+												key={index}
+												className="text-white capitalize my-3 bg-zinc-300 rounded-full py-0.5 px-3">
+												{specialty}
+											</p>
+										)
+									)}
 								</div>
 								<p
 									className={` ${
 										job.status === "ongoing"
 											? "text-lime-600"
 											: job.status === "filled"
-											? "text-zinc-300"
-											: job.status === "opening soon"
-											? "text-amber-400"
-											: "text-zinc-500"
+											  ? "text-zinc-300"
+											  : job.status === "opening soon"
+											    ? "text-amber-400"
+											    : "text-zinc-500"
 									} mx-1 my-2 uppercase text-lime-600`}>
 									{job.status}
 								</p>
 							</div>
 							<div className="col-span-full md:col-span-3 md:pt-10 ">
 								<h2 className="text-3xl text-bold">
-									Rough Income: ${job.income.amount} {job.income.occurance}
+									Rough Income: ${job.income.amount}{" "}
+									{job.income.occurance}
 								</h2>
-								<p className="flex gap-2 py-3 pl-1 text-zinc-500">{job.description}</p>
+								<p className="flex gap-2 py-3 pl-1 text-zinc-500">
+									{job.description}
+								</p>
 								<button
 									onClick={() => {
 										setPosition(job.title)
