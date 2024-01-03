@@ -42,6 +42,7 @@ export type FormData = {
 	device: string
 	subscribed: boolean
 	documents: string[]
+	qualification: string
 	password: string
 }
 
@@ -85,13 +86,6 @@ type Step = {
 	status: string
 }
 
-const Steps: Step[] = [
-	{ id: 1, label: "Step 1", name: "Contact Info", status: "current" },
-	{ id: 2, label: "Step 2", name: "User Details", status: "upcoming" },
-	{ id: 3, label: "Step 3", name: "Benefits Info", status: "upcoming" },
-	{ id: 4, label: "Step 4", name: "Product Select", status: "upcoming" },
-]
-
 const MultistepForm = () => {
 	const [data, setData] = useState(INITIAL_DATA)
 	const [imageSrc, setImageSrc] = useState("")
@@ -120,7 +114,16 @@ const MultistepForm = () => {
 			return { ...prev, ...fields }
 		})
 	}
-	const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next, goTo } = useMultiStepForm([
+	const {
+		steps,
+		currentStepIndex,
+		step,
+		isFirstStep,
+		isLastStep,
+		back,
+		next,
+		goTo,
+	} = useMultiStepForm([
 		<ContactForm {...data} updateFields={updateFields} />,
 		<UserForm {...data} updateFields={updateFields} />,
 		<BenefitForm {...data} data={data} updateFields={updateFields} />,
@@ -156,11 +159,15 @@ const MultistepForm = () => {
 				/>
 			</div>
 			<StepperGraphic Steps={Steps} goTo={goTo} />
-			<form onSubmit={(e) => onSubmit(e)} className="flex flex-col items-center w-full mx-auto">
+			<form
+				onSubmit={(e) => onSubmit(e)}
+				className="flex flex-col items-center w-full mx-auto">
 				<div className="flex flex-col-reverse w-full max-w-[990px] md:flex-row">
 					<div className="grid grid-cols-12 md:gap-8">
 						{/* left/bottom collumn/row */}
-						<div className="col-span-12 md:col-span-7 xl:col-span-6">{step}</div>
+						<div className="col-span-12 md:col-span-7 xl:col-span-6">
+							{step}
+						</div>
 						{/* right/top collumn/row */}
 						<div className="hidden col-span-12 mb-12 md:flex md:mb-0 md:col-span-5 xl:col-span-6">
 							<Image
@@ -191,7 +198,8 @@ const MultistepForm = () => {
 						<button
 							type="submit"
 							className={`${
-								isLastStep && "bg-indigo-600 text-white hover:bg-indigo-500"
+								isLastStep &&
+								"bg-indigo-600 text-white hover:bg-indigo-500"
 							} px-3 py-1 text-lg rounded-md border-2 acguvf:border-black border-zinc-400`}>
 							{isLastStep ? "Submit" : "Next"}
 						</button>

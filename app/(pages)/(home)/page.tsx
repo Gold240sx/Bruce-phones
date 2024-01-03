@@ -15,19 +15,32 @@ export default function Home() {
 	}
 
 	return (
-		<main className={`flex flex-col items-center justify-between w-full min-h-screen pt-6 `}>
+		<main
+			className={`flex flex-col items-center justify-between w-full min-h-screen pt-6 `}>
 			{/* // className={`${ 
 			// 	formOpen === true ? "overflow-hidden h-screen" : ""
 			// } flex flex-col items-center justify-between w-full min-h-screen pt-6 `}>*/}
-			<div className={` relative items-center justify-between w-full font-mono text-sm`}>
+			<div
+				className={` relative items-center justify-between w-full font-mono text-sm`}>
 				{/*// className={` ${
 				// 	formOpen === true ? "overflow-hidden h-screen" : ""
 				// } relative items-center justify-between w-full font-mono text-sm`}>*/}
 				{formOpen && <BgBlur toggleMainForm={toggleMainForm} />}
-				{formOpen && <PopupModal toggleMainForm={toggleMainForm} form={form} />}
-				<Hero toggleMainForm={toggleMainForm} formOpen={formOpen} setForm={setForm} form={form} />
+				{formOpen && (
+					<PopupModal toggleMainForm={toggleMainForm} form={form} />
+				)}
+				<Hero
+					toggleMainForm={toggleMainForm}
+					formOpen={formOpen}
+					setForm={setForm}
+					form={form}
+				/>
 				<TestimonialSection />
-				<Faq toggleMainForm={toggleMainForm} formOpen={formOpen} setForm={setForm} />
+				<Faq
+					toggleMainForm={toggleMainForm}
+					formOpen={formOpen}
+					setForm={setForm}
+				/>
 			</div>
 		</main>
 	)
